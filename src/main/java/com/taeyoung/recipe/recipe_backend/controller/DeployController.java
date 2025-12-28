@@ -78,4 +78,9 @@ public class DeployController {
     public String deploy25() {
         return "recipe로 전환!";
     }
+
+    @GetMapping("/deploy/26")
+    public String deploy26() {
+        return "recipe로 전환! 마지막!";
+    }
 }
