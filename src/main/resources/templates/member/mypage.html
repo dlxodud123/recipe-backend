@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>마이 페이지</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f9f9f9;
+        }
+
+        .delete-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            background-color: #e74c3c;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+<div class="delete-container">
+    <h2>마이 페이지</h2>
+    <div>
+        <p>Username: <span id="username"></span></p>
+        <p>Email: <span id="email"></span></p>
+    </div>
+    <div>
+        <button id="deleteBtn">회원 탈퇴</button>
+    </div>
+</div>
+
+<script>
+    async function loadMyInfo() {
+        try {
+            const res = await fetch('/api/members/me', {
+                method: 'GET',
+                credentials: 'include'
+            });
+
+            if (!res.ok) {
+                const error = await res.json();
+                alert(error.message);
+                return;
+            }
+
+            const data = await res.json();
+            document.getElementById("username").innerText = data.username;
+            document.getElementById("email").innerText = data.email;
+
+        } catch (err) {
+            console.error(err);
+            alert("마이페이지 로딩중 오류가 발생했습니다.");
+        }
+    }
+
+    loadMyInfo();
+
+    document.getElementById("deleteBtn").addEventListener("click", async () => {
+        try {
+            const res = await fetch("/api/members/delete", {
+                method: "DELETE",
+                credentials: "include" // JWT 쿠키 포함
+            });
+
+            if (!res.ok) {
+                const error = await res.json();
+                alert(error.message);
+                return;
+            }
+
+            alert("회원 탈퇴가 완료되었습니다.");
+            window.location.href = "/logout";
+
+        } catch (err) {
+            console.error(err);
+            alert("삭제 중 오류가 발생했습니다.");
+        }
+    });
+</script>
+</body>
+</html>
