@@ -77,5 +77,5 @@ public class DeployController {
     @GetMapping("/deploy/25")
     public String deploy25() {
         return "recipe로 전환!";
-    }
+    } 
 }

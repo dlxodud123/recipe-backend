@@ -72,7 +72,7 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-jar {
+bootJar {
 	archiveBaseName.set("recipe-backend")
 	archiveVersion.set("0.0.1-SNAPSHOT")
 }
