@@ -73,4 +73,9 @@ public class DeployController {
     public String deploySuccess() {
         return "마지막 배포 테스트";
     }
+
+    @GetMapping("/deploy/25")
+    public String deploy25() {
+        return "recipe로 전환!";
+    }
 }
