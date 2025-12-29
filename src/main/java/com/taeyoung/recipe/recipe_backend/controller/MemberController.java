@@ -1,9 +1,9 @@
 package com.taeyoung.recipe.recipe_backend.controller;
 
 import com.taeyoung.recipe.recipe_backend.domain.member.CustomUser;
-import com.taeyoung.recipe.recipe_backend.dto.member.request.find.EmailRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.SignupRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.UpdateRequestDto;
+import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindUsernameRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.find.UsernameAndPasswordRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.find.UsernameRequestDto;
 import com.taeyoung.recipe.recipe_backend.service.MemberService;
@@ -20,14 +20,14 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    // 회원가입(아이디 중복 확인)
+    // 회원가입(아이디 중복 확인) !!
     @GetMapping("/signup/{username}")
     public ResponseEntity<String> checkUsernameDuplicate(@PathVariable String username){
         memberService.isUsernameDuplicated(username);
         return ResponseEntity.ok("사용가능한 아이디입니다");
     }
 
-    // 회원가입
+    // 회원가입 !!
     @PostMapping("/signup")
     public ResponseEntity<String> registerMember(@Valid @RequestBody SignupRequestDto signupRequestDto){
         memberService.registerMember(signupRequestDto);
@@ -60,13 +60,13 @@ public class MemberController {
         return ResponseEntity.ok("회원수정 성공!");
     }
 
-    // username 찾기
-//    @PostMapping("/find-username")
-//    public ResponseEntity<String> findUsername(@RequestBody EmailRequestDto emailRequestDto) {
-//        String findUsername = memberService.findByUsernameByEmail(emailRequestDto.getEmail());
-//
-//        return ResponseEntity.ok(findUsername);
-//    }
+    // username 찾기 !!
+    @PostMapping("/find-username")
+    public ResponseEntity<String> findUsername(@Valid @RequestBody FindUsernameRequestDto findUsernameRequestDto) {
+        String findUsername = memberService.findUsername(findUsernameRequestDto);
+
+        return ResponseEntity.ok(findUsername);
+    }
 
     // password 찾기
     @PostMapping("/find-password")

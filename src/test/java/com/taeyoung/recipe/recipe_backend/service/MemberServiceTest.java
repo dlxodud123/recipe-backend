@@ -5,6 +5,7 @@ import com.taeyoung.recipe.recipe_backend.domain.member.Member;
 import com.taeyoung.recipe.recipe_backend.domain.member.ProviderType;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.SignupRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.UpdateRequestDto;
+import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindUsernameRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.response.MemberResponseDto;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateUsernameException;
 import com.taeyoung.recipe.recipe_backend.repository.member.MemberRepository;
@@ -34,7 +35,7 @@ public class MemberServiceTest {
     @BeforeEach
     public void before() {
         SignupRequestDto signupRequestDto1 = new SignupRequestDto("user1", "password1", "name1", "01012345678", true, "asdf", "zxcv", "qwer", LocalDate.parse("2001-12-13"), Gender.M);
-        SignupRequestDto signupRequestDto2 = new SignupRequestDto("user2", "password1", "name1", "01012345678", true, "asdf", "zxcv", "qwer", LocalDate.parse("2001-12-13"), Gender.M);
+        SignupRequestDto signupRequestDto2 = new SignupRequestDto("user2", "password2", "name2", "01012345678", true, "asdf", "zxcv", "qwer", LocalDate.parse("2001-12-13"), Gender.M);
 
         memberService.registerMember(signupRequestDto1);
         memberService.registerMember(signupRequestDto2);
@@ -56,5 +57,14 @@ public class MemberServiceTest {
         // when, then
         assertThat(memberService.findByUsername("user1")).isPresent();
         assertThat(memberService.findByUsername("user3")).isNotPresent();
+    }
+
+    @Test
+    public void findUsername() {
+        // given
+        FindUsernameRequestDto findUsernameRequestDto = new FindUsernameRequestDto("name1", "01012345678");
+
+        // when, then
+        assertThat(memberService.findUsername(findUsernameRequestDto)).isEqualTo("user1");
     }
 }

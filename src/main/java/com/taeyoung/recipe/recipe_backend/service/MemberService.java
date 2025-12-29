@@ -5,6 +5,7 @@ import com.taeyoung.recipe.recipe_backend.domain.member.ProviderType;
 import com.taeyoung.recipe.recipe_backend.domain.member.Role;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.SignupRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.UpdateRequestDto;
+import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindUsernameRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.response.MemberResponseDto;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateEmailException;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateUsernameException;
@@ -27,14 +28,14 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
 
-    // 회원가입(아이디 중복 확인)
+    // 회원가입(아이디 중복 확인) !!
     public void isUsernameDuplicated(String username) {
         if (memberRepository.existsByUsername(username)) {
             throw new DuplicateUsernameException("이미 사용중인 아이디입니다.");
         }
     }
 
-    // 회원가입
+    // 회원가입 !!
     public Member registerMember(SignupRequestDto signupRequestDto){
         String encodedPassword = passwordEncoder.encode(signupRequestDto.getPassword());
 
@@ -71,13 +72,13 @@ public class MemberService {
         member.updateMember(encodedPassword, updateRequestDto.getEmail());
     }
 
-    // username 찾기
-//    public String findByUsernameByEmail(String email) {
-//        Member findMember = memberRepository.findByEmail(email)
-//                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
-//
-//        return findMember.getUsername();
-//    }
+    // username 찾기 !!
+    public String findUsername(FindUsernameRequestDto findUsernameRequestDto) {
+        Member findMember = memberRepository.findByNameAndPhone(findUsernameRequestDto.getName(), findUsernameRequestDto.getPhone())
+                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
+
+        return findMember.getUsername();
+    }
 
     // password 찾기
     public String findByPasswordByUsername(String username) {
