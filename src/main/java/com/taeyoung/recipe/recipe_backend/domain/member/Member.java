@@ -21,19 +21,19 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ProviderType provider;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @Column(unique = true)
     private String username;
 
     private String password;
-
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
     private String name;
     private String phone;
     private Boolean ageConsent;
-    private String address;
     private String zipcode;
+    private String address;
+    private String detailAddress;
     private LocalDate birthDate;
 
     @Enumerated(EnumType.STRING)
@@ -51,16 +51,17 @@ public class Member extends BaseEntity {
     public Member() {
     }
 
-    public Member(ProviderType provider, String username, String password, Role role, String name, String phone, Boolean ageConsent, String address, String zipcode, LocalDate birthDate, Gender gender) {
+    public Member(ProviderType provider, Role role, String username, String password, String name, String phone, Boolean ageConsent, String zipcode, String address, String detailAddress, LocalDate birthDate, Gender gender) {
         this.provider = provider;
+        this.role = role;
         this.username = username;
         this.password = password;
-        this.role = role;
         this.name = name;
         this.phone = phone;
         this.ageConsent = ageConsent;
-        this.address = address;
         this.zipcode = zipcode;
+        this.address = address;
+        this.detailAddress = detailAddress;
         this.birthDate = birthDate;
         this.gender = gender;
     }

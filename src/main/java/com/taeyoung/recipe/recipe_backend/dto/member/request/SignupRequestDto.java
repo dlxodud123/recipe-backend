@@ -25,19 +25,23 @@ public class SignupRequestDto {
     private Boolean ageConsent;
     private String address;
     private String zipcode;
+    private String detailAddress;
     private LocalDate birthDate;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    public SignupRequestDto(String username, String password, String name, String phone, Boolean ageConsent, String address, String zipcode, LocalDate birthDate, Gender gender) {
+    public SignupRequestDto(String username, String password, String name, String phone,
+                            Boolean ageConsent, String zipcode, String address, String detailAddress,
+                            LocalDate birthDate, Gender gender) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.phone = phone;
         this.ageConsent = ageConsent;
-        this.address = address;
         this.zipcode = zipcode;
+        this.address = address;
+        this.detailAddress = detailAddress;
         this.birthDate = birthDate;
         this.gender = gender;
     }

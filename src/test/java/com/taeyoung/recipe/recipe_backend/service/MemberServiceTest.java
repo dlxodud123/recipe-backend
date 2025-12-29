@@ -33,8 +33,8 @@ public class MemberServiceTest {
 
     @BeforeEach
     public void before() {
-        SignupRequestDto signupRequestDto1 = new SignupRequestDto("user1", "password1", "name1", "01012345678", true, "asdf", "zxcv", LocalDate.parse("2001-12-13"), Gender.M);
-        SignupRequestDto signupRequestDto2 = new SignupRequestDto("user2", "password1", "name1", "01012345678", true, "asdf", "zxcv", LocalDate.parse("2001-12-13"), Gender.M);
+        SignupRequestDto signupRequestDto1 = new SignupRequestDto("user1", "password1", "name1", "01012345678", true, "asdf", "zxcv", "qwer", LocalDate.parse("2001-12-13"), Gender.M);
+        SignupRequestDto signupRequestDto2 = new SignupRequestDto("user2", "password1", "name1", "01012345678", true, "asdf", "zxcv", "qwer", LocalDate.parse("2001-12-13"), Gender.M);
 
         memberService.registerMember(signupRequestDto1);
         memberService.registerMember(signupRequestDto2);

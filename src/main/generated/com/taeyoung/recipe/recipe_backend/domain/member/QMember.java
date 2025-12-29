@@ -30,6 +30,8 @@ public class QMember extends EntityPathBase<Member> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
+    public final StringPath detailAddress = createString("detailAddress");
+
     public final EnumPath<Gender> gender = createEnum("gender", Gender.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);

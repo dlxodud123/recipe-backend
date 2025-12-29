@@ -40,14 +40,15 @@ public class MemberService {
 
         return memberRepository.save(new Member(
                 ProviderType.LOCAL,
+                Role.USER,
                 signupRequestDto.getUsername(),
                 encodedPassword,
-                Role.USER,
                 signupRequestDto.getName(),
                 signupRequestDto.getPhone(),
                 signupRequestDto.getAgeConsent(),
-                signupRequestDto.getAddress(),
                 signupRequestDto.getZipcode(),
+                signupRequestDto.getAddress(),
+                signupRequestDto.getDetailAddress(),
                 signupRequestDto.getBirthDate(),
                 signupRequestDto.getGender()
         ));
