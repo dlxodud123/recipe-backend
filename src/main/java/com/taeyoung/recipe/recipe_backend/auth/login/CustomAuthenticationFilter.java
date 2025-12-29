@@ -41,9 +41,9 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                     .orElseThrow(() -> new BadCredentialsException("username 또는 password가 일치하지 않습니다."));
 
             // 2. email 검증
-            if (!member.getEmail().equals(loginRequest.getEmail())) {
-                throw new EmailNotMatchException("email이 일치하지 않습니다.");
-            }
+//            if (!member.getEmail().equals(loginRequest.getEmail())) {
+//                throw new EmailNotMatchException("email이 일치하지 않습니다.");
+//            }
 
             UsernamePasswordAuthenticationToken authToken =
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());

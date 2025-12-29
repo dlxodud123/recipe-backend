@@ -16,7 +16,7 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QTag extends EntityPathBase<Tag> {
 
-    private static final long serialVersionUID = 272892407L;
+    private static final long serialVersionUID = 2112845879L;
 
     public static final QTag tag = new QTag("tag");
 

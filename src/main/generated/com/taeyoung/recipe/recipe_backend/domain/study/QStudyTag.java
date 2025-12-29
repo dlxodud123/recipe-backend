@@ -16,7 +16,7 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QStudyTag extends EntityPathBase<StudyTag> {
 
-    private static final long serialVersionUID = 2003052756L;
+    private static final long serialVersionUID = -1515677036L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 

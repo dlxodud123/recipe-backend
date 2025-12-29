@@ -52,7 +52,7 @@ public class JwtFilter extends OncePerRequestFilter {
                         id,
                         claim.get("username").toString(),
                         "none",
-                        claim.get("email").toString(),
+//                        claim.get("email").toString(),
                         ProviderType.valueOf(claim.get("provider").toString()),
                         authorities
                 );

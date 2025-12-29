@@ -16,10 +16,15 @@ public class CustomUser extends User {
     @Enumerated(EnumType.STRING)
     private ProviderType provider;
 
-    public CustomUser(Long id, String username, String password, String email, ProviderType provider, Collection<? extends GrantedAuthority> authorities) {
+//    public CustomUser(Long id, String username, String password, String email, ProviderType provider, Collection<? extends GrantedAuthority> authorities) {
+//        super(username, password, authorities);
+//        this.id = id;
+//        this.email = email;
+//        this.provider = provider;
+//    }
+    public CustomUser(Long id, String username, String password, ProviderType provider, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
         this.id = id;
-        this.email = email;
         this.provider = provider;
     }
 }

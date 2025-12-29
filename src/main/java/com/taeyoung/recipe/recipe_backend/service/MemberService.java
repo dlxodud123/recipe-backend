@@ -25,6 +25,13 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
 
+    // 회원가입(아이디 중복 확인)
+    public void isUsernameDuplicated(String username) {
+        if (memberRepository.existsByUsername(username)) {
+            throw new DuplicateUsernameException("이미 사용중인 아이디입니다.");
+        }
+    }
+
     // 회원가입
     public Member registerMember(SignupRequestDto signupRequestDto){
         String encodedPassword = passwordEncoder.encode(signupRequestDto.getPassword());
@@ -32,9 +39,9 @@ public class MemberService {
         if (memberRepository.existsByUsername(signupRequestDto.getUsername())) {
             throw new DuplicateUsernameException("이미 사용중인 username입니다.");
         }
-        if (memberRepository.existsByEmail(signupRequestDto.getEmail())) {
-            throw new DuplicateEmailException("이미 사용중인 email입니다.");
-        }
+//        if (memberRepository.existsByEmail(signupRequestDto.getEmail())) {
+//            throw new DuplicateEmailException("이미 사용중인 email입니다.");
+//        }
 
         return memberRepository.save(new Member(
                 signupRequestDto.getUsername(),
@@ -63,12 +70,12 @@ public class MemberService {
     }
 
     // username 찾기
-    public String findByUsernameByEmail(String email) {
-        Member findMember = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
-
-        return findMember.getUsername();
-    }
+//    public String findByUsernameByEmail(String email) {
+//        Member findMember = memberRepository.findByEmail(email)
+//                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
+//
+//        return findMember.getUsername();
+//    }
 
     // password 찾기
     public String findByPasswordByUsername(String username) {
@@ -85,27 +92,27 @@ public class MemberService {
     }
 
     // email 찾기
-    public String findByEmailByUsernameAndPassword(String username, String password) {
-        Member findMember = memberRepository.findByUsername(username)
-                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
-
-        if (!passwordEncoder.matches(password, findMember.getPassword())) {
-            throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
-        }
-        return findMember.getEmail();
-    }
+//    public String findByEmailByUsernameAndPassword(String username, String password) {
+//        Member findMember = memberRepository.findByUsername(username)
+//                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
+//
+//        if (!passwordEncoder.matches(password, findMember.getPassword())) {
+//            throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
+//        }
+//        return findMember.getEmail();
+//    }
 
 
     // test 전용
-    @Transactional(readOnly = true)
-    public MemberResponseDto getMyInfo(Long id){
-        Member findMember = memberRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
-        return new MemberResponseDto(findMember.getUsername(), findMember.getEmail());
-    }
-    @Transactional(readOnly = true)
-    public Member findByUsername(String username){
-        return memberRepository.findByUsername(username)
-                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
-    }
+//    @Transactional(readOnly = true)
+//    public MemberResponseDto getMyInfo(Long id){
+//        Member findMember = memberRepository.findById(id)
+//                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
+//        return new MemberResponseDto(findMember.getUsername(), findMember.getEmail());
+//    }
+//    @Transactional(readOnly = true)
+//    public Member findByUsername(String username){
+//        return memberRepository.findByUsername(username)
+//                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
+//    }
 }

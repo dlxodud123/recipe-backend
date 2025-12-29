@@ -20,6 +20,13 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    // 회원가입(아이디 중복 확인)
+    @PostMapping("/signup/{username}")
+    public ResponseEntity<String> checkUsernameDuplicate(@PathVariable String username){
+        memberService.isUsernameDuplicated(username);
+        return ResponseEntity.ok("사용가능한 아이디입니다");
+    }
+
     // 회원가입
     @PostMapping("/signup")
     public ResponseEntity<String> registerMember(@Valid @RequestBody SignupRequestDto signupRequestDto){
@@ -54,12 +61,12 @@ public class MemberController {
     }
 
     // username 찾기
-    @PostMapping("/find-username")
-    public ResponseEntity<String> findUsername(@RequestBody EmailRequestDto emailRequestDto) {
-        String findUsername = memberService.findByUsernameByEmail(emailRequestDto.getEmail());
-
-        return ResponseEntity.ok(findUsername);
-    }
+//    @PostMapping("/find-username")
+//    public ResponseEntity<String> findUsername(@RequestBody EmailRequestDto emailRequestDto) {
+//        String findUsername = memberService.findByUsernameByEmail(emailRequestDto.getEmail());
+//
+//        return ResponseEntity.ok(findUsername);
+//    }
 
     // password 찾기
     @PostMapping("/find-password")
@@ -70,13 +77,13 @@ public class MemberController {
     }
 
     // email 찾기
-    @PostMapping("/find-email")
-    public ResponseEntity<String> findEmail(@RequestBody UsernameAndPasswordRequestDto usernameAndPasswordRequestDto) {
-        String findEmail = memberService.findByEmailByUsernameAndPassword(
-                usernameAndPasswordRequestDto.getUsername(),
-                usernameAndPasswordRequestDto.getPassword()
-        );
-
-        return ResponseEntity.ok(findEmail);
-    }
+//    @PostMapping("/find-email")
+//    public ResponseEntity<String> findEmail(@RequestBody UsernameAndPasswordRequestDto usernameAndPasswordRequestDto) {
+//        String findEmail = memberService.findByEmailByUsernameAndPassword(
+//                usernameAndPasswordRequestDto.getUsername(),
+//                usernameAndPasswordRequestDto.getPassword()
+//        );
+//
+//        return ResponseEntity.ok(findEmail);
+//    }
 }

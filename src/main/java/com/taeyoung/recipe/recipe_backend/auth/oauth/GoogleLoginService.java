@@ -13,9 +13,9 @@ public class GoogleLoginService {
     private final MemberRepository memberRepository;
 
     // email 중복 체크
-    public boolean checkEmailExists(String email) {
-        return memberRepository.existsByEmail(email);
-    }
+//    public boolean checkEmailExists(String email) {
+//        return memberRepository.existsByEmail(email);
+//    }
 
     // username 중복 체크
     public boolean checkUsernameExists(String username) {

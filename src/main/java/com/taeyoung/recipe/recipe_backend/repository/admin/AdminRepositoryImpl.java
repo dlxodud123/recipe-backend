@@ -36,7 +36,7 @@ public class AdminRepositoryImpl implements AdminRepository{
                 AdminDashboardResponseDto.RecentMember.class,
                 member.id,
                 member.username,
-                member.email,
+//                member.email,
                 Expressions.stringTemplate(
                     "DATE_FORMAT({0}, '%Y-%m-%d %H:%i:%s')",
                     member.createdAt
@@ -76,7 +76,7 @@ public class AdminRepositoryImpl implements AdminRepository{
                 AdminMembersResponseDto.class,
                 member.id,
                 member.username,
-                member.email,
+//                member.email,
                 Expressions.stringTemplate(
                     "DATE_FORMAT({0}, '%Y-%m-%d %H:%i:%s')",
                     member.createdAt
