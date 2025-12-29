@@ -21,7 +21,7 @@ public class MemberController {
     private final MemberService memberService;
 
     // 회원가입(아이디 중복 확인)
-    @PostMapping("/signup/{username}")
+    @GetMapping("/signup/{username}")
     public ResponseEntity<String> checkUsernameDuplicate(@PathVariable String username){
         memberService.isUsernameDuplicated(username);
         return ResponseEntity.ok("사용가능한 아이디입니다");

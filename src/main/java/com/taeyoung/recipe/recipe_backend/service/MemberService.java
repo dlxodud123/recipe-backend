@@ -1,6 +1,7 @@
 package com.taeyoung.recipe.recipe_backend.service;
 
 import com.taeyoung.recipe.recipe_backend.domain.member.Member;
+import com.taeyoung.recipe.recipe_backend.domain.member.ProviderType;
 import com.taeyoung.recipe.recipe_backend.domain.member.Role;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.SignupRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.UpdateRequestDto;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -36,19 +38,18 @@ public class MemberService {
     public Member registerMember(SignupRequestDto signupRequestDto){
         String encodedPassword = passwordEncoder.encode(signupRequestDto.getPassword());
 
-        if (memberRepository.existsByUsername(signupRequestDto.getUsername())) {
-            throw new DuplicateUsernameException("이미 사용중인 username입니다.");
-        }
-//        if (memberRepository.existsByEmail(signupRequestDto.getEmail())) {
-//            throw new DuplicateEmailException("이미 사용중인 email입니다.");
-//        }
-
         return memberRepository.save(new Member(
+                ProviderType.LOCAL,
                 signupRequestDto.getUsername(),
                 encodedPassword,
-                signupRequestDto.getEmail(),
-                signupRequestDto.getProvider(),
-                Role.USER
+                Role.USER,
+                signupRequestDto.getName(),
+                signupRequestDto.getPhone(),
+                signupRequestDto.getAgeConsent(),
+                signupRequestDto.getAddress(),
+                signupRequestDto.getZipcode(),
+                signupRequestDto.getBirthDate(),
+                signupRequestDto.getGender()
         ));
     }
 
@@ -110,9 +111,8 @@ public class MemberService {
 //                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
 //        return new MemberResponseDto(findMember.getUsername(), findMember.getEmail());
 //    }
-//    @Transactional(readOnly = true)
-//    public Member findByUsername(String username){
-//        return memberRepository.findByUsername(username)
-//                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
-//    }
+    @Transactional(readOnly = true)
+    public Optional<Member> findByUsername(String username){
+        return memberRepository.findByUsername(username);
+    }
 }

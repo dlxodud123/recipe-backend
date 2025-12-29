@@ -51,12 +51,18 @@ public class Member extends BaseEntity {
     public Member() {
     }
 
-    public Member(String username, String password, String email, ProviderType provider, Role role) {
+    public Member(ProviderType provider, String username, String password, Role role, String name, String phone, Boolean ageConsent, String address, String zipcode, LocalDate birthDate, Gender gender) {
+        this.provider = provider;
         this.username = username;
         this.password = password;
-//        this.email = email;
         this.role = role;
-        this.provider = provider;
+        this.name = name;
+        this.phone = phone;
+        this.ageConsent = ageConsent;
+        this.address = address;
+        this.zipcode = zipcode;
+        this.birthDate = birthDate;
+        this.gender = gender;
     }
 
     public void updateMember(String password, String email) {
