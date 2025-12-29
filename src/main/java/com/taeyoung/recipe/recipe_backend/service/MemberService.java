@@ -5,6 +5,7 @@ import com.taeyoung.recipe.recipe_backend.domain.member.ProviderType;
 import com.taeyoung.recipe.recipe_backend.domain.member.Role;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.SignupRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.UpdateRequestDto;
+import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindPasswordRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindUsernameRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.response.MemberResponseDto;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateEmailException;
@@ -80,9 +81,9 @@ public class MemberService {
         return findMember.getUsername();
     }
 
-    // password 찾기
-    public String findByPasswordByUsername(String username) {
-        Member findMember = memberRepository.findByUsername(username)
+    // password 찾기 !!
+    public String findPassword(FindPasswordRequestDto findPasswordRequestDto) {
+        Member findMember = memberRepository.findByNameAndUsername(findPasswordRequestDto.getName(), findPasswordRequestDto.getUsername())
                 .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
 
         // 임시 비밀번호 생성 (UUID 앞 8자리)

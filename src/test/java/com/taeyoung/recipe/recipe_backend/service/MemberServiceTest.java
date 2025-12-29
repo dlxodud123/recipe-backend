@@ -5,10 +5,12 @@ import com.taeyoung.recipe.recipe_backend.domain.member.Member;
 import com.taeyoung.recipe.recipe_backend.domain.member.ProviderType;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.SignupRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.UpdateRequestDto;
+import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindPasswordRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindUsernameRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.response.MemberResponseDto;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateUsernameException;
 import com.taeyoung.recipe.recipe_backend.repository.member.MemberRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,9 +64,30 @@ public class MemberServiceTest {
     @Test
     public void findUsername() {
         // given
-        FindUsernameRequestDto findUsernameRequestDto = new FindUsernameRequestDto("name1", "01012345678");
+        FindUsernameRequestDto findUsernameRequestDto1 = new FindUsernameRequestDto("name1", "01012345678");
+        FindUsernameRequestDto findUsernameRequestDto2 = new FindUsernameRequestDto("name11", "01012345678");
 
         // when, then
-        assertThat(memberService.findUsername(findUsernameRequestDto)).isEqualTo("user1");
+        assertThat(memberService.findUsername(findUsernameRequestDto1)).isEqualTo("user1");
+        assertThatThrownBy(() ->
+                memberService.findUsername(findUsernameRequestDto2)
+        )
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessage("회원이 존재하지 않습니다.");
+    }
+
+    @Test
+    public void findPassword() {
+        // given
+        FindPasswordRequestDto findPasswordRequestDto1 = new FindPasswordRequestDto("name1", "user1");
+        FindPasswordRequestDto findPasswordRequestDto2 = new FindPasswordRequestDto("name12", "user1");
+
+        // when, then
+        assertThat(memberService.findPassword(findPasswordRequestDto1).length()).isEqualTo(8);
+        assertThatThrownBy(() ->
+                memberService.findPassword(findPasswordRequestDto2)
+        )
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessage("회원이 존재하지 않습니다.");
     }
 }

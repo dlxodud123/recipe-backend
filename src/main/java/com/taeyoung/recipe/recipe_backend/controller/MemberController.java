@@ -3,9 +3,8 @@ package com.taeyoung.recipe.recipe_backend.controller;
 import com.taeyoung.recipe.recipe_backend.domain.member.CustomUser;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.SignupRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.UpdateRequestDto;
+import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindPasswordRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindUsernameRequestDto;
-import com.taeyoung.recipe.recipe_backend.dto.member.request.find.UsernameAndPasswordRequestDto;
-import com.taeyoung.recipe.recipe_backend.dto.member.request.find.UsernameRequestDto;
 import com.taeyoung.recipe.recipe_backend.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -68,10 +67,10 @@ public class MemberController {
         return ResponseEntity.ok(findUsername);
     }
 
-    // password 찾기
+    // password 찾기 !!
     @PostMapping("/find-password")
-    public ResponseEntity<String> findPassword(@RequestBody UsernameRequestDto usernameRequestDto) {
-        String findPassword = memberService.findByPasswordByUsername(usernameRequestDto.getUsername());
+    public ResponseEntity<String> findPassword(@RequestBody FindPasswordRequestDto findPasswordRequestDto) {
+        String findPassword = memberService.findPassword(findPasswordRequestDto);
 
         return ResponseEntity.ok(findPassword);
     }
