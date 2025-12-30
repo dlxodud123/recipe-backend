@@ -51,9 +51,10 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         // 쿠키에 JWT 저장
         Cookie cookie = new Cookie("jwt", jwt);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(false);
+//        cookie.setHttpOnly(true);
 //        cookie.setSecure(true); // HTTPS 필수
+        cookie.setHttpOnly(false);
+        cookie.setSecure(false);
         cookie.setPath("/");
         cookie.setMaxAge(1000);
 //        cookie.setSameSite("None");
