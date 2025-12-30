@@ -12,8 +12,8 @@ public class CustomUser extends User {
     public Long id;
     private ProviderType provider;
 
-    public CustomUser(Long id, String username, ProviderType provider, Collection<? extends GrantedAuthority> authorities) {
-        super(username, "", authorities);
+    public CustomUser(Long id, String username, String password, ProviderType provider, Collection<? extends GrantedAuthority> authorities) {
+        super(username, password, authorities);
         this.id = id;
         this.provider = provider;
     }
