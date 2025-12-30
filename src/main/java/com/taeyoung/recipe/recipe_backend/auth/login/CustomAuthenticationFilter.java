@@ -22,9 +22,11 @@ import java.io.IOException;
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
+    private final MemberRepository memberRepository;
 
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, MemberRepository memberRepository) {
         this.authenticationManager = authenticationManager;
+        this.memberRepository = memberRepository;
         setFilterProcessesUrl("/api/members/login");
     }
 
