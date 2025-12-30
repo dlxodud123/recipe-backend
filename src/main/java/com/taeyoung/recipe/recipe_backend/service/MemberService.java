@@ -7,13 +7,10 @@ import com.taeyoung.recipe.recipe_backend.dto.member.request.SignupRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.UpdateRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindPasswordRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindUsernameRequestDto;
-import com.taeyoung.recipe.recipe_backend.dto.member.response.MemberResponseDto;
-import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateEmailException;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateUsernameException;
 import com.taeyoung.recipe.recipe_backend.repository.member.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -94,18 +91,6 @@ public class MemberService {
 
         return tempPassword;
     }
-
-    // email 찾기
-//    public String findByEmailByUsernameAndPassword(String username, String password) {
-//        Member findMember = memberRepository.findByUsername(username)
-//                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
-//
-//        if (!passwordEncoder.matches(password, findMember.getPassword())) {
-//            throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
-//        }
-//        return findMember.getEmail();
-//    }
-
 
     // test 전용
 //    @Transactional(readOnly = true)

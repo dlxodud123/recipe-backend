@@ -74,15 +74,4 @@ public class MemberController {
 
         return ResponseEntity.ok(findPassword);
     }
-
-    // email 찾기
-//    @PostMapping("/find-email")
-//    public ResponseEntity<String> findEmail(@RequestBody UsernameAndPasswordRequestDto usernameAndPasswordRequestDto) {
-//        String findEmail = memberService.findByEmailByUsernameAndPassword(
-//                usernameAndPasswordRequestDto.getUsername(),
-//                usernameAndPasswordRequestDto.getPassword()
-//        );
-//
-//        return ResponseEntity.ok(findEmail);
-//    }
 }

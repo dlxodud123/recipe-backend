@@ -21,12 +21,9 @@ import java.io.IOException;
 
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final MemberRepository memberRepository;
-
     private final AuthenticationManager authenticationManager;
 
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
         setFilterProcessesUrl("/api/members/login");
     }
@@ -36,33 +33,24 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         try {
             LoginRequestDto loginRequest = new ObjectMapper().readValue(request.getInputStream(), LoginRequestDto.class);
 
-            // 1. username으로 회원 조회
-            Member member = memberRepository.findByUsername(loginRequest.getUsername())
-                    .orElseThrow(() -> new BadCredentialsException("username 또는 password가 일치하지 않습니다."));
-
-            // 2. email 검증
-//            if (!member.getEmail().equals(loginRequest.getEmail())) {
-//                throw new EmailNotMatchException("email이 일치하지 않습니다.");
-//            }
-
             UsernamePasswordAuthenticationToken authToken =
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
 
             return authenticationManager.authenticate(authToken);
-
         } catch (IOException e) {
             throw new RuntimeException("로그인 요청 파싱 실패", e);
         }
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException {
         // JWT 생성
-        String jwt = JwtUtil.createToken(authResult);
+        String jwt = JwtUtil.createToken(authentication);
 
         // 쿠키에 JWT 저장
         Cookie cookie = new Cookie("jwt", jwt);
         cookie.setHttpOnly(true);
+        cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setMaxAge(1000);
         response.addCookie(cookie);

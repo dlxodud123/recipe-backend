@@ -1,7 +1,5 @@
 package com.taeyoung.recipe.recipe_backend.domain.member;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -10,20 +8,12 @@ import java.util.Collection;
 
 @Getter
 public class CustomUser extends User {
-    public Long id;
-    private String email;
 
-    @Enumerated(EnumType.STRING)
+    public Long id;
     private ProviderType provider;
 
-//    public CustomUser(Long id, String username, String password, String email, ProviderType provider, Collection<? extends GrantedAuthority> authorities) {
-//        super(username, password, authorities);
-//        this.id = id;
-//        this.email = email;
-//        this.provider = provider;
-//    }
-    public CustomUser(Long id, String username, String password, ProviderType provider, Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, authorities);
+    public CustomUser(Long id, String username, ProviderType provider, Collection<? extends GrantedAuthority> authorities) {
+        super(username, "", authorities);
         this.id = id;
         this.provider = provider;
     }

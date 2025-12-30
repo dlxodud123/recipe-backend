@@ -16,6 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 public class JwtFilter extends OncePerRequestFilter {
     @Override
@@ -36,8 +37,12 @@ public class JwtFilter extends OncePerRequestFilter {
             try {
                 Claims claim = JwtUtil.extractToken(jwtCookie);
 
-                var arr = claim.get("authorities").toString().split(",");
-                var authorities = Arrays.stream(arr)
+//                var arr = claim.get("authorities").toString().split(",");
+//                var authorities = Arrays.stream(arr)
+//                        .map(SimpleGrantedAuthority::new)
+//                        .toList();
+                List<String> authoritiesList = (List<String>) claim.get("authorities");
+                var authorities = authoritiesList.stream()
                         .map(SimpleGrantedAuthority::new)
                         .toList();
 
@@ -51,8 +56,6 @@ public class JwtFilter extends OncePerRequestFilter {
                 var customUser = new CustomUser(
                         id,
                         claim.get("username").toString(),
-                        "none",
-//                        claim.get("email").toString(),
                         ProviderType.valueOf(claim.get("provider").toString()),
                         authorities
                 );
@@ -68,12 +71,6 @@ public class JwtFilter extends OncePerRequestFilter {
         } else {
             // JWT 쿠키 없으면 인증 정보 비움
             SecurityContextHolder.clearContext();
-
-            // DELETE 경로라면 401 상태 코드 보내고 종료
-            if (request.getRequestURI().startsWith("/delete")) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
-            }
         }
 
         // 다음 필터로 요청 계속 전달
