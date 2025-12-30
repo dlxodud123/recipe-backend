@@ -57,10 +57,14 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         cookie.setSecure(false);
         cookie.setPath("/");
         cookie.setMaxAge(1000);
-//        cookie.setSameSite("None");
         response.addCookie(cookie);
 
-        // 2️⃣ 응답 바디로 JWT 전송 (로컬 테스트용)
+        // SameSite=None 직접 헤더에 추가
+//        String header = String.format("jwt=%s; Max-Age=%d; Path=/; SameSite=None%s",
+//                jwt, 1000, cookie.getSecure() ? "; Secure" : "");
+//        response.addHeader("Set-Cookie", header);
+
+        // 로컬호스트 콘솔 확인용
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write("{\"jwt\":\"" + jwt + "\"}");
     }
