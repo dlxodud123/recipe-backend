@@ -37,7 +37,7 @@ public class MemberController {
     @GetMapping("/me")
     public ResponseEntity<CustomUser> getMyInfo(Authentication authentication){
         CustomUser user = (CustomUser) authentication.getPrincipal();
-
+  
         return ResponseEntity.ok(user);
     }
 
