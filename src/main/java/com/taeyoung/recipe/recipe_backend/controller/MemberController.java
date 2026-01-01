@@ -7,10 +7,13 @@ import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindPasswordRe
 import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindUsernameRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.response.MyPageResponseDto;
 import com.taeyoung.recipe.recipe_backend.service.MemberService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -46,14 +49,23 @@ public class MemberController {
 
     // 회원 탈퇴 !!
     @DeleteMapping("/me")
-    public ResponseEntity<String> deleteMyAccount(Authentication authentication){
+    public ResponseEntity<Void> deleteMyAccount(Authentication authentication, HttpServletResponse response){
         // 서버 배포용
 //        memberService.updateMember((CustomUser) authentication.getPrincipal()).getId());
 
         // 로컬 테스트용
         memberService.deleteMember(3L);
 
-        return ResponseEntity.ok("회원탈퇴 성공!");
+        // 🔥 JWT 쿠키 삭제
+        Cookie cookie = new Cookie("jwt", null);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+
+        SecurityContextHolder.clearContext();
+
+        return ResponseEntity.ok().build();
     }
 
     // 회원 정보 수정 !!
