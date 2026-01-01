@@ -7,10 +7,12 @@ import com.taeyoung.recipe.recipe_backend.dto.member.request.SignupRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.UpdateRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindPasswordRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindUsernameRequestDto;
+import com.taeyoung.recipe.recipe_backend.dto.member.response.MyPageResponseDto;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateUsernameException;
 import com.taeyoung.recipe.recipe_backend.repository.member.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,6 +53,16 @@ public class MemberService {
                 signupRequestDto.getBirthDate(),
                 signupRequestDto.getGender()
         ));
+    }
+
+    // 회원 정보 조회 !! (배포용)
+    public MyPageResponseDto getMyInfo(Authentication authentication) {
+
+    }
+
+    // 회원 정보 조회 !! (테스트용)
+    public MyPageResponseDto finById(Long id) {
+
     }
 
     // 회원 탈퇴

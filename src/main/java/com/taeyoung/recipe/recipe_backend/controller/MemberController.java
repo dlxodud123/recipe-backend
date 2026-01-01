@@ -5,6 +5,7 @@ import com.taeyoung.recipe.recipe_backend.dto.member.request.SignupRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.UpdateRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindPasswordRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindUsernameRequestDto;
+import com.taeyoung.recipe.recipe_backend.dto.member.response.MyPageResponseDto;
 import com.taeyoung.recipe.recipe_backend.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,12 +34,15 @@ public class MemberController {
         return ResponseEntity.ok("회원가입 성공!");
     }
 
-    // 회원 정보 조회
+    // 회원 정보 조회 !!
     @GetMapping("/me")
-    public ResponseEntity<CustomUser> getMyInfo(Authentication authentication){
+    public ResponseEntity<MyPageResponseDto> getMyInfo(Authentication authentication){
         CustomUser user = (CustomUser) authentication.getPrincipal();
-  
-        return ResponseEntity.ok(user);
+        // 서버 배포용
+//        return ResponseEntity.ok(memberService.getMyInfo(authentication));
+
+        // 로컬 테스트용
+        return ResponseEntity.ok(memberService.finById(1L));
     }
 
     // 회원 탈퇴
