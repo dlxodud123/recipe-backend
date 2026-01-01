@@ -1,5 +1,6 @@
 package com.taeyoung.recipe.recipe_backend.service;
 
+import com.taeyoung.recipe.recipe_backend.domain.member.CustomUser;
 import com.taeyoung.recipe.recipe_backend.domain.member.Member;
 import com.taeyoung.recipe.recipe_backend.domain.member.ProviderType;
 import com.taeyoung.recipe.recipe_backend.domain.member.Role;
@@ -57,13 +58,18 @@ public class MemberService {
 
     // 회원 정보 조회 !! (배포용)
     public MyPageResponseDto getMyInfo(Authentication authentication) {
+        CustomUser user = (CustomUser) authentication.getPrincipal();
+        Member findMember = memberRepository.findById(user.id)
+                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
 
+//        return new MyPageResponseDto();
+        return null;
     }
 
     // 회원 정보 조회 !! (테스트용)
-    public MyPageResponseDto finById(Long id) {
-
-    }
+//    public MyPageResponseDto finById(Long id) {
+//
+//    }
 
     // 회원 탈퇴
     public void deleteMember(Long id){

@@ -37,9 +37,8 @@ public class MemberController {
     // 회원 정보 조회 !!
     @GetMapping("/me")
     public ResponseEntity<MyPageResponseDto> getMyInfo(Authentication authentication){
-        CustomUser user = (CustomUser) authentication.getPrincipal();
         // 서버 배포용
-//        return ResponseEntity.ok(memberService.getMyInfo(authentication));
+        return ResponseEntity.ok(memberService.getMyInfo(authentication));
 
         // 로컬 테스트용
         return ResponseEntity.ok(memberService.finById(1L));
