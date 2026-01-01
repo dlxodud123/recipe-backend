@@ -30,6 +30,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     // 회원가입(아이디 중복 확인) !!
+    @Transactional(readOnly = true)
     public void isUsernameDuplicated(String username) {
         if (memberRepository.existsByUsername(username)) {
             throw new DuplicateUsernameException("이미 사용중인 아이디입니다.");
@@ -56,20 +57,14 @@ public class MemberService {
         ));
     }
 
-    // 회원 정보 조회 !! (배포용)
-    public MyPageResponseDto getMyInfo(Authentication authentication) {
-        CustomUser user = (CustomUser) authentication.getPrincipal();
-        Member findMember = memberRepository.findById(user.id)
+    // 회원 정보 조회 !!
+    @Transactional(readOnly = true)
+    public MyPageResponseDto getMyInfo(Long id) {
+        Member findMember = memberRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
 
-//        return new MyPageResponseDto();
-        return null;
+        return MyPageResponseDto.from(findMember);
     }
-
-    // 회원 정보 조회 !! (테스트용)
-//    public MyPageResponseDto finById(Long id) {
-//
-//    }
 
     // 회원 탈퇴
     public void deleteMember(Long id){
@@ -89,6 +84,7 @@ public class MemberService {
     }
 
     // username 찾기 !!
+    @Transactional(readOnly = true)
     public String findUsername(FindUsernameRequestDto findUsernameRequestDto) {
         Member findMember = memberRepository.findByNameAndPhone(findUsernameRequestDto.getName(), findUsernameRequestDto.getPhone())
                 .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
@@ -111,12 +107,6 @@ public class MemberService {
     }
 
     // test 전용
-//    @Transactional(readOnly = true)
-//    public MemberResponseDto getMyInfo(Long id){
-//        Member findMember = memberRepository.findById(id)
-//                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
-//        return new MemberResponseDto(findMember.getUsername(), findMember.getEmail());
-//    }
     @Transactional(readOnly = true)
     public Optional<Member> findByUsername(String username){
         return memberRepository.findByUsername(username);

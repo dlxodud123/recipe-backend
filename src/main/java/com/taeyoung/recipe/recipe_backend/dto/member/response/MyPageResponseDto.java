@@ -1,8 +1,14 @@
 package com.taeyoung.recipe.recipe_backend.dto.member.response;
 
+import com.taeyoung.recipe.recipe_backend.domain.member.Gender;
+import com.taeyoung.recipe.recipe_backend.domain.member.Member;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDate;
+
 @Getter
+@AllArgsConstructor
 public class MyPageResponseDto {
 
     private String username;
@@ -10,16 +16,19 @@ public class MyPageResponseDto {
     private String zipcode;
     private String address;
     private String detailAddress;
-    private String birthDate;
-    private String gender;
+    private LocalDate birthDate;
+    private Gender gender;
 
-    public MyPageResponseDto(String username, String name, String zipcode, String address, String detailAddress, String birthDate, String gender) {
-        this.username = username;
-        this.name = name;
-        this.zipcode = zipcode;
-        this.address = address;
-        this.detailAddress = detailAddress;
-        this.birthDate = birthDate;
-        this.gender = gender;
+    // 정적 팩토리 메서드
+    public static MyPageResponseDto from(Member member) {
+        return new MyPageResponseDto(
+                member.getUsername(),
+                member.getName(),
+                member.getZipcode(),
+                member.getAddress(),
+                member.getDetailAddress(),
+                member.getBirthDate(),
+                member.getGender()
+        );
     }
 }

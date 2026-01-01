@@ -38,10 +38,10 @@ public class MemberController {
     @GetMapping("/me")
     public ResponseEntity<MyPageResponseDto> getMyInfo(Authentication authentication){
         // 서버 배포용
-        return ResponseEntity.ok(memberService.getMyInfo(authentication));
+//        return ResponseEntity.ok(memberService.getMyInfo(((CustomUser) authentication.getPrincipal()).getId()));
 
         // 로컬 테스트용
-        return ResponseEntity.ok(memberService.finById(1L));
+        return ResponseEntity.ok(memberService.getMyInfo(1L));
     }
 
     // 회원 탈퇴
