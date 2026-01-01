@@ -4,8 +4,6 @@ import com.taeyoung.recipe.recipe_backend.domain.member.Gender;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
-import java.time.LocalDate;
-
 @Getter
 public class UpdateRequestDto {
 

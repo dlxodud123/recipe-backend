@@ -66,7 +66,7 @@ public class MemberService {
         return MyPageResponseDto.from(findMember);
     }
 
-    // 회원 탈퇴
+    // 회원 탈퇴 !!
     public void deleteMember(Long id){
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));

@@ -44,12 +44,15 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getMyInfo(2L));
     }
 
-    // 회원 탈퇴
-    @DeleteMapping("/delete")
+    // 회원 탈퇴 !!
+    @DeleteMapping("/me")
     public ResponseEntity<String> deleteMyAccount(Authentication authentication){
-        CustomUser user = (CustomUser) authentication.getPrincipal();
+        // 서버 배포용
+//        memberService.updateMember((CustomUser) authentication.getPrincipal()).getId());
 
-        memberService.deleteMember(user.getId());
+        // 로컬 테스트용
+        memberService.deleteMember(3L);
+
         return ResponseEntity.ok("회원탈퇴 성공!");
     }
 
