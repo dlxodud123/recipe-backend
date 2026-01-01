@@ -74,13 +74,18 @@ public class MemberService {
         memberRepository.delete(member);
     }
 
-    // 회원 정보 수정
+    // 회원 정보 수정 !!
     public void updateMember(UpdateRequestDto updateRequestDto, Long id) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
 
-        String encodedPassword = passwordEncoder.encode(updateRequestDto.getPassword());
-        member.updateMember(encodedPassword, updateRequestDto.getEmail());
+        member.updateMember(
+                updateRequestDto.getName(),
+                updateRequestDto.getZipcode(),
+                updateRequestDto.getAddress(),
+                updateRequestDto.getDetailAddress(),
+                updateRequestDto.getGender()
+        );
     }
 
     // username 찾기 !!

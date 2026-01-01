@@ -1,20 +1,27 @@
 package com.taeyoung.recipe.recipe_backend.dto.member.request;
 
-import jakarta.validation.constraints.Email;
+import com.taeyoung.recipe.recipe_backend.domain.member.Gender;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
+
+import java.time.LocalDate;
 
 @Getter
 public class UpdateRequestDto {
 
-    @NotBlank(message = "Password는 필수입니다.")
-    private String password;
-    @NotBlank(message = "Email은 필수입니다.")
-    @Email(message = "이메일 형식이 올바르지 않습니다.")
-    private String email;
+    @NotBlank
+    private String name;
 
-    public UpdateRequestDto(String password, String email) {
-        this.password = password;
-        this.email = email;
+    private String zipcode;
+    private String address;
+    private String detailAddress;
+    private Gender gender;
+
+    public UpdateRequestDto(String name, String zipcode, String address, String detailAddress, Gender gender) {
+        this.name = name;
+        this.zipcode = zipcode;
+        this.address = address;
+        this.detailAddress = detailAddress;
+        this.gender = gender;
     }
 }

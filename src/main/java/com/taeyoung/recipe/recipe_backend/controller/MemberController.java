@@ -41,7 +41,7 @@ public class MemberController {
 //        return ResponseEntity.ok(memberService.getMyInfo(((CustomUser) authentication.getPrincipal()).getId()));
 
         // 로컬 테스트용
-        return ResponseEntity.ok(memberService.getMyInfo(1L));
+        return ResponseEntity.ok(memberService.getMyInfo(2L));
     }
 
     // 회원 탈퇴
@@ -53,12 +53,15 @@ public class MemberController {
         return ResponseEntity.ok("회원탈퇴 성공!");
     }
 
-    // 회원 정보 수정
-    @PutMapping("/update")
+    // 회원 정보 수정 !!
+    @PutMapping("/me")
     public ResponseEntity<String> updateMyInfo(@Valid @RequestBody UpdateRequestDto updateRequestDto, Authentication authentication){
-        CustomUser user = (CustomUser) authentication.getPrincipal();
+        // 서버 배포용
+//        memberService.updateMember(updateRequestDto, ((CustomUser) authentication.getPrincipal()).getId());
 
-        memberService.updateMember(updateRequestDto, user.getId());
+        // 로컬 테스트용
+        memberService.updateMember(updateRequestDto, 2L);
+
         return ResponseEntity.ok("회원수정 성공!");
     }
 

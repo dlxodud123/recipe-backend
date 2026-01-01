@@ -66,9 +66,12 @@ public class Member extends BaseEntity {
         this.gender = gender;
     }
 
-    public void updateMember(String password, String email) {
-        this.password = password;
-//        this.email = email;
+    public void updateMember(String name, String zipcode, String address, String detailAddress, Gender gender) {
+        this.name = name;
+        this.zipcode = zipcode;
+        this.address = address;
+        this.detailAddress = detailAddress;
+        this.gender = gender;
     }
 
     public void setRandomPassword(String password) {
