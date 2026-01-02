@@ -45,7 +45,7 @@ public class MemberController {
 
         // 로컬 테스트용
         return ResponseEntity.ok(memberService.getMyInfo(2L));
-    }
+    }  
 
     // 회원 탈퇴 !!
     @DeleteMapping("/me")
@@ -59,7 +59,8 @@ public class MemberController {
         // 🔥 JWT 쿠키 삭제
         Cookie cookie = new Cookie("jwt", null);
         cookie.setPath("/");
-        cookie.setHttpOnly(true);
+//        cookie.setHttpOnly(true);
+        cookie.setHttpOnly(false);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
 
