@@ -1,5 +1,6 @@
 package com.taeyoung.recipe.recipe_backend.auth.oauth;
 
+import com.taeyoung.recipe.recipe_backend.domain.member.ProviderType;
 import com.taeyoung.recipe.recipe_backend.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,13 +13,12 @@ public class GoogleLoginService {
 
     private final MemberRepository memberRepository;
 
-    // email 중복 체크
-//    public boolean checkEmailExists(String email) {
-//        return memberRepository.existsByEmail(email);
-//    }
-
     // username 중복 체크
     public boolean checkUsernameExists(String username) {
         return memberRepository.existsByUsername(username);
+    }
+
+    public boolean existsByProviderAndProviderId(ProviderType provider, String providerId) {
+        return memberRepository.existsByProviderAndProviderId(provider, providerId);
     }
 }

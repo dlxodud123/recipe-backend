@@ -1,14 +1,10 @@
 package com.taeyoung.recipe.recipe_backend.domain.member;
 
-import com.taeyoung.recipe.recipe_backend.domain.study.Comment;
-import com.taeyoung.recipe.recipe_backend.domain.study.Study;
 import com.taeyoung.recipe.recipe_backend.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -20,6 +16,8 @@ public class Member extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private ProviderType provider;
+
+    private String providerId;
 
     @Enumerated(EnumType.STRING)
     private Role role;

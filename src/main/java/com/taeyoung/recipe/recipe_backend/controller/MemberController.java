@@ -45,7 +45,7 @@ public class MemberController {
 
         // 로컬 테스트용
         return ResponseEntity.ok(memberService.getMyInfo(2L));
-    }  
+    }
 
     // 회원 탈퇴 !!
     @DeleteMapping("/me")
