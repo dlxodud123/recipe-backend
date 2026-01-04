@@ -18,7 +18,7 @@ public class Member extends BaseEntity {
     private ProviderType provider;
 
     private String providerId;
-
+        
     @Enumerated(EnumType.STRING)
     private Role role;
 
