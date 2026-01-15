@@ -12,7 +12,7 @@ import java.util.Map;
 @Controller
 @RequiredArgsConstructor
 public class GoogleLoginController {
-
+    
     private final GoogleOAuthService googleOAuthService;
     private final GoogleLoginService googleLoginService;
 
