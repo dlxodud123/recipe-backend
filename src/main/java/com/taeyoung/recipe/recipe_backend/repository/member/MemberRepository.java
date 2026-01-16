@@ -17,5 +17,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByNameAndUsername(String name, String username);
 
     // google login
-    boolean existsByProviderAndProviderId(ProviderType provider, String providerId);
+//    boolean existsByProviderAndProviderId(ProviderType provider, String providerId);
+    Member findByProviderAndProviderId(ProviderType provider, String providerId);
 }
