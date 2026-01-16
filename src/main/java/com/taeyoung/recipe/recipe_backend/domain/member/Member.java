@@ -8,6 +8,14 @@ import java.time.LocalDate;
 
 @Entity
 @Getter
+@Table(
+    name = "member",
+    uniqueConstraints = {
+        @UniqueConstraint(
+            columnNames = {"provider", "provider_id"}
+        )
+    }
+)
 public class Member extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +25,7 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ProviderType provider;
 
+    @Column(name = "provider_id")
     private String providerId;
             
     @Enumerated(EnumType.STRING)
@@ -24,6 +33,9 @@ public class Member extends BaseEntity {
 
     @Column(unique = true)
     private String username;
+
+//    @Column(unique = true)
+//    private String email;
 
     private String password;
     private String name;
