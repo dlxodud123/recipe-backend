@@ -42,7 +42,7 @@
             String providerId = (String) userInfo.get("id");
 
             System.out.println("userInfo : " + userInfo);
-            System.out.println("providerId" + providerId);
+            System.out.println("providerId" + providerId);  
 
             // 🔹 가입 여부 판단
 //            boolean exists = googleLoginService.existsByProviderAndProviderId(provider, providerId);
