@@ -18,4 +18,8 @@ public class GoogleLoginService {
     public Member findByProviderAndProviderId(ProviderType provider, String providerId) {
         return memberRepository.findByProviderAndProviderId(provider, providerId);
     }
+
+    public void registerSocialMember(Member member) {
+        memberRepository.save(member);
+    }
 }

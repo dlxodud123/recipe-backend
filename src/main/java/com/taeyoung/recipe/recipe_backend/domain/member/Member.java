@@ -92,5 +92,14 @@ public class Member extends BaseEntity {
     public void setRole(Role role){
         this.role = role;
     }
+
+    public static Member createSocialMember(String username, ProviderType provider, String providerId, Role role) {
+        Member member = new Member();
+        member.username = username;
+        member.provider = provider;
+        member.providerId = providerId;
+        member.role = role;
+        return member;
+    }
 }
 
