@@ -28,14 +28,15 @@ public class Member extends BaseEntity {
     @Column(name = "provider_id")
     private String providerId;
 
+    // 연동 대상 (LOCAL 계정의 member_id)
+    @Column(name = "linked_member_id")
+    private Long linkedMemberId;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @Column(unique = true)
     private String username;
-
-//    @Column(unique = true)
-//    private String email;
 
     private String password;
     private String name;
