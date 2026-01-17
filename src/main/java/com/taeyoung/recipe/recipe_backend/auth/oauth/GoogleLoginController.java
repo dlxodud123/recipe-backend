@@ -49,8 +49,8 @@ public class GoogleLoginController {
         Member member = googleLoginService.findByProviderAndProviderId(provider, providerId);
 
         if (member == null) {
-            Member newMember = Member.createSocialMember(email, provider, providerId, Role.USER);
-            googleLoginService.registerSocialMember(newMember);
+            member = Member.createSocialMember(email, provider, providerId, Role.USER);
+            googleLoginService.registerSocialMember(member);
         }
 
         // JWT 발급 및 쿠키/응답 처리
@@ -74,7 +74,7 @@ public class GoogleLoginController {
 //        cookie.setHttpOnly(true);
 //        cookie.setSecure(true); // HTTPS 필수
         cookie.setHttpOnly(false); // 로컬 테스트용
-        cookie.setSecure(false);   // 로컬 테스트용
+        cookie.setSecure(false); // 로컬 테스트용
         cookie.setPath("/");
         cookie.setMaxAge(1000);
         response.addCookie(cookie);
@@ -84,7 +84,7 @@ public class GoogleLoginController {
 //                jwt, 1000, cookie.getSecure() ? "; Secure" : "");
 //        response.addHeader("Set-Cookie", header);
 
-//        로컬호스트 콘솔 확인용
+        // 로컬호스트 콘솔 확인용
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write("{\"jwt\":\"" + jwt + "\"}");
     }
