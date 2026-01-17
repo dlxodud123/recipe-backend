@@ -15,12 +15,11 @@ public class GoogleLoginService {
     private final MemberRepository memberRepository;
 
     // provider, providerId로 식별
-//    public boolean existsByProviderAndProviderId(ProviderType provider, String providerId) {
-//        return memberRepository.existsByProviderAndProviderId(provider, providerId);
-//    }
-
-    // provider, providerId로 식별
     public Member findByProviderAndProviderId(ProviderType provider, String providerId) {
         return memberRepository.findByProviderAndProviderId(provider, providerId);
+    }
+
+    public void registerSocialMember(Member member) {
+        memberRepository.save(member);
     }
 }
