@@ -45,7 +45,9 @@ public class SecurityConfig {
         config.setAllowedOrigins(List.of(
                 "http://localhost:3000",
                 "http://127.0.0.1:3000",
-                "https://d1lirp3xwprh2a.cloudfront.net"
+                "https://d1lirp3xwprh2a.cloudfront.net",
+                "https://mealhub.site",
+                "https://api.mealhub.site"
         ));
         config.setAllowedMethods(List.of(
                 "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"
