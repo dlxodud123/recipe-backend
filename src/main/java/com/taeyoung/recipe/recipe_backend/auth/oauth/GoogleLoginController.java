@@ -1,6 +1,7 @@
 package com.taeyoung.recipe.recipe_backend.auth.oauth;
 
 import com.taeyoung.recipe.recipe_backend.auth.jwt.JwtUtil;
+import com.taeyoung.recipe.recipe_backend.domain.member.CustomUser;
 import com.taeyoung.recipe.recipe_backend.domain.member.Member;
 import com.taeyoung.recipe.recipe_backend.domain.member.ProviderType;
 import com.taeyoung.recipe.recipe_backend.domain.member.Role;
@@ -54,7 +55,7 @@ public class GoogleLoginController {
         }
 
         // JWT 발급 및 쿠키/응답 처리
-        sendJwtToResponse(member, response);
+        sendJwtToResponse(member, email, response);
 
         // 뷰 반환 없이 JSON 응답만
 //        return "redirect:https://d1lirp3xwprh2a.cloudfront.net";
@@ -62,11 +63,20 @@ public class GoogleLoginController {
     }
 
     // JWT 생성 + 쿠키 설정 + JSON 응답
-    private void sendJwtToResponse(Member member, HttpServletResponse response) throws IOException {
+    private void sendJwtToResponse(Member member, String email, HttpServletResponse response) throws IOException {
+
+        CustomUser customUser = new CustomUser(
+                member.getId(),
+                email,
+                "",
+                member.getProvider(),
+                List.of(new SimpleGrantedAuthority(member.getRole().name()))
+        );
+
         Authentication authentication = new UsernamePasswordAuthenticationToken(
-            member,
+            customUser,
             null,
-            List.of(new SimpleGrantedAuthority(member.getRole().name()))
+            customUser.getAuthorities()
         );
 
         String jwt = JwtUtil.createToken(authentication);
