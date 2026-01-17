@@ -27,13 +27,13 @@ public class GoogleLoginController {
     private final GoogleLoginService googleLoginService;
 
     // 구글 로그인 버튼 클릭 → 로그인 URL로 리다이렉트
-    @GetMapping("/oauth/google/login")
+    @GetMapping("/api/oauth/google/login")
     public String login() {
         return "redirect:" + googleOAuthService.getLoginUrl();
     }
 
     // 구글 인증 후 콜백
-    @GetMapping("/oauth/google/callback")
+    @GetMapping("/api/oauth/google/callback")
     public String callback(@RequestParam String code, Model model, HttpServletResponse response) throws IOException {
         String accessToken = googleOAuthService.getAccessToken(code);
         Map<String, Object> userInfo = googleOAuthService.getUserInfo(accessToken);
