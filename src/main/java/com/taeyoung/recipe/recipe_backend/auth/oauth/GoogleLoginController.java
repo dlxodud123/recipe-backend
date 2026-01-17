@@ -57,7 +57,8 @@ public class GoogleLoginController {
         sendJwtToResponse(member, response);
 
         // 뷰 반환 없이 JSON 응답만
-        return null;
+//        return "redirect:https://d1lirp3xwprh2a.cloudfront.net";
+        return "redirect:http://localhost:3000";
     }
 
     // JWT 생성 + 쿠키 설정 + JSON 응답
