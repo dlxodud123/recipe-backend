@@ -63,9 +63,15 @@ public class GoogleLoginController {
     // JWT 생성 + 쿠키 설정 + JSON 응답
     private void sendJwtToResponse(Member member, HttpServletResponse response) throws IOException {
         Authentication authentication = new UsernamePasswordAuthenticationToken(
+<<<<<<< HEAD
                 member,
                 null,
                 List.of(new SimpleGrantedAuthority(member.getRole().name()))
+=======
+            member,
+            null,
+            List.of(new SimpleGrantedAuthority(member.getRole().name()))
+>>>>>>> feature/social-login
         );
 
         String jwt = JwtUtil.createToken(authentication);
