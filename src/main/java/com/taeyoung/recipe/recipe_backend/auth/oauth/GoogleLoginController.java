@@ -59,7 +59,8 @@ public class GoogleLoginController {
 
         // 뷰 반환 없이 JSON 응답만
 //        return "redirect:https://d1lirp3xwprh2a.cloudfront.net";
-        return "redirect:https://mealhub.site";
+//        return "redirect:https://mealhub.site";
+        return "redirect:https://api.mealhub.site";
     }
 
     // JWT 생성 + 쿠키 설정 + JSON 응답
