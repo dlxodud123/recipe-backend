@@ -38,6 +38,7 @@ public class Member extends BaseEntity {
     @Column(unique = true)
     private String username;
 
+    private String email;
     private String password;
     private String name;
     private String phone;
@@ -93,9 +94,9 @@ public class Member extends BaseEntity {
         this.role = role;
     }
 
-    public static Member createSocialMember(String username, ProviderType provider, String providerId, Role role) {
+    public static Member createSocialMember(String email, ProviderType provider, String providerId, Role role) {
         Member member = new Member();
-        member.username = username;
+        member.email = email;
         member.provider = provider;
         member.providerId = providerId;
         member.role = role;
