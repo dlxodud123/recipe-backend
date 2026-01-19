@@ -43,9 +43,6 @@ public class GoogleLoginController {
         ProviderType provider = ProviderType.GOOGLE;
         String providerId = (String) userInfo.get("id");
 
-        System.out.println("userInfo : " + userInfo);
-        System.out.println("providerId" + providerId);
-
         // 연동이 완료된 member가 db에 있는지 확인
         Member member = googleLoginService.findByProviderAndProviderId(provider, providerId);
 
@@ -58,9 +55,7 @@ public class GoogleLoginController {
         sendJwtToResponse(member, email, response);
 
         // 뷰 반환 없이 JSON 응답만
-//        return "redirect:https://d1lirp3xwprh2a.cloudfront.net";
-//        return "redirect:https://mealhub.site";
-        return "redirect:https://api.mealhub.site";
+        return "redirect:https://mealhub.site";
     }
 
     // JWT 생성 + 쿠키 설정 + JSON 응답
