@@ -38,8 +38,8 @@ public class Member extends BaseEntity {
     @Column(unique = true)
     private String username;
 
-    private String email;
     private String password;
+    private String email;
     private String name;
     private String phone;
     private Boolean ageConsent;
@@ -63,11 +63,12 @@ public class Member extends BaseEntity {
     public Member() {
     }
 
-    public Member(ProviderType provider, Role role, String username, String password, String name, String phone, Boolean ageConsent, String zipcode, String address, String detailAddress, LocalDate birthDate, Gender gender) {
+    public Member(ProviderType provider, Role role, String username, String password, String email, String name, String phone, Boolean ageConsent, String zipcode, String address, String detailAddress, LocalDate birthDate, Gender gender) {
         this.provider = provider;
         this.role = role;
         this.username = username;
         this.password = password;
+        this.email = email;
         this.name = name;
         this.phone = phone;
         this.ageConsent = ageConsent;

@@ -46,6 +46,7 @@ public class MemberService {
                 Role.USER,
                 signupRequestDto.getUsername(),
                 encodedPassword,
+                signupRequestDto.getEmail(),
                 signupRequestDto.getName(),
                 signupRequestDto.getPhone(),
                 signupRequestDto.getAgeConsent(),
