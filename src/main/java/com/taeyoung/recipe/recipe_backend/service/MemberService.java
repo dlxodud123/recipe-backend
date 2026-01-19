@@ -9,6 +9,7 @@ import com.taeyoung.recipe.recipe_backend.dto.member.request.UpdateRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindPasswordRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindUsernameRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.response.MyPageResponseDto;
+import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateEmailException;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateUsernameException;
 import com.taeyoung.recipe.recipe_backend.repository.member.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -34,6 +35,14 @@ public class MemberService {
     public void isUsernameDuplicated(String username) {
         if (memberRepository.existsByUsername(username)) {
             throw new DuplicateUsernameException("이미 사용중인 아이디입니다.");
+        }
+    }
+
+    // 회원가입(이메일 중복 확인) !!
+    @Transactional(readOnly = true)
+    public void isEmailDuplicated(String email) {
+        if (memberRepository.existsByEmailAndProvider(email, ProviderType.LOCAL)) {
+            throw new DuplicateEmailException("이미 사용중인 이메일입니다.");
         }
     }
 
@@ -67,14 +76,6 @@ public class MemberService {
         return MyPageResponseDto.from(findMember);
     }
 
-    // 회원 탈퇴 !!
-    public void deleteMember(Long id){
-        Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
-
-        memberRepository.delete(member);
-    }
-
     // 회원 정보 수정 !!
     public void updateMember(UpdateRequestDto updateRequestDto, Long id) {
         Member member = memberRepository.findById(id)
@@ -88,6 +89,21 @@ public class MemberService {
                 updateRequestDto.getGender()
         );
     }
+
+    // 회원 탈퇴 !!
+    public void deleteMember(Long id){
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
+
+        memberRepository.delete(member);
+    }
+
+    // 회원 연동
+    public void linkMember(Long id){
+
+    }
+
+    // 회원 연동 해제
 
     // username 찾기 !!
     @Transactional(readOnly = true)
