@@ -92,7 +92,7 @@ public class MemberService {
     // username 찾기 !!
     @Transactional(readOnly = true)
     public String findUsername(FindUsernameRequestDto findUsernameRequestDto) {
-        Member findMember = memberRepository.findByNameAndPhone(findUsernameRequestDto.getName(), findUsernameRequestDto.getPhone())
+        Member findMember = memberRepository.findByNameAndEmail(findUsernameRequestDto.getName(), findUsernameRequestDto.getEmail())
                 .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
 
         return findMember.getUsername();

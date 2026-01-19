@@ -9,10 +9,10 @@ public class FindUsernameRequestDto {
     @NotBlank
     private String name;
     @NotBlank
-    private String phone;
+    private String email;
 
-    public FindUsernameRequestDto(String name, String phone) {
+    public FindUsernameRequestDto(String name, String email) {
         this.name = name;
-        this.phone = phone;
+        this.email = email;
     }
 }
