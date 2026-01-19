@@ -52,18 +52,18 @@ public class GoogleLoginController {
         }
 
         // JWT 발급 및 쿠키/응답 처리
-        sendJwtToResponse(member, email, response);
+        sendJwtToResponse(member, response);
 
         // 뷰 반환 없이 JSON 응답만
         return "redirect:https://mealhub.site";
     }
 
     // JWT 생성 + 쿠키 설정 + JSON 응답
-    private void sendJwtToResponse(Member member, String email, HttpServletResponse response) throws IOException {
+    private void sendJwtToResponse(Member member, HttpServletResponse response) throws IOException {
 
         CustomUser customUser = new CustomUser(
                 member.getId(),
-                email,
+                member.getEmail(),
                 "",
                 member.getProvider(),
                 List.of(new SimpleGrantedAuthority(member.getRole().name()))
