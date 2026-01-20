@@ -97,8 +97,7 @@ public class MemberController {
 //        memberService.linkMember(((CustomUser) authentication.getPrincipal()).getId());
 
         // 로컬 테스트용
-        memberService.linkMember(8L);
-//        memberService.linkMember(7L);
+        memberService.linkMember(7L);
 
         return ResponseEntity.ok("회원연동 성공!");
     }
