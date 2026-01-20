@@ -9,6 +9,7 @@ import com.taeyoung.recipe.recipe_backend.dto.member.request.UpdateRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindPasswordRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindUsernameRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.response.MyPageResponseDto;
+import com.taeyoung.recipe.recipe_backend.global.exception.AlreadyLinkedAccountException;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateEmailException;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateUsernameException;
 import com.taeyoung.recipe.recipe_backend.repository.member.MemberRepository;
@@ -110,16 +111,28 @@ public class MemberService {
     }
 
     // 회원 연동
-//    public void linkMember(Long id){
+    public void linkMember(Long id){
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
+
+        if (member.getProvider() == ProviderType.LOCAL) {
+            linkSocial(member);
+        } else {
+            linkLocal(member);
+        }
+    }
+
+    // 회원 연동 해제
+    public void deleteLinkMember(Long id){
 //        Member member = memberRepository.findById(id)
 //                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
 //
-//        Member findMember = memberRepository.findByEmail(member.getEmail())
-//                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
-//
-//    }
-
-    // 회원 연동 해제
+//        if (member.getProvider() == ProviderType.LOCAL) {
+//            linkFromLocal(member);
+//        } else {
+//            linkFromSocial(member);
+//        }
+    }
 
     // username 찾기 !!
     @Transactional(readOnly = true)
@@ -148,5 +161,31 @@ public class MemberService {
     @Transactional(readOnly = true)
     public Optional<Member> findByUsername(String username){
         return memberRepository.findByUsername(username);
+    }
+
+
+    // 소셜계정으로 연동하려고 하는 경우
+    private void linkSocial(Member local) {
+        Member social = memberRepository.findByEmailAndProviderNot(local.getEmail(), ProviderType.LOCAL)
+                .orElseThrow(() -> new EntityNotFoundException("연동할 소셜 계정이 없습니다."));
+
+        // 이미 연동된 계정입니다.
+        if (social.getLinkedMemberId() != null) {
+            throw new AlreadyLinkedAccountException();
+        }
+
+        social.link(local.getId());
+    }
+    // 로컬계정으로 연동하려고 하는 경우
+    private void linkLocal(Member social) {
+        // 이미 연동된 계정입니다.
+        if (social.getLinkedMemberId() != null) {
+            throw new AlreadyLinkedAccountException();
+        }
+
+        Member local = memberRepository.findByEmailAndProvider(social.getEmail(), ProviderType.LOCAL)
+                .orElseThrow(() -> new EntityNotFoundException("연동할 로컬 계정이 없습니다."));
+
+        social.link(local.getId());
     }
 }

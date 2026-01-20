@@ -103,5 +103,9 @@ public class Member extends BaseEntity {
         member.role = role;
         return member;
     }
+
+    public void link(Long localMemberId) {
+        this.linkedMemberId = localMemberId;
+    }
 }
 

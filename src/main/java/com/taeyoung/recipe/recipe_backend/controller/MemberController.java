@@ -63,7 +63,7 @@ public class MemberController {
 //        memberService.updateMember(updateRequestDto, ((CustomUser) authentication.getPrincipal()).getId());
 
         // 로컬 테스트용
-        memberService.updateMember(updateRequestDto, 2L);
+        memberService.updateMember(updateRequestDto, 7L);
 
         return ResponseEntity.ok("회원수정 성공!");
     }
@@ -97,7 +97,7 @@ public class MemberController {
 //        memberService.linkMember(((CustomUser) authentication.getPrincipal()).getId());
 
         // 로컬 테스트용
-//        memberService.linkMember(2L);
+        memberService.linkMember(7L);
 
         return ResponseEntity.ok("회원연동 성공!");
     }
@@ -106,10 +106,10 @@ public class MemberController {
     @DeleteMapping("/me/social")
     public ResponseEntity<String> deleteLinkMyInfo(Authentication authentication){
         // 서버 배포용
-//        memberService.updateMember(updateRequestDto, ((CustomUser) authentication.getPrincipal()).getId());
-
+//        memberService.deleteLinkMember(((CustomUser) authentication.getPrincipal()).getId());
+//
         // 로컬 테스트용
-//        memberService.updateMember(updateRequestDto, 2L);
+        memberService.deleteLinkMember(7L);
 
         return ResponseEntity.ok("회원연동 해제 성공!");
     }
