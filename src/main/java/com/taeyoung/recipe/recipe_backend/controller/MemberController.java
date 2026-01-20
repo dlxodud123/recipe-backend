@@ -103,7 +103,7 @@ public class MemberController {
         return ResponseEntity.ok("회원연동 성공!");
     }
 
-    // 회원 정보 연동 해제
+    // 회원 정보 연동 해제 !!
     @DeleteMapping("/me/social")
     public ResponseEntity<String> deleteLinkMyInfo(Authentication authentication){
         // 서버 배포용

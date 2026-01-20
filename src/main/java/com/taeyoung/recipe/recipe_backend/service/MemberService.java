@@ -123,7 +123,7 @@ public class MemberService {
         }
     }
 
-    // 회원 연동 해제
+    // 회원 연동 해제 !!
     public void deleteLinkMember(Long id){
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));

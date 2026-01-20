@@ -12,6 +12,7 @@ import java.time.LocalDate;
 public class MyPageResponseDto {
 
     private String username;
+    private String email;
     private String name;
     private String zipcode;
     private String address;
@@ -25,6 +26,7 @@ public class MyPageResponseDto {
     public static MyPageResponseDto from(Member member, boolean isLinked) {
         return new MyPageResponseDto(
                 member.getUsername(),
+                member.getEmail(),
                 member.getName(),
                 member.getZipcode(),
                 member.getAddress(),
