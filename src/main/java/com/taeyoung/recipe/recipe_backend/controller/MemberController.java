@@ -48,10 +48,12 @@ public class MemberController {
     @GetMapping("/me")
     public ResponseEntity<MyPageResponseDto> getMyInfo(Authentication authentication){
         // 서버 배포용
-//        return ResponseEntity.ok(memberService.getMyInfo(((CustomUser) authentication.getPrincipal()).getId()));
+//        MyPageResponseDto myPageDto = memberService.getMyInfo(((CustomUser) authentication.getPrincipal()).getId());
+//        return ResponseEntity.ok(myPageDto);
 
         // 로컬 테스트용
-        return ResponseEntity.ok(memberService.getMyInfo(2L));
+        MyPageResponseDto myPageDto = memberService.getMyInfo(7L);
+        return ResponseEntity.ok(myPageDto);
     }
 
     // 회원 정보 수정 !!
@@ -92,7 +94,7 @@ public class MemberController {
     @PostMapping("/me/social")
     public ResponseEntity<String> linkMyInfo(Authentication authentication){
         // 서버 배포용
-        memberService.linkMember(((CustomUser) authentication.getPrincipal()).getId());
+//        memberService.linkMember(((CustomUser) authentication.getPrincipal()).getId());
 
         // 로컬 테스트용
 //        memberService.linkMember(2L);

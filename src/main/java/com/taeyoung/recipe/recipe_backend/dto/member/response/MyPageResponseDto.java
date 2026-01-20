@@ -19,8 +19,10 @@ public class MyPageResponseDto {
     private LocalDate birthDate;
     private Gender gender;
 
+    private boolean linked; // 연동 여부 추가
+
     // 정적 팩토리 메서드
-    public static MyPageResponseDto from(Member member) {
+    public static MyPageResponseDto from(Member member, boolean isLinked) {
         return new MyPageResponseDto(
                 member.getUsername(),
                 member.getName(),
@@ -28,7 +30,8 @@ public class MyPageResponseDto {
                 member.getAddress(),
                 member.getDetailAddress(),
                 member.getBirthDate(),
-                member.getGender()
+                member.getGender(),
+                isLinked
         );
     }
 }

@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -70,10 +71,20 @@ public class MemberService {
     // 회원 정보 조회 !!
     @Transactional(readOnly = true)
     public MyPageResponseDto getMyInfo(Long id) {
-        Member findMember = memberRepository.findById(id)
+        Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
 
-        return MyPageResponseDto.from(findMember);
+        boolean isLinked;
+
+        if (member.getProvider() == ProviderType.LOCAL) {
+            // 로컬 로그인 → 소셜이 나를 물고 있는지
+            isLinked = memberRepository.existsByLinkedMemberId(member.getId());
+        } else {
+            // 소셜 로그인 → 내가 로컬을 물고 있는지
+            isLinked = member.getLinkedMemberId() != null;
+        }
+
+        return MyPageResponseDto.from(member, isLinked);
     }
 
     // 회원 정보 수정 !!
@@ -99,9 +110,14 @@ public class MemberService {
     }
 
     // 회원 연동
-    public void linkMember(Long id){
-
-    }
+//    public void linkMember(Long id){
+//        Member member = memberRepository.findById(id)
+//                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
+//
+//        Member findMember = memberRepository.findByEmail(member.getEmail())
+//                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
+//
+//    }
 
     // 회원 연동 해제
 
