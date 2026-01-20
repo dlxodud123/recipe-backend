@@ -107,5 +107,8 @@ public class Member extends BaseEntity {
     public void link(Long localMemberId) {
         this.linkedMemberId = localMemberId;
     }
+    public void unlink() {
+        this.linkedMemberId = null;
+    }
 }
 

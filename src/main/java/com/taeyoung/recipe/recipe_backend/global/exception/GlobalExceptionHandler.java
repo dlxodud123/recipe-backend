@@ -81,4 +81,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(new ErrorResponseDto("ALREADY_LINKED", e.getMessage()));
     }
+
+    // 409 CONFLICT: 이미 연동 해제된 계정을 다시 해제하려고 할 때 발생
+    @ExceptionHandler(AlreadyUnlinkedAccountException.class)
+    public ResponseEntity<ErrorResponseDto> handleAlreadyUnlinked(AlreadyUnlinkedAccountException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorResponseDto("ALREADY_UNLINKED", e.getMessage()));
+    }
 }
