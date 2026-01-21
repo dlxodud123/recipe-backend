@@ -44,3 +44,17 @@ app:
       - http://localhost:3000
       - http://127.0.0.1:3000
       - https://dxxxx.cloudfront.net
+
+# 🔹 여기 아래에 AWS S3 설정 추가
+cloud:
+  aws:
+    credentials:
+      access-key: ${AWS_ACCESS_KEY_ID}
+      secret-key: ${AWS_SECRET_ACCESS_KEY}
+    region:
+      static: us-east-1
+    s3:
+      bucket: mealhub-img
+
+cdn:
+  url: https://cdn.mealhub.site
