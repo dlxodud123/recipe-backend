@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -49,6 +50,8 @@ public class QMember extends EntityPathBase<Member> {
     public final EnumPath<ProviderType> provider = createEnum("provider", ProviderType.class);
 
     public final StringPath providerId = createString("providerId");
+
+    public final ListPath<com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe, com.taeyoung.recipe.recipe_backend.domain.recipe.QRecipe> recipes = this.<com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe, com.taeyoung.recipe.recipe_backend.domain.recipe.QRecipe>createList("recipes", com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe.class, com.taeyoung.recipe.recipe_backend.domain.recipe.QRecipe.class, PathInits.DIRECT2);
 
     public final EnumPath<Role> role = createEnum("role", Role.class);
 

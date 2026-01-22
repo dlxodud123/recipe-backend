@@ -37,6 +37,8 @@ public class QRecipe extends EntityPathBase<Recipe> {
 
     public final ListPath<RecipeIngredient, QRecipeIngredient> ingredients = this.<RecipeIngredient, QRecipeIngredient>createList("ingredients", RecipeIngredient.class, QRecipeIngredient.class, PathInits.DIRECT2);
 
+    public final com.taeyoung.recipe.recipe_backend.domain.member.QMember member;
+
     public final ListPath<RecipeSeasoning, QRecipeSeasoning> seasonings = this.<RecipeSeasoning, QRecipeSeasoning>createList("seasonings", RecipeSeasoning.class, QRecipeSeasoning.class, PathInits.DIRECT2);
 
     public final StringPath serving = createString("serving");
@@ -69,6 +71,7 @@ public class QRecipe extends EntityPathBase<Recipe> {
     public QRecipe(Class<? extends Recipe> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.category = inits.isInitialized("category") ? new QCategory(forProperty("category")) : null;
+        this.member = inits.isInitialized("member") ? new com.taeyoung.recipe.recipe_backend.domain.member.QMember(forProperty("member")) : null;
     }
 
 }
