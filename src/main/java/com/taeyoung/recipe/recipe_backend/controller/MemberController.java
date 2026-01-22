@@ -48,10 +48,11 @@ public class MemberController {
     // 회원 정보 조회 !!
     @GetMapping("/me")
     public ResponseEntity<MyPageResponseDto> getMyInfo(){
+        System.out.println("🔥 ME API CALLED - LOCAL TEST CODE");
 //    public ResponseEntity<MyPageResponseDto> getMyInfo(Authentication authentication){
         // 서버 배포용
 //        MyPageResponseDto myPageDto = memberService.getMyInfo(((CustomUser) authentication.getPrincipal()).getId());
-//        return ResponseEntity.ok(myPageDto);  
+//        return ResponseEntity.ok(myPageDto);
 
         // 로컬 테스트용
         MyPageResponseDto myPageDto = memberService.getMyInfo(7L);
