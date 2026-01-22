@@ -45,7 +45,7 @@ app:
       - http://127.0.0.1:3000
       - https://dxxxx.cloudfront.net
 
-# 🔹 여기 아래에 AWS S3 설정 추가 
+# 🔹 여기 아래에 AWS S3 설정 추가
 cloud:
   aws:
     credentials:
