@@ -30,9 +30,9 @@ public class RecipeController {
         String imageUrl = s3UploaderService.uploadFile(image);
 
         // 서버용
-        Recipe saved = recipeService.save(recipeCreateRequestDto, imageUrl, userId);
+//        Recipe saved = recipeService.save(recipeCreateRequestDto, imageUrl, userId);
         // 테스트용
-//        Recipe saved = recipeService.save(recipeCreateRequestDto, imageUrl, 7L);
+        Recipe saved = recipeService.save(recipeCreateRequestDto, imageUrl, 7L);
 
         return ResponseEntity.ok(saved);
     }

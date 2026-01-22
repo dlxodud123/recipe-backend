@@ -1,5 +1,6 @@
 package com.taeyoung.recipe.recipe_backend.domain.recipe;
 
+import com.taeyoung.recipe.recipe_backend.domain.member.Member;
 import com.taeyoung.recipe.recipe_backend.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -31,6 +32,10 @@ public class Recipe extends BaseEntity {
     @Column(nullable = false)
     private String imageUrl;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
+
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("ingredientOrder ASC")
     private List<RecipeIngredient> ingredients = new ArrayList<>();
@@ -45,5 +50,38 @@ public class Recipe extends BaseEntity {
 
 
     public Recipe() {
+    }
+
+
+    // 작성자 편의 메서드
+    public void setMember(Member member) {
+        this.member = member;
+        member.addRecipe(this);
+    }
+
+    // 기본 정보 편의 메서드
+    public Recipe setBasicInfo(String title, String subTitle, String description, String serving,
+                             Category category, String imageUrl) {
+        this.title = title;
+        this.subTitle = subTitle;
+        this.description = description;
+        this.serving = serving;
+        this.category = category;
+        this.imageUrl = imageUrl;
+        return this;
+    }
+
+    // 재료/양념/단계 편의 메서드
+    public void addIngredient(RecipeIngredient ingredient) {
+        ingredient.assignToRecipe(this);
+        this.ingredients.add(ingredient);
+    }
+    public void addSeasoning(RecipeSeasoning seasoning) {
+        seasoning.assignToRecipe(this);
+        this.seasonings.add(seasoning);
+    }
+    public void addStep(RecipeStep step) {
+        step.assignToRecipe(this);
+        this.steps.add(step);
     }
 }

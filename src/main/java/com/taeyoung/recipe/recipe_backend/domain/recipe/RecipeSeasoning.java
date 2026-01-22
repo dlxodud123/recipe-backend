@@ -25,4 +25,14 @@ public class RecipeSeasoning {
     // 순서
     @Column(name = "seasoning_order", nullable = false)
     private int seasoningOrder;
+
+
+    public void setNameAndOrder(String name, int order) {
+        this.name = name;
+        this.seasoningOrder = order;
+    }
+
+    public void assignToRecipe(Recipe recipe){
+        this.recipe = recipe;
+    }
 }

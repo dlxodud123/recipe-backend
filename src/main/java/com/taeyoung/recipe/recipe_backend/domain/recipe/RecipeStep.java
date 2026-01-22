@@ -24,4 +24,14 @@ public class RecipeStep {
     // 순서
     @Column(name = "step_order", nullable = false)
     private int stepOrder;
+
+
+    public void setNameAndOrder(String content, int order) {
+        this.content = content;
+        this.stepOrder = order;
+    }
+
+    public void assignToRecipe(Recipe recipe){
+        this.recipe = recipe;
+    }
 }

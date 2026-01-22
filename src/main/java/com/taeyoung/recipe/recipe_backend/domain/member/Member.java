@@ -1,10 +1,13 @@
 package com.taeyoung.recipe.recipe_backend.domain.member;
 
+import com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe;
 import com.taeyoung.recipe.recipe_backend.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -51,8 +54,8 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-//    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
-//    private List<Recipe> recipes;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Recipe> recipes = new ArrayList<>();
 //
 //    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
 //    private List<Comment> comments = new ArrayList<>();
@@ -109,6 +112,16 @@ public class Member extends BaseEntity {
     }
     public void unlink() {
         this.linkedMemberId = null;
+    }
+
+
+    public void addRecipe(Recipe recipe) {
+        recipe.setMember(this);  // Recipe쪽 member 세팅
+        this.recipes.add(recipe); // Member쪽 리스트에 추가
+    }
+    public void removeRecipe(Recipe recipe) {
+        this.recipes.remove(recipe); // Member쪽 리스트에서 제거
+        recipe.setMember(null);      // Recipe쪽 member를 null로
     }
 }
 
