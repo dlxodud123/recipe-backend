@@ -48,7 +48,7 @@ public class SecurityConfig {
                 "https://d1lirp3xwprh2a.cloudfront.net",
                 "https://mealhub.site",
                 "https://api.mealhub.site"
-        )); 
+        ));
         config.setAllowedMethods(List.of(
                 "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"
         ));

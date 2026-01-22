@@ -46,7 +46,8 @@ public class MemberController {
 
     // 회원 정보 조회 !!
     @GetMapping("/me")
-    public ResponseEntity<MyPageResponseDto> getMyInfo(Authentication authentication){
+    public ResponseEntity<MyPageResponseDto> getMyInfo(){
+//    public ResponseEntity<MyPageResponseDto> getMyInfo(Authentication authentication){
         // 서버 배포용
 //        MyPageResponseDto myPageDto = memberService.getMyInfo(((CustomUser) authentication.getPrincipal()).getId());
 //        return ResponseEntity.ok(myPageDto);
