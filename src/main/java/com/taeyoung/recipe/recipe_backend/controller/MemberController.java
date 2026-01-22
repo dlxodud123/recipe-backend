@@ -51,7 +51,7 @@ public class MemberController {
 //    public ResponseEntity<MyPageResponseDto> getMyInfo(Authentication authentication){
         // 서버 배포용
 //        MyPageResponseDto myPageDto = memberService.getMyInfo(((CustomUser) authentication.getPrincipal()).getId());
-//        return ResponseEntity.ok(myPageDto); 
+//        return ResponseEntity.ok(myPageDto);  
 
         // 로컬 테스트용
         MyPageResponseDto myPageDto = memberService.getMyInfo(7L);
