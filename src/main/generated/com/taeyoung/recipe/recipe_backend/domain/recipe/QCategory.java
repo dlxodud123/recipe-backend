@@ -1,4 +1,4 @@
-package com.taeyoung.recipe.recipe_backend.domain.study;
+package com.taeyoung.recipe.recipe_backend.domain.recipe;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,15 +16,17 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QCategory extends EntityPathBase<Category> {
 
-    private static final long serialVersionUID = 953212545L;
+    private static final long serialVersionUID = -1026452896L;
 
     public static final QCategory category = new QCategory("category");
+
+    public final NumberPath<Integer> categoryOrder = createNumber("categoryOrder", Integer.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath name = createString("name");
 
-    public final ListPath<Study, QStudy> studies = this.<Study, QStudy>createList("studies", Study.class, QStudy.class, PathInits.DIRECT2);
+    public final ListPath<Recipe, QRecipe> recipes = this.<Recipe, QRecipe>createList("recipes", Recipe.class, QRecipe.class, PathInits.DIRECT2);
 
     public QCategory(String variable) {
         super(Category.class, forVariable(variable));
