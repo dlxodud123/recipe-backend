@@ -18,7 +18,7 @@ public class RecipeCreateRequestDto {
     @NotBlank
     private String serving;
     @NotBlank
-    private String category;
+    private Long categoryId;
 
     @NotBlank
     private List<String> ingredients;
@@ -26,7 +26,4 @@ public class RecipeCreateRequestDto {
     private List<String> seasonings;
     @NotBlank
     private List<String> steps;
-
-    @NotBlank
-    private String imageUrl;
 }

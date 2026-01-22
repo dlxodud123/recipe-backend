@@ -25,11 +25,14 @@ public class RecipeController {
     public ResponseEntity<?> createStudy(@RequestPart("image") MultipartFile image,
                                               @RequestPart("recipe") RecipeCreateRequestDto recipeCreateRequestDto,
                                               Authentication authentication) throws IOException {
-        CustomUser user = (CustomUser) authentication.getPrincipal();
+        Long userId = ((CustomUser) authentication.getPrincipal()).getId();
 
         String imageUrl = s3UploaderService.uploadFile(image);
-        recipeCreateRequestDto.setImageUrl(imageUrl);
-        Recipe saved = recipeService.save(recipeCreateRequestDto);
+
+        // 서버용
+        Recipe saved = recipeService.save(recipeCreateRequestDto, imageUrl, userId);
+        // 테스트용
+//        Recipe saved = recipeService.save(recipeCreateRequestDto, imageUrl, 7L);
 
         return ResponseEntity.ok(saved);
     }
