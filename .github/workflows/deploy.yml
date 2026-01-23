@@ -9,35 +9,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. 레포지토리 체크아웃
       - name: Checkout
         uses: actions/checkout@v3
 
-      # 2. Java 17 세팅
+      # 1. Java 17 세팅 (프로젝트 버전에 맞게 수정하세요)
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # 3. Gradle 권한 부여 및 빌드 (Test 제외)
+      # 2. Gradle 권한 부여 및 빌드 (Test 제외)
       - name: Build with Gradle
         run: |
           chmod +x gradlew
           ./gradlew build -x test --no-daemon
 
-      # 4. EC2 접속 후 기존 JAR 삭제 (안전하게 덮어쓰기)
-      - name: Remove old JAR on EC2
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_KEY }}
-          script: |
-            rm -f /home/${{ secrets.EC2_USER }}/app/recipe-backend-0.0.1-SNAPSHOT.jar
-            echo "> 기존 JAR 삭제 완료"
-
-      # 5. 빌드된 JAR 파일을 EC2로 전송 (SCP)
+      # 3. 빌드된 JAR 파일을 EC2로 전송 (SCP)
       - name: Transfer JAR to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -45,10 +33,10 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           source: "build/libs/recipe-backend-0.0.1-SNAPSHOT.jar"
-          target: "/home/${{ secrets.EC2_USER }}/app"
-          strip_components: 0
+          target: "/home/${{ secrets.EC2_USER }}/app/recipe-backend-0.0.1-SNAPSHOT.jar"
+          strip_components: 0 # 경로 구조 유지 옵션 (필요에 따라 조절)
 
-      # 6. EC2 접속 후 배포 스크립트 실행
+      # 4. EC2 접속 후 배포 스크립트 실행
       - name: Run deploy script on EC2
         uses: appleboy/ssh-action@v0.1.7
         env:
@@ -60,6 +48,7 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           envs: GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET
           script: |
+            # 환경변수를 스크립트로 전달
             export GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
             export GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
             
