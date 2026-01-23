@@ -37,8 +37,15 @@ public class RecipeController {
         // 서버용
 //        Recipe saved = recipeService.save(recipeCreateRequestDto, imageUrl, userId);
         // 테스트용
-        Recipe saved = recipeService.save(recipeCreateRequestDto, imageUrl, 7L);
-
-        return ResponseEntity.ok(saved);
+//        Recipe saved = recipeService.save(recipeCreateRequestDto, imageUrl, 7L);
+//
+//        return ResponseEntity.ok(saved);
+        try {
+            Recipe saved = recipeService.save(recipeCreateRequestDto, imageUrl, 7L);
+            return ResponseEntity.ok(saved);
+        } catch(Exception e) {
+            e.printStackTrace(); // 어디서 터졌는지 로그 확인
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
 }
