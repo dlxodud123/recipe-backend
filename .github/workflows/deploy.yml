@@ -42,7 +42,7 @@ jobs:
           strip_components: 2 # 경로 구조 유지 옵션 (필요에 따라 조절)
           debug: true
 
-      # 4. EC2 접속 후 배포 스크립트 실행
+      # 4. EC2 접속 후 배포 스크립트 실행 
       - name: Run deploy script on EC2
         uses: appleboy/ssh-action@v0.1.7
         env:
