@@ -99,7 +99,7 @@ public class MemberController {
         // 로컬 테스트용
         memberService.linkMember(7L);
 
-        return ResponseEntity.ok("회원연동 성공!");
+        return ResponseEntity.ok("회원연동 성공!"); 
     }
 
     // 회원 정보 연동 해제 !!
