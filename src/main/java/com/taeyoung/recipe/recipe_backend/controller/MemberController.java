@@ -55,7 +55,7 @@ public class MemberController {
 //        return ResponseEntity.ok(myPageDto);
 
         // 로컬 테스트용
-        MyPageResponseDto myPageDto = memberService.getMyInfo(7L);
+        MyPageResponseDto myPageDto = memberService.getMyInfo(7L); 
         return ResponseEntity.ok(myPageDto);
     }
 
