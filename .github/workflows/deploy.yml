@@ -37,8 +37,8 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           source: "build/libs/recipe-backend-0.0.1-SNAPSHOT.jar"
-          # target: "/home/${{ secrets.EC2_USER }}/app"
-          target: "/home/ec2-user/app"
+          target: "/home/${{ secrets.EC2_USER }}/app"
+          # target: "/home/ec2-user/app"
           strip_components: 0 # 경로 구조 유지 옵션 (필요에 따라 조절)
           debug: true
 
