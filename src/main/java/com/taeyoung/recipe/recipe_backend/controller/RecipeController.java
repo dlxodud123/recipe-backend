@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -45,7 +46,8 @@ public class RecipeController {
             return ResponseEntity.ok(saved);
         } catch(Exception e) {
             e.printStackTrace(); // 어디서 터졌는지 로그 확인
-            return ResponseEntity.status(500).body(e.getMessage());
+            return ResponseEntity.status(500)
+                    .body(Map.of("error", e.getClass().getSimpleName(), "message", e.getMessage()));
         }
     }
 }
