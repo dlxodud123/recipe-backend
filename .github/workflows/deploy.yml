@@ -55,8 +55,8 @@ jobs:
           envs: GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET
           script: |
             # 환경변수를 스크립트로 전달
-            # export GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
-            # export GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
+            export GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
+            export GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
             
             cd /home/${{ secrets.EC2_USER }}/app
             chmod +x ./deploy.sh
