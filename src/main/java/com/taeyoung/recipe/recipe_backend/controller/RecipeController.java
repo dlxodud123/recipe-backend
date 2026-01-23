@@ -27,7 +27,7 @@ public class RecipeController {
     public ResponseEntity<?> createStudy(@RequestPart("image") MultipartFile image,
                                          @Valid @RequestPart("recipe") RecipeCreateRequestDto recipeCreateRequestDto,
                                          Authentication authentication) throws IOException {
-        Long userId = ((CustomUser) authentication.getPrincipal()).getId();
+//        Long userId = ((CustomUser) authentication.getPrincipal()).getId();
 
         if (image == null || image.isEmpty()) {
             throw new IllegalArgumentException("이미지를 업로드해주세요");
