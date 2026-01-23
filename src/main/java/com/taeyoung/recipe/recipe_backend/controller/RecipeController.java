@@ -5,6 +5,7 @@ import com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeCreateRequestDto;
 import com.taeyoung.recipe.recipe_backend.service.RecipeService;
 import com.taeyoung.recipe.recipe_backend.service.S3UploaderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -23,8 +24,8 @@ public class RecipeController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createStudy(@RequestPart("image") MultipartFile image,
-                                              @RequestPart("recipe") RecipeCreateRequestDto recipeCreateRequestDto,
-                                              Authentication authentication) throws IOException {
+                                         @Valid @RequestPart("recipe") RecipeCreateRequestDto recipeCreateRequestDto,
+                                         Authentication authentication) throws IOException {
         Long userId = ((CustomUser) authentication.getPrincipal()).getId();
 
         String imageUrl = s3UploaderService.uploadFile(image);

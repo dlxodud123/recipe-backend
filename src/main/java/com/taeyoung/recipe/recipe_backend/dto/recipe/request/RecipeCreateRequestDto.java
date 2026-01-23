@@ -1,6 +1,8 @@
 package com.taeyoung.recipe.recipe_backend.dto.recipe.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,13 +19,13 @@ public class RecipeCreateRequestDto {
     private String description;
     @NotBlank
     private String serving;
-    @NotBlank
+    @NotNull
     private Long categoryId;
 
-    @NotBlank
+    @NotEmpty
     private List<String> ingredients;
-    @NotBlank
+    @NotEmpty
     private List<String> seasonings;
-    @NotBlank
+    @NotEmpty
     private List<String> steps;
 }
