@@ -17,8 +17,8 @@ public class RecipeCreateRequestDto {
     private String subTitle;
     @NotBlank
     private String description;
-    @NotBlank
-    private String serving;
+    @NotNull
+    private Integer serving;
     @NotNull
     private Long categoryId;
 

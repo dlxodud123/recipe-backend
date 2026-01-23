@@ -28,6 +28,10 @@ public class RecipeController {
                                          Authentication authentication) throws IOException {
         Long userId = ((CustomUser) authentication.getPrincipal()).getId();
 
+        if (image == null || image.isEmpty()) {
+            throw new IllegalArgumentException("이미지를 업로드해주세요");
+        }
+
         String imageUrl = s3UploaderService.uploadFile(image);
 
         // 서버용

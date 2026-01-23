@@ -23,7 +23,7 @@ public class Recipe extends BaseEntity {
     @Column(nullable = false)
     private String description;
     @Column(nullable = false)
-    private String serving;
+    private Integer serving;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
@@ -60,7 +60,7 @@ public class Recipe extends BaseEntity {
     }
 
     // 기본 정보 편의 메서드
-    public Recipe setBasicInfo(String title, String subTitle, String description, String serving,
+    public Recipe setBasicInfo(String title, String subTitle, String description, Integer serving,
                              Category category, String imageUrl) {
         this.title = title;
         this.subTitle = subTitle;
