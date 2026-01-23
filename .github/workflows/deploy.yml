@@ -25,6 +25,10 @@ jobs:
           chmod +x gradlew
           ./gradlew build -x test --no-daemon
 
+      # 2-1. 빌드된 JAR 확인
+      - name: Check built JAR
+        run: ls -l build/libs/
+
       # 3. 빌드된 JAR 파일을 EC2로 전송 (SCP)
       - name: Transfer JAR to EC2
         uses: appleboy/scp-action@v0.1.7
