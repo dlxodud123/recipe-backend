@@ -14,15 +14,6 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, Object>   > handleAll(Exception e) {
-        Map<String, Object> error = Map.of(
-                "error", e.getClass().getSimpleName(),
-                "message", e.getMessage()
-        );
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
-    }
-
     // 404 NOT FOUND: 단일 조회 실패
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorResponseDto> handleEntityNotFound(EntityNotFoundException e) {

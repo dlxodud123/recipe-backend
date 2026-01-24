@@ -1,6 +1,5 @@
 package com.taeyoung.recipe.recipe_backend.controller;
 
-import com.taeyoung.recipe.recipe_backend.domain.member.CustomUser;
 import com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeCreateRequestDto;
 import com.taeyoung.recipe.recipe_backend.service.RecipeService;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,9 +35,11 @@ public class RecipeController {
 
         // 서버용
 //        recipeService.save(recipeCreateRequestDto, imageUrl, userId);
+
 //        return ResponseEntity.ok(saved);
 
 
+        // 테스트용
         recipeService.save(recipeCreateRequestDto, imageUrl, 7L);
 
         return ResponseEntity.ok("레시피 저장 완료!");
