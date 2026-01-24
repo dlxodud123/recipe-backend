@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
                 "error", e.getClass().getSimpleName(),
                 "message", e.getMessage()
         );
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류 발생");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 
     // 404 NOT FOUND: 단일 조회 실패
