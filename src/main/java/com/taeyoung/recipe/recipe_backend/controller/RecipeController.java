@@ -29,6 +29,8 @@ public class RecipeController {
                                          Authentication authentication) throws IOException {
 //        Long userId = ((CustomUser) authentication.getPrincipal()).getId();
 
+
+
         if (image == null || image.isEmpty()) {
             throw new IllegalArgumentException("이미지를 업로드해주세요");
         }
@@ -42,7 +44,27 @@ public class RecipeController {
 //
 //        return ResponseEntity.ok(saved);
         try {
+            System.out.println("==== 이미지 파일: " + image.getOriginalFilename());
+
+            // DTO 값 확인
+            System.out.println("==== 레시피 DTO ====");
+            System.out.println("title: " + recipeCreateRequestDto.getTitle());
+            System.out.println("subTitle: " + recipeCreateRequestDto.getSubTitle());
+            System.out.println("description: " + recipeCreateRequestDto.getDescription());
+            System.out.println("serving: " + recipeCreateRequestDto.getServing());
+            System.out.println("categoryId: " + recipeCreateRequestDto.getCategoryId());
+            System.out.println("ingredients: " + recipeCreateRequestDto.getIngredients());
+            System.out.println("seasonings: " + recipeCreateRequestDto.getSeasonings());
+            System.out.println("steps: " + recipeCreateRequestDto.getSteps());
+            System.out.println("===================");
+
+            // S3 업로드
+            System.out.println("==== 이미지 URL: " + imageUrl);
+
+            // 저장
             Recipe saved = recipeService.save(recipeCreateRequestDto, imageUrl, 7L);
+            System.out.println("==== 저장 완료, recipeId: " + saved.getId());
+
             return ResponseEntity.ok(saved);
         } catch(Exception e) {
             e.printStackTrace(); // 어디서 터졌는지 로그 확인
