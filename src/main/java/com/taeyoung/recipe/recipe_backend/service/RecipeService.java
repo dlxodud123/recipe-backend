@@ -4,6 +4,7 @@ import com.taeyoung.recipe.recipe_backend.domain.member.Member;
 import com.taeyoung.recipe.recipe_backend.domain.recipe.*;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeCreateRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByCategoryResponseDto;
+import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateRecipeTitleException;
 import com.taeyoung.recipe.recipe_backend.repository.member.MemberRepository;
 import com.taeyoung.recipe.recipe_backend.repository.recipe.CategoryRepository;
 import com.taeyoung.recipe.recipe_backend.repository.recipe.RecipeRepository;
@@ -25,6 +26,11 @@ public class RecipeService {
         // 멤버 조회
         Member member = memberRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
+
+        // title 중복 체크
+        if (recipeRepository.existsByTitle(dto.getTitle())) {
+            throw new DuplicateRecipeTitleException("이미 존재하는 레시피 제목입니다.");
+        }
 
         // 카테고리 조회
         Category category = categoryRepository.findById(dto.getCategoryId())
@@ -78,15 +84,15 @@ public class RecipeService {
 
     public List<RecipeByCategoryResponseDto> getRecipeByCategory(String categoryName) {
         Category category = categoryRepository.findByName(categoryName)
-                .orElseThrow(() -> new EntityNotFoundException("카테고리가 존재하지 않습니다."));
+            .orElseThrow(() -> new EntityNotFoundException("카테고리가 존재하지 않습니다."));
 
         return recipeRepository.findAllByCategoryId(category.getId())
-                .stream()
-                .map(recipe -> new RecipeByCategoryResponseDto(
-                        recipe.getTitle(),
-                        recipe.getSubTitle(),
-                        recipe.getImageUrl()
-                ))
-                .toList();
+            .stream()
+            .map(recipe -> new RecipeByCategoryResponseDto(
+                    recipe.getTitle(),
+                    recipe.getSubTitle(),
+                    recipe.getImageUrl()
+            ))
+            .toList();
     }
 }

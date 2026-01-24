@@ -77,6 +77,13 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponseDto("DUPLICATE_EMAIL", e.getMessage()));
     }
 
+    // 409 CONFLICT: 레시피 제목 중복
+    @ExceptionHandler(DuplicateRecipeTitleException.class)
+    public ResponseEntity<ErrorResponseDto> handleDuplicateRecipeTitle(DuplicateRecipeTitleException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorResponseDto("DUPLICATE_RECIPE_TITLE", e.getMessage()));
+    }
+
     // 409 CONFLICT: 이미 다른 계정과 연동되어 있을 때 발생
     @ExceptionHandler(AlreadyLinkedAccountException.class)
     public ResponseEntity<ErrorResponseDto> handleAlreadyLinked(AlreadyLinkedAccountException e) {

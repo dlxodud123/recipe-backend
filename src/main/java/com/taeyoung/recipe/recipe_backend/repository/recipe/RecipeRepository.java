@@ -6,5 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
+    // title 중복 체크
+    boolean existsByTitle(String title);
+
+    // 조회
     List<Recipe> findAllByCategoryId(Long categoryId);
 }

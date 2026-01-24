@@ -16,7 +16,7 @@ public class Recipe extends BaseEntity {
     @Column(name = "recipe_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String title;
     @Column(nullable = false)
     private String subTitle;
