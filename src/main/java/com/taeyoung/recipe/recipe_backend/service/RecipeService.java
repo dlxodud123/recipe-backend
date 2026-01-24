@@ -10,6 +10,8 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RecipeService {
@@ -18,7 +20,7 @@ public class RecipeService {
     private final MemberRepository memberRepository;
     private final CategoryRepository categoryRepository;
 
-    public void save(RecipeCreateRequestDto dto, String imageUrl, Long userId) {
+    public Recipe save(RecipeCreateRequestDto dto, String imageUrl, Long userId) {
         // 멤버 조회
         Member member = memberRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
@@ -70,6 +72,13 @@ public class RecipeService {
         recipe.setMember(member);
 
         // 저장
-        recipeRepository.save(recipe);
+        return recipeRepository.save(recipe);
+    }
+
+    public List<Recipe> getRecipeByCategory(String categoryName) {
+        Category category = categoryRepository.findByName(categoryName)
+                .orElseThrow(() -> new EntityNotFoundException("카테고리가 존재하지 않습니다."));
+
+        return recipeRepository.findAllByCategoryId(category.getId());
     }
 }

@@ -6,12 +6,12 @@ import com.taeyoung.recipe.recipe_backend.service.RecipeService;
 import com.taeyoung.recipe.recipe_backend.service.S3UploaderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,8 +21,9 @@ public class RecipeController {
     private final S3UploaderService s3UploaderService;
     private final RecipeService recipeService;
 
+    // 레시피 생성
     @PostMapping("/create")
-    public ResponseEntity<String> createStudy(@RequestPart("image") MultipartFile image,
+    public Recipe createStudy(@RequestPart("image") MultipartFile image,
                                          @Valid @RequestPart("recipe") RecipeCreateRequestDto recipeCreateRequestDto,
                                          Authentication authentication) throws IOException {
 //        Long userId = ((CustomUser) authentication.getPrincipal()).getId();
@@ -38,10 +39,14 @@ public class RecipeController {
 
 //        return ResponseEntity.ok(saved);
 
-
         // 테스트용
-        recipeService.save(recipeCreateRequestDto, imageUrl, 7L);
+        return recipeService.save(recipeCreateRequestDto, imageUrl, 7L);
+    }
 
-        return ResponseEntity.ok("레시피 저장 완료!");
+    // 레시피 조회(카테고리)
+    @GetMapping("/{categoryName}")
+    public List<Recipe> getRecipeByCategory(@PathVariable String categoryName) {
+
+        return recipeService.getRecipeByCategory(categoryName);
     }
 }
