@@ -89,6 +89,7 @@ public class RecipeService {
         return recipeRepository.findAllByCategoryId(category.getId())
             .stream()
             .map(recipe -> new RecipeByCategoryResponseDto(
+                    recipe.getId(),
                     recipe.getTitle(),
                     recipe.getSubTitle(),
                     recipe.getImageUrl()
