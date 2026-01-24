@@ -116,7 +116,6 @@ public class Member extends BaseEntity {
 
 
     public void addRecipe(Recipe recipe) {
-        recipe.setMember(this);  // Recipe쪽 member 세팅
         this.recipes.add(recipe); // Member쪽 리스트에 추가
     }
     public void removeRecipe(Recipe recipe) {
