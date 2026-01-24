@@ -35,7 +35,6 @@ public class RecipeController {
             throw new IllegalArgumentException("이미지를 업로드해주세요");
         }
 
-        String imageUrl = s3UploaderService.uploadFile(image);
 
         // 서버용
 //        Recipe saved = recipeService.save(recipeCreateRequestDto, imageUrl, userId);
@@ -43,6 +42,8 @@ public class RecipeController {
 //        Recipe saved = recipeService.save(recipeCreateRequestDto, imageUrl, 7L);
 //
 //        return ResponseEntity.ok(saved);
+
+        String imageUrl = null;
         try {
             System.out.println("==== 이미지 파일: " + image.getOriginalFilename());
 
@@ -59,6 +60,7 @@ public class RecipeController {
             System.out.println("===================");
 
             // S3 업로드
+            imageUrl = s3UploaderService.uploadFile(image);
             System.out.println("==== 이미지 URL: " + imageUrl);
 
             // 저장
