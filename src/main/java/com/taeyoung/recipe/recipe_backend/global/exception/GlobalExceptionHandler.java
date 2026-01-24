@@ -15,7 +15,7 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, Object>> handleAll(Exception e) {
+    public ResponseEntity<Map<String, Object>   > handleAll(Exception e) {
         Map<String, Object> error = Map.of(
                 "error", e.getClass().getSimpleName(),
                 "message", e.getMessage()

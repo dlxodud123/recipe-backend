@@ -67,7 +67,7 @@ public class RecipeController {
             Recipe saved = recipeService.save(recipeCreateRequestDto, imageUrl, 7L);
             System.out.println("==== 저장 완료, recipeId: " + saved.getId());
 
-            return ResponseEntity.ok(saved);
+            return ResponseEntity.ok("레시피 저장 완료!");
         } catch(Exception e) {
             e.printStackTrace(); // 어디서 터졌는지 로그 확인
             return ResponseEntity.status(500)
