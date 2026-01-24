@@ -18,7 +18,7 @@ public class RecipeService {
     private final MemberRepository memberRepository;
     private final CategoryRepository categoryRepository;
 
-    public Recipe save(RecipeCreateRequestDto dto, String imageUrl, Long userId) {
+    public void save(RecipeCreateRequestDto dto, String imageUrl, Long userId) {
         // 멤버 조회
         Member member = memberRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
@@ -70,6 +70,6 @@ public class RecipeService {
         recipe.setMember(member);
 
         // 저장
-        return recipeRepository.save(recipe);
+        recipeRepository.save(recipe);
     }
 }
