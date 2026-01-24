@@ -1,8 +1,10 @@
 package com.taeyoung.recipe.recipe_backend.domain.recipe;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 @Table(
     name = "recipe_ingredient",
     uniqueConstraints = {

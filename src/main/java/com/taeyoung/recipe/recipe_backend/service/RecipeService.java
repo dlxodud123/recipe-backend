@@ -4,6 +4,7 @@ import com.taeyoung.recipe.recipe_backend.domain.member.Member;
 import com.taeyoung.recipe.recipe_backend.domain.recipe.*;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeCreateRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByCategoryResponseDto;
+import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByIdResponseDto;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateRecipeTitleException;
 import com.taeyoung.recipe.recipe_backend.repository.member.MemberRepository;
 import com.taeyoung.recipe.recipe_backend.repository.recipe.CategoryRepository;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -95,5 +97,12 @@ public class RecipeService {
                     recipe.getImageUrl()
             ))
             .toList();
+    }
+
+    public RecipeByIdResponseDto getRecipeById(long recipeId) {
+        Recipe recipe = recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new EntityNotFoundException("레시피가 존재하지 않습니다."));
+
+        return RecipeByIdResponseDto.from(recipe);
     }
 }

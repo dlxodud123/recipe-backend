@@ -3,6 +3,7 @@ package com.taeyoung.recipe.recipe_backend.controller;
 import com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeCreateRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByCategoryResponseDto;
+import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByIdResponseDto;
 import com.taeyoung.recipe.recipe_backend.service.RecipeService;
 import com.taeyoung.recipe.recipe_backend.service.S3UploaderService;
 import jakarta.validation.Valid;
@@ -36,9 +37,7 @@ public class RecipeController {
         String imageUrl = s3UploaderService.uploadFile(image);
 
         // 서버용
-//        recipeService.save(recipeCreateRequestDto, imageUrl, userId);
-
-//        return ResponseEntity.ok(saved);
+//        return recipeService.save(recipeCreateRequestDto, imageUrl, userId);
 
         // 테스트용
         return recipeService.save(recipeCreateRequestDto, imageUrl, 7L);
@@ -49,5 +48,12 @@ public class RecipeController {
     public List<RecipeByCategoryResponseDto> getRecipeByCategory(@PathVariable String categoryName) {
 
         return recipeService.getRecipeByCategory(categoryName);
+    }
+
+    // 상세 레시피 조회(id)
+    @GetMapping("/{recipeId}")
+    public RecipeByIdResponseDto getRecipeByCategory(@PathVariable Long recipeId) {
+
+        return recipeService.getRecipeById(recipeId);
     }
 }
