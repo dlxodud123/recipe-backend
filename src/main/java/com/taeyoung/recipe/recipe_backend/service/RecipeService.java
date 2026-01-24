@@ -29,7 +29,7 @@ public class RecipeService {
 
         // title 중복 체크
         if (recipeRepository.existsByTitle(dto.getTitle())) {
-            throw new DuplicateRecipeTitleException("이미 존재하는 레시피 제목입니다.");
+            throw new DuplicateRecipeTitleException("이미 존재하는 요리 제목입니다.");
         }
 
         // 카테고리 조회
