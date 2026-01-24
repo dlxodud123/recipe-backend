@@ -2,6 +2,7 @@ package com.taeyoung.recipe.recipe_backend.controller;
 
 import com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeCreateRequestDto;
+import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByCategoryResponseDto;
 import com.taeyoung.recipe.recipe_backend.service.RecipeService;
 import com.taeyoung.recipe.recipe_backend.service.S3UploaderService;
 import jakarta.validation.Valid;
@@ -45,7 +46,7 @@ public class RecipeController {
 
     // 레시피 조회(카테고리)
     @GetMapping("/{categoryName}")
-    public List<Recipe> getRecipeByCategory(@PathVariable String categoryName) {
+    public List<RecipeByCategoryResponseDto> getRecipeByCategory(@PathVariable String categoryName) {
 
         return recipeService.getRecipeByCategory(categoryName);
     }

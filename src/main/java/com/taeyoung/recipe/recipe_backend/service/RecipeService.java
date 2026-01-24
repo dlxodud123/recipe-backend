@@ -3,6 +3,7 @@ package com.taeyoung.recipe.recipe_backend.service;
 import com.taeyoung.recipe.recipe_backend.domain.member.Member;
 import com.taeyoung.recipe.recipe_backend.domain.recipe.*;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeCreateRequestDto;
+import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByCategoryResponseDto;
 import com.taeyoung.recipe.recipe_backend.repository.member.MemberRepository;
 import com.taeyoung.recipe.recipe_backend.repository.recipe.CategoryRepository;
 import com.taeyoung.recipe.recipe_backend.repository.recipe.RecipeRepository;
@@ -75,10 +76,17 @@ public class RecipeService {
         return recipeRepository.save(recipe);
     }
 
-    public List<Recipe> getRecipeByCategory(String categoryName) {
+    public List<RecipeByCategoryResponseDto> getRecipeByCategory(String categoryName) {
         Category category = categoryRepository.findByName(categoryName)
                 .orElseThrow(() -> new EntityNotFoundException("카테고리가 존재하지 않습니다."));
 
-        return recipeRepository.findAllByCategoryId(category.getId());
+        return recipeRepository.findAllByCategoryId(category.getId())
+                .stream()
+                .map(recipe -> new RecipeByCategoryResponseDto(
+                        recipe.getTitle(),
+                        recipe.getSubTitle(),
+                        recipe.getImageUrl()
+                ))
+                .toList();
     }
 }
