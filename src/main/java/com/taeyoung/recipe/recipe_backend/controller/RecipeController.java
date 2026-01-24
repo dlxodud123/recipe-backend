@@ -29,7 +29,7 @@ public class RecipeController {
                                          Authentication authentication) throws IOException {
 //        Long userId = ((CustomUser) authentication.getPrincipal()).getId();
 
-
+        System.out.println("시작");
 
         if (image == null || image.isEmpty()) {
             throw new IllegalArgumentException("이미지를 업로드해주세요");
