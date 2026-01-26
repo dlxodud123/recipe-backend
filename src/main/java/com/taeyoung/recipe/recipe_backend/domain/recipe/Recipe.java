@@ -33,6 +33,7 @@ public class Recipe extends BaseEntity {
     @Column(nullable = false)
     private String imageUrl;
 
+    @Column(nullable = false)
     private Long viewCount = 0L;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -78,6 +79,7 @@ public class Recipe extends BaseEntity {
         this.serving = serving;
         this.category = category;
         this.imageUrl = imageUrl;
+        this.viewCount = 0L;
         return this;
     }
 

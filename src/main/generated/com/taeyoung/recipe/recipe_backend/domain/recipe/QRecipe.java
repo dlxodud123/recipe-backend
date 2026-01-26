@@ -54,6 +54,8 @@ public class QRecipe extends EntityPathBase<Recipe> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
+    public final NumberPath<Long> viewCount = createNumber("viewCount", Long.class);
+
     public QRecipe(String variable) {
         this(Recipe.class, forVariable(variable), INITS);
     }
