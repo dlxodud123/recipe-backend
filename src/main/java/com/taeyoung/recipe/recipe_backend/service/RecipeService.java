@@ -14,6 +14,7 @@ import com.taeyoung.recipe.recipe_backend.repository.recipe.RecipeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class RecipeService {
 
     private final RecipeRepository recipeRepository;
@@ -111,6 +113,8 @@ public class RecipeService {
     public RecipeByIdResponseDto getRecipeById(long recipeId) {
         Recipe recipe = recipeRepository.findById(recipeId)
             .orElseThrow(() -> new EntityNotFoundException("레시피가 존재하지 않습니다."));
+
+        recipe.increaseViewCount();
 
         return RecipeByIdResponseDto.from(recipe);
     }

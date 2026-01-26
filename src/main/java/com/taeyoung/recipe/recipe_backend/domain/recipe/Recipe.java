@@ -33,6 +33,8 @@ public class Recipe extends BaseEntity {
     @Column(nullable = false)
     private String imageUrl;
 
+    private Long viewCount = 0L;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
@@ -56,6 +58,10 @@ public class Recipe extends BaseEntity {
     public Recipe() {
     }
 
+    // 조회수 증가 메서드
+    public void increaseViewCount() {
+        this.viewCount++;
+    }
 
     // 작성자 편의 메서드
     public void setMember(Member member) {
