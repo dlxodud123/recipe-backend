@@ -5,6 +5,7 @@ import com.taeyoung.recipe.recipe_backend.domain.recipe.*;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeCreateRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByCategoryResponseDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByIdResponseDto;
+import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeRecentResponseDto;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateRecipeItemException;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateRecipeTitleException;
 import com.taeyoung.recipe.recipe_backend.repository.member.MemberRepository;
@@ -30,7 +31,7 @@ public class RecipeService {
     public Recipe save(RecipeCreateRequestDto dto, String imageUrl, Long userId) {
         // 멤버 조회
         Member member = memberRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
+            .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
 
         // title 중복 체크
         if (recipeRepository.existsByTitle(dto.getTitle())) {
@@ -39,7 +40,7 @@ public class RecipeService {
 
         // 카테고리 조회
         Category category = categoryRepository.findById(dto.getCategoryId())
-                .orElseThrow(() -> new EntityNotFoundException("카테고리가 존재하지 않습니다."));
+            .orElseThrow(() -> new EntityNotFoundException("카테고리가 존재하지 않습니다."));
 
         // 재료 및 양념 중복 체크
         validateNoDuplicate(dto);
@@ -47,12 +48,12 @@ public class RecipeService {
         // 기본정보 세팅
         Recipe recipe = new Recipe();
         recipe.setBasicInfo(
-                dto.getTitle(),
-                dto.getSubTitle(),
-                dto.getDescription(),
-                dto.getServing(),
-                category,
-                imageUrl
+            dto.getTitle(),
+            dto.getSubTitle(),
+            dto.getDescription(),
+            dto.getServing(),
+            category,
+            imageUrl
         );
 
         // recipe와 ingredient 연결(양방향)
@@ -109,10 +110,21 @@ public class RecipeService {
     // 상세 레시피 조회(id)
     public RecipeByIdResponseDto getRecipeById(long recipeId) {
         Recipe recipe = recipeRepository.findById(recipeId)
-                .orElseThrow(() -> new EntityNotFoundException("레시피가 존재하지 않습니다."));
+            .orElseThrow(() -> new EntityNotFoundException("레시피가 존재하지 않습니다."));
 
         return RecipeByIdResponseDto.from(recipe);
     }
+
+    // 최신 레시피 조회
+    public List<RecipeRecentResponseDto> getRecentRecipe() {
+        List<Recipe> recipes = recipeRepository.findTop5ByOrderByCreatedAtDesc();
+
+        return recipes.stream()
+            .map(RecipeRecentResponseDto::from)
+            .toList();
+    }
+
+
 
 
     // 재료, 양념 중복 체크 메서드

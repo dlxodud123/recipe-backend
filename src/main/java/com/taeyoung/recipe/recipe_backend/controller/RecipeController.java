@@ -4,6 +4,7 @@ import com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeCreateRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByCategoryResponseDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByIdResponseDto;
+import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeRecentResponseDto;
 import com.taeyoung.recipe.recipe_backend.service.RecipeService;
 import com.taeyoung.recipe.recipe_backend.service.S3UploaderService;
 import jakarta.validation.Valid;
@@ -52,8 +53,15 @@ public class RecipeController {
 
     // 상세 레시피 조회(id)
     @GetMapping("/detail/{recipeId}")
-    public RecipeByIdResponseDto getRecipeByCategory(@PathVariable Long recipeId) {
+    public RecipeByIdResponseDto getRecipeById(@PathVariable Long recipeId) {
 
         return recipeService.getRecipeById(recipeId);
+    }
+
+    // 최신 레시피 조회(5개)
+    @GetMapping("/recent")
+    public List<RecipeRecentResponseDto> getRecentRecipe(){
+
+        return recipeService.getRecentRecipe();
     }
 }

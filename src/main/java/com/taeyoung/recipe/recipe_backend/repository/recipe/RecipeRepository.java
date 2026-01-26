@@ -11,4 +11,7 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
     // 조회
     List<Recipe> findAllByCategoryId(Long categoryId);
+
+    // 최근 조회(5개)
+    List<Recipe> findTop5ByOrderByCreatedAtDesc();
 }
