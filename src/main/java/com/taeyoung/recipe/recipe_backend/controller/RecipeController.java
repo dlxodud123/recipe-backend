@@ -51,7 +51,7 @@ public class RecipeController {
     }
 
     // 상세 레시피 조회(id)
-    @GetMapping("/{recipeId}")
+    @GetMapping("/detail/{recipeId}")
     public RecipeByIdResponseDto getRecipeByCategory(@PathVariable Long recipeId) {
 
         return recipeService.getRecipeById(recipeId);
