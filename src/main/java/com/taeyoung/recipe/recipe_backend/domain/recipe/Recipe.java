@@ -1,5 +1,6 @@
 package com.taeyoung.recipe.recipe_backend.domain.recipe;
 
+import com.taeyoung.recipe.recipe_backend.domain.comment.Comment;
 import com.taeyoung.recipe.recipe_backend.domain.member.Member;
 import com.taeyoung.recipe.recipe_backend.global.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -47,6 +48,9 @@ public class Recipe extends BaseEntity {
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("stepOrder ASC")
     private List<RecipeStep> steps = new ArrayList<>();
+
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
 
     public Recipe() {

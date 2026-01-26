@@ -26,6 +26,8 @@ public class QRecipe extends EntityPathBase<Recipe> {
 
     public final QCategory category;
 
+    public final ListPath<com.taeyoung.recipe.recipe_backend.domain.comment.Comment, com.taeyoung.recipe.recipe_backend.domain.comment.QComment> comments = this.<com.taeyoung.recipe.recipe_backend.domain.comment.Comment, com.taeyoung.recipe.recipe_backend.domain.comment.QComment>createList("comments", com.taeyoung.recipe.recipe_backend.domain.comment.Comment.class, com.taeyoung.recipe.recipe_backend.domain.comment.QComment.class, PathInits.DIRECT2);
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 

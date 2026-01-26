@@ -1,5 +1,6 @@
 package com.taeyoung.recipe.recipe_backend.domain.member;
 
+import com.taeyoung.recipe.recipe_backend.domain.comment.Comment;
 import com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe;
 import com.taeyoung.recipe.recipe_backend.global.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -56,9 +57,9 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Recipe> recipes = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
-//    private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 //
 //    @OneToMany(mappedBy = "member")
 //    private List<Like> likes = new ArrayList<>();
