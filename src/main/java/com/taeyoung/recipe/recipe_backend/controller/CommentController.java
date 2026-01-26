@@ -1,11 +1,15 @@
 package com.taeyoung.recipe.recipe_backend.controller;
 
 import com.taeyoung.recipe.recipe_backend.domain.comment.Comment;
-import com.taeyoung.recipe.recipe_backend.dto.comment.CommentCreateRequestDto;
+import com.taeyoung.recipe.recipe_backend.dto.comment.request.CommentCreateRequestDto;
+import com.taeyoung.recipe.recipe_backend.dto.comment.response.CommentByIdResponseDto;
+import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByIdResponseDto;
 import com.taeyoung.recipe.recipe_backend.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,5 +33,9 @@ public class CommentController {
     }
 
     // 댓글 조회(id)
+    @GetMapping("/{recipeId}")
+    public List<CommentByIdResponseDto> getCommentById(@PathVariable Long recipeId) {
 
+        return commentService.getCommentById(recipeId);
+    }
 }

@@ -3,8 +3,8 @@ package com.taeyoung.recipe.recipe_backend.service;
 import com.taeyoung.recipe.recipe_backend.domain.comment.Comment;
 import com.taeyoung.recipe.recipe_backend.domain.member.Member;
 import com.taeyoung.recipe.recipe_backend.domain.recipe.*;
-import com.taeyoung.recipe.recipe_backend.dto.comment.CommentCreateRequestDto;
-import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateRecipeTitleException;
+import com.taeyoung.recipe.recipe_backend.dto.comment.request.CommentCreateRequestDto;
+import com.taeyoung.recipe.recipe_backend.dto.comment.response.CommentByIdResponseDto;
 import com.taeyoung.recipe.recipe_backend.repository.comment.CommentRepository;
 import com.taeyoung.recipe.recipe_backend.repository.member.MemberRepository;
 import com.taeyoung.recipe.recipe_backend.repository.recipe.RecipeRepository;
@@ -12,7 +12,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -41,5 +41,13 @@ public class CommentService {
         recipe.getComments().add(comment);
 
         return commentRepository.save(comment);
+    }
+
+    // 댓글 조회(id)
+    public List<CommentByIdResponseDto> getCommentById(Long recipeId) {
+        List<Comment> comments = commentRepository.findAllByRecipeIdOrderByCreatedAtDesc(recipeId);
+        return comments.stream()
+            .map(CommentByIdResponseDto::from)
+            .toList();
     }
 }
