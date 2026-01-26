@@ -34,23 +34,13 @@ public class RecipeByIdResponseDto {
             recipe.getDescription(),
             recipe.getServing(),
             recipe.getImageUrl(),
-//            recipe.getCategory().getName(),
             recipe.getCategory() != null ? recipe.getCategory().getName() : "",
-//            recipe.getIngredients().stream()
-//                    .map(RecipeIngredientResponseDto::from)
-//                    .toList(),
             recipe.getIngredients() != null
                     ? recipe.getIngredients().stream().map(RecipeIngredientResponseDto::from).toList()
                     : List.of(),
-//            recipe.getSeasonings().stream()
-//                    .map(RecipeSeasoningResponseDto::from)
-//                    .toList(),
             recipe.getSeasonings() != null
                     ? recipe.getSeasonings().stream().map(RecipeSeasoningResponseDto::from).toList()
                     : List.of(),
-//            recipe.getSteps().stream()
-//                    .map(RecipeStepResponseDto::from)
-//                    .toList()
             recipe.getSteps() != null
                     ? recipe.getSteps().stream().map(RecipeStepResponseDto::from).toList()
                     : List.of()

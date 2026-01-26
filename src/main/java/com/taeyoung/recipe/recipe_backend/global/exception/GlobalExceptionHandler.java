@@ -97,4 +97,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(new ErrorResponseDto("ALREADY_UNLINKED", e.getMessage()));
     }
+
+    // 409 CONFLICT: 재료 또는 양념 항목 중복
+    @ExceptionHandler(DuplicateRecipeItemException.class)
+    public ResponseEntity<ErrorResponseDto> handleDuplicateRecipeItem(DuplicateRecipeItemException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorResponseDto("DUPLICATE_RECIPE_ITEM", e.getMessage()));
+    }
 }

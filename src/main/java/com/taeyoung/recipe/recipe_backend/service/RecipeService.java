@@ -5,6 +5,7 @@ import com.taeyoung.recipe.recipe_backend.domain.recipe.*;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeCreateRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByCategoryResponseDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByIdResponseDto;
+import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateRecipeItemException;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateRecipeTitleException;
 import com.taeyoung.recipe.recipe_backend.repository.member.MemberRepository;
 import com.taeyoung.recipe.recipe_backend.repository.recipe.CategoryRepository;
@@ -13,8 +14,9 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +26,7 @@ public class RecipeService {
     private final MemberRepository memberRepository;
     private final CategoryRepository categoryRepository;
 
+    // 레시피 생성
     public Recipe save(RecipeCreateRequestDto dto, String imageUrl, Long userId) {
         // 멤버 조회
         Member member = memberRepository.findById(userId)
@@ -37,6 +40,9 @@ public class RecipeService {
         // 카테고리 조회
         Category category = categoryRepository.findById(dto.getCategoryId())
                 .orElseThrow(() -> new EntityNotFoundException("카테고리가 존재하지 않습니다."));
+
+        // 재료 및 양념 중복 체크
+        validateNoDuplicate(dto);
 
         // 기본정보 세팅
         Recipe recipe = new Recipe();
@@ -84,6 +90,7 @@ public class RecipeService {
         return recipeRepository.save(recipe);
     }
 
+    // 레시피 조회(카테고리)
     public List<RecipeByCategoryResponseDto> getRecipeByCategory(String categoryName) {
         Category category = categoryRepository.findByName(categoryName)
             .orElseThrow(() -> new EntityNotFoundException("카테고리가 존재하지 않습니다."));
@@ -99,10 +106,35 @@ public class RecipeService {
             .toList();
     }
 
+    // 상세 레시피 조회(id)
     public RecipeByIdResponseDto getRecipeById(long recipeId) {
         Recipe recipe = recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new EntityNotFoundException("레시피가 존재하지 않습니다."));
 
         return RecipeByIdResponseDto.from(recipe);
+    }
+
+
+    // 재료, 양념 중복 체크 메서드
+    private void validateNoDuplicate(RecipeCreateRequestDto dto) {
+
+        // 재료 내부 중복 체크
+        Set<String> ingredientSet = new HashSet<>();
+        for (String raw : dto.getIngredients()) {
+            if (raw == null) continue;
+            String value = raw.trim().replaceAll("\\s+", " ").toLowerCase();
+            if (!ingredientSet.add(value)) {
+                throw new DuplicateRecipeItemException("재료에 중복된 항목이 있습니다.");
+            }
+        }
+        // 양념 내부 중복 체크
+        Set<String> seasoningSet = new HashSet<>();
+        for (String raw : dto.getSeasonings()) {
+            if (raw == null) continue;
+            String value = raw.trim().replaceAll("\\s+", " ").toLowerCase();
+            if (!seasoningSet.add(value)) {
+                throw new DuplicateRecipeItemException("양념에 중복된 항목이 있습니다.");
+            }
+        }
     }
 }
