@@ -44,7 +44,7 @@ public class RecipeController {
     }
 
     // 레시피 조회(카테고리)
-    @GetMapping("/category/{categoryName}")
+    @GetMapping("/category")
     public List<RecipeByCategoryResponseDto> getRecipeByCategory(@RequestParam("categoryName") String categoryName) {
 
         return recipeService.getRecipeByCategory(categoryName);
