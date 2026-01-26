@@ -46,7 +46,7 @@ public class RecipeController {
     // 레시피 조회(카테고리)
     @GetMapping("/category/{categoryName}")
     public List<RecipeByCategoryResponseDto> getRecipeByCategory(@PathVariable String categoryName) {
-
+        System.out.println("categoryName = " + categoryName);
         return recipeService.getRecipeByCategory(categoryName);
     }
 
