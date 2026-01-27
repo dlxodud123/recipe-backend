@@ -20,6 +20,8 @@ public class RecipeByIdResponseDto {
 
     private String imgUrl;
 
+    private Long viewCount;
+
     private String categoryName;
 
     private List<RecipeIngredientResponseDto> ingredients;
@@ -34,6 +36,7 @@ public class RecipeByIdResponseDto {
             recipe.getDescription(),
             recipe.getServing(),
             recipe.getImageUrl(),
+            recipe.getViewCount(),
             recipe.getCategory() != null ? recipe.getCategory().getName() : "",
             recipe.getIngredients() != null
                     ? recipe.getIngredients().stream().map(RecipeIngredientResponseDto::from).toList()
