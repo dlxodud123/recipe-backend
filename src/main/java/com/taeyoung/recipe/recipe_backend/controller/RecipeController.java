@@ -4,6 +4,7 @@ import com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeCreateRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByCategoryResponseDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByIdResponseDto;
+import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByViewCountResponseDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeRecentResponseDto;
 import com.taeyoung.recipe.recipe_backend.service.RecipeService;
 import com.taeyoung.recipe.recipe_backend.service.S3UploaderService;
@@ -63,5 +64,12 @@ public class RecipeController {
     public List<RecipeRecentResponseDto> getRecentRecipe(){
 
         return recipeService.getRecentRecipe();
+    }
+
+    // 조회수 TOP 조회(20개)
+    @GetMapping("/views")
+    public List<RecipeByViewCountResponseDto> getViewRecipe(){
+
+        return recipeService.getTop20ByViewCount();
     }
 }

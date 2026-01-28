@@ -5,6 +5,7 @@ import com.taeyoung.recipe.recipe_backend.domain.recipe.*;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeCreateRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByCategoryResponseDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByIdResponseDto;
+import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByViewCountResponseDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeRecentResponseDto;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateRecipeItemException;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateRecipeTitleException;
@@ -127,6 +128,17 @@ public class RecipeService {
             .map(RecipeRecentResponseDto::from)
             .toList();
     }
+
+    // 조회수 TOP 조회(20개)
+    public List<RecipeByViewCountResponseDto> getTop20ByViewCount() {
+        List<Recipe> recipes = recipeRepository.findTop20ByOrderByViewCountDesc();
+
+        return recipes.stream()
+                .map(RecipeByViewCountResponseDto::from)
+                .toList();
+    }
+
+
 
 
 
