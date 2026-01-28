@@ -3,10 +3,7 @@ package com.taeyoung.recipe.recipe_backend.service;
 import com.taeyoung.recipe.recipe_backend.domain.member.Member;
 import com.taeyoung.recipe.recipe_backend.domain.recipe.*;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeCreateRequestDto;
-import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByCategoryResponseDto;
-import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByIdResponseDto;
-import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByViewCountResponseDto;
-import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeRecentResponseDto;
+import com.taeyoung.recipe.recipe_backend.dto.recipe.response.*;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateRecipeItemException;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateRecipeTitleException;
 import com.taeyoung.recipe.recipe_backend.repository.member.MemberRepository;
@@ -134,8 +131,14 @@ public class RecipeService {
         List<Recipe> recipes = recipeRepository.findTop20ByOrderByViewCountDescCreatedAtDesc();
 
         return recipes.stream()
-                .map(RecipeByViewCountResponseDto::from)
-                .toList();
+            .map(RecipeByViewCountResponseDto::from)
+            .toList();
+    }
+
+    // 댓글 랭킹 조회(5개)
+    public List<RecipeByCommentCountResponseDto> getTop20ByCommentCount() {
+
+        return recipeRepository.findTop5ByCommentCount();
     }
 
 

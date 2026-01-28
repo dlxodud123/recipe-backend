@@ -2,10 +2,7 @@ package com.taeyoung.recipe.recipe_backend.controller;
 
 import com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeCreateRequestDto;
-import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByCategoryResponseDto;
-import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByIdResponseDto;
-import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByViewCountResponseDto;
-import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeRecentResponseDto;
+import com.taeyoung.recipe.recipe_backend.dto.recipe.response.*;
 import com.taeyoung.recipe.recipe_backend.service.RecipeService;
 import com.taeyoung.recipe.recipe_backend.service.S3UploaderService;
 import jakarta.validation.Valid;
@@ -71,5 +68,12 @@ public class RecipeController {
     public List<RecipeByViewCountResponseDto> getViewRecipe(){
 
         return recipeService.getTop20ByViewCount();
+    }
+
+    // 댓글 랭킹 조회(5개)
+    @GetMapping("/top-commented")
+    public List<RecipeByCommentCountResponseDto> getTopCommentedRecipes() {
+        return recipeService.getTop20ByCommentCount();
+
     }
 }

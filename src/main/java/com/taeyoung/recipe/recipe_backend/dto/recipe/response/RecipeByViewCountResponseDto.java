@@ -12,12 +12,14 @@ public class RecipeByViewCountResponseDto {
     private Long id;
     private String title;
     private String imgUrl;
+    private Long viewCount;
 
     public static RecipeByViewCountResponseDto from(Recipe recipe) {
         return new RecipeByViewCountResponseDto(
             recipe.getId(),
             recipe.getTitle(),
-            recipe.getImageUrl()
+            recipe.getImageUrl(),
+            recipe.getViewCount()
         );
     }
 }
