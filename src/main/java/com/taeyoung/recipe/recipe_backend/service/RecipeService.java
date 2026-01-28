@@ -11,6 +11,8 @@ import com.taeyoung.recipe.recipe_backend.repository.recipe.CategoryRepository;
 import com.taeyoung.recipe.recipe_backend.repository.recipe.RecipeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -137,8 +139,9 @@ public class RecipeService {
 
     // 댓글 랭킹 조회(5개)
     public List<RecipeByCommentCountResponseDto> getTop20ByCommentCount() {
+        Pageable top5 = PageRequest.of(0, 5);
 
-        return recipeRepository.findTop5ByCommentCount();
+        return recipeRepository.findTop5ByCommentCount(top5);
     }
 
 

@@ -2,6 +2,7 @@ package com.taeyoung.recipe.recipe_backend.repository.recipe;
 
 import com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByCommentCountResponseDto;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -33,5 +34,5 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
         GROUP BY r.id, r.title, r.imageUrl, r.createdAt
         ORDER BY COUNT(c) DESC, r.createdAt DESC
     """)
-    List<RecipeByCommentCountResponseDto> findTop5ByCommentCount();
+    List<RecipeByCommentCountResponseDto> findTop5ByCommentCount(Pageable pageable);
 }
