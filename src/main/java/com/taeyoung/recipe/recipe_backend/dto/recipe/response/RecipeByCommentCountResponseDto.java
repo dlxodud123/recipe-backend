@@ -12,14 +12,14 @@ public class RecipeByCommentCountResponseDto {
     private Long id;
     private String title;
     private String imgUrl;
-    private Integer commentCount;
+    private Long commentCount;
 
     public static RecipeByCommentCountResponseDto from(Recipe recipe) {
         return new RecipeByCommentCountResponseDto(
                 recipe.getId(),
                 recipe.getTitle(),
                 recipe.getImageUrl(),
-                recipe.getComments().size()
+                (long) recipe.getComments().size()
         );
     }
 }
