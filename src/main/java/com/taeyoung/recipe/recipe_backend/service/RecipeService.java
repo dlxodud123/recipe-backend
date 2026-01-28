@@ -131,7 +131,7 @@ public class RecipeService {
 
     // 조회수 TOP 조회(20개)
     public List<RecipeByViewCountResponseDto> getTop20ByViewCount() {
-        List<Recipe> recipes = recipeRepository.findTop20ByOrderByViewCountDesc();
+        List<Recipe> recipes = recipeRepository.findTop20ByOrderByViewCountDescCreatedAtDesc();
 
         return recipes.stream()
                 .map(RecipeByViewCountResponseDto::from)
