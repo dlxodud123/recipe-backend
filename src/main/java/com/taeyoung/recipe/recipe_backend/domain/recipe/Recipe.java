@@ -24,7 +24,7 @@ public class Recipe extends BaseEntity {
     @Column(nullable = false)
     private String description;
     @Column(nullable = false)
-    private Integer serving;
+    private Integer serving;  
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
