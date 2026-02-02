@@ -18,6 +18,8 @@ public class SignupRequestDto {
     @NotBlank
     private String password;
     @NotBlank
+    private String email;
+    @NotBlank
     private String name;
     @NotBlank
     private String phone;
@@ -31,11 +33,12 @@ public class SignupRequestDto {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    public SignupRequestDto(String username, String password, String name, String phone,
+    public SignupRequestDto(String username, String password, String email, String name, String phone,
                             Boolean ageConsent, String zipcode, String address, String detailAddress,
                             LocalDate birthDate, Gender gender) {
         this.username = username;
         this.password = password;
+        this.email = email;
         this.name = name;
         this.phone = phone;
         this.ageConsent = ageConsent;

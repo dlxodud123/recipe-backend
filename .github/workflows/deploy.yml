@@ -25,6 +25,10 @@ jobs:
           chmod +x gradlew
           ./gradlew build -x test --no-daemon
 
+      # 2-1. 빌드된 JAR 확인
+      - name: Check built JAR
+        run: ls -l build/libs/
+
       # 3. 빌드된 JAR 파일을 EC2로 전송 (SCP)
       - name: Transfer JAR to EC2
         uses: appleboy/scp-action@v0.1.7
@@ -34,7 +38,9 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           source: "build/libs/recipe-backend-0.0.1-SNAPSHOT.jar"
           target: "/home/${{ secrets.EC2_USER }}/app"
-          strip_components: 0 # 경로 구조 유지 옵션 (필요에 따라 조절)
+          # target: "/home/ec2-user/app"
+          strip_components: 2 # 경로 구조 유지 옵션 (필요에 따라 조절)
+          debug: true
 
       # 4. EC2 접속 후 배포 스크립트 실행
       - name: Run deploy script on EC2

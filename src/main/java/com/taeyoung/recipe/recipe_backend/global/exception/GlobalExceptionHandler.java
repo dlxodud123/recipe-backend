@@ -9,6 +9,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.Map;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -73,5 +75,33 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handleDuplicateEmail(DuplicateEmailException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(new ErrorResponseDto("DUPLICATE_EMAIL", e.getMessage()));
+    }
+
+    // 409 CONFLICT: 레시피 제목 중복
+    @ExceptionHandler(DuplicateRecipeTitleException.class)
+    public ResponseEntity<ErrorResponseDto> handleDuplicateRecipeTitle(DuplicateRecipeTitleException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorResponseDto("DUPLICATE_RECIPE_TITLE", e.getMessage()));
+    }
+
+    // 409 CONFLICT: 이미 다른 계정과 연동되어 있을 때 발생
+    @ExceptionHandler(AlreadyLinkedAccountException.class)
+    public ResponseEntity<ErrorResponseDto> handleAlreadyLinked(AlreadyLinkedAccountException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorResponseDto("ALREADY_LINKED", e.getMessage()));
+    }
+
+    // 409 CONFLICT: 이미 연동 해제된 계정을 다시 해제하려고 할 때 발생
+    @ExceptionHandler(AlreadyUnlinkedAccountException.class)
+    public ResponseEntity<ErrorResponseDto> handleAlreadyUnlinked(AlreadyUnlinkedAccountException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorResponseDto("ALREADY_UNLINKED", e.getMessage()));
+    }
+
+    // 409 CONFLICT: 재료 또는 양념 항목 중복
+    @ExceptionHandler(DuplicateRecipeItemException.class)
+    public ResponseEntity<ErrorResponseDto> handleDuplicateRecipeItem(DuplicateRecipeItemException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorResponseDto("DUPLICATE_RECIPE_ITEM", e.getMessage()));
     }
 }

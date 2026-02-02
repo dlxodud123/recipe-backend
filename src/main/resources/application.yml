@@ -2,16 +2,18 @@ spring:
   profiles:
     active: local
   datasource:
-#    url: jdbc:h2:tcp://localhost/~/studyhub
-#    username: sa
-#    password:
-#    driver-class-name: org.h2.Driver
-#  jpa:
-#    database-platform: org.hibernate.dialect.H2Dialect
-    url: jdbc:mysql://studyhub-db.cyhu008wm212.us-east-1.rds.amazonaws.com:3306/recipe_db?useSSL=false&serverTimezone=Asia/Seoul
-    username: admin
+#    로컬 MySQL 사용
+    url: jdbc:mysql://localhost:3306/recipe_db?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: root
     password: vltmxhs12
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+#    서버 MySQL 사용
+#    url: jdbc:mysql://studyhub-db.cyhu008wm212.us-east-1.rds.amazonaws.com:3306/recipe_db?useSSL=false&serverTimezone=Asia/Seoul
+#    username: admin
+#    password: vltmxhs12
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+  
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
@@ -19,7 +21,6 @@ spring:
     properties:
       hibernate:
         default_batch_fetch_size: 100
-        #        show_sql: true
         format_sql: true
         use_sql_comments: true
 
@@ -34,13 +35,26 @@ server:
 google:
   client-id: ${GOOGLE_CLIENT_ID}
   client-secret: ${GOOGLE_CLIENT_SECRET}
-  redirect-uri: https://api.mealhub.site/api/oauth/google/callback
-#  redirect-uri: http://localhost:8080/oauth/google/callback
-#  redirect-uri: http://3.94.211.213/oauth/google/callback
+#  redirect-uri: https://api.mealhub.site/api/oauth/google/callback
+  redirect-uri: http://localhost:8080/oauth/google/callback
 
 app:
   cors:
     allowed-origins:
       - http://localhost:3000
       - http://127.0.0.1:3000
-      - https://dxxxx.cloudfront.net
+#      - https://dxxxx.cloudfront.net
+
+# 🔹 여기 아래에 AWS S3 설정 추가
+cloud:
+  aws:
+    credentials:
+      access-key: ${AWS_ACCESS_KEY_ID}
+      secret-key: ${AWS_SECRET_ACCESS_KEY}
+    region:
+      static: us-east-1
+    s3:
+      bucket: mealhub-img
+
+cdn:
+  url: https://cdn.mealhub.site

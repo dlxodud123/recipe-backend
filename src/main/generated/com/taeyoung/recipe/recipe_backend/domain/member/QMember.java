@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -26,6 +27,8 @@ public class QMember extends EntityPathBase<Member> {
     public final BooleanPath ageConsent = createBoolean("ageConsent");
 
     public final DatePath<java.time.LocalDate> birthDate = createDate("birthDate", java.time.LocalDate.class);
+
+    public final ListPath<com.taeyoung.recipe.recipe_backend.domain.comment.Comment, com.taeyoung.recipe.recipe_backend.domain.comment.QComment> comments = this.<com.taeyoung.recipe.recipe_backend.domain.comment.Comment, com.taeyoung.recipe.recipe_backend.domain.comment.QComment>createList("comments", com.taeyoung.recipe.recipe_backend.domain.comment.Comment.class, com.taeyoung.recipe.recipe_backend.domain.comment.QComment.class, PathInits.DIRECT2);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
@@ -49,6 +52,8 @@ public class QMember extends EntityPathBase<Member> {
     public final EnumPath<ProviderType> provider = createEnum("provider", ProviderType.class);
 
     public final StringPath providerId = createString("providerId");
+
+    public final ListPath<com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe, com.taeyoung.recipe.recipe_backend.domain.recipe.QRecipe> recipes = this.<com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe, com.taeyoung.recipe.recipe_backend.domain.recipe.QRecipe>createList("recipes", com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe.class, com.taeyoung.recipe.recipe_backend.domain.recipe.QRecipe.class, PathInits.DIRECT2);
 
     public final EnumPath<Role> role = createEnum("role", Role.class);
 

@@ -1,4 +1,4 @@
-package com.taeyoung.recipe.recipe_backend.domain.study;
+package com.taeyoung.recipe.recipe_backend.domain.comment;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -11,22 +11,18 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QStudy is a Querydsl query type for Study
+ * QComment is a Querydsl query type for Comment
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QStudy extends EntityPathBase<Study> {
+public class QComment extends EntityPathBase<Comment> {
 
-    private static final long serialVersionUID = -1074982106L;
+    private static final long serialVersionUID = -1133237614L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QStudy study = new QStudy("study");
+    public static final QComment comment = new QComment("comment");
 
     public final com.taeyoung.recipe.recipe_backend.global.entity.QBaseEntity _super = new com.taeyoung.recipe.recipe_backend.global.entity.QBaseEntity(this);
-
-    public final QCategory category;
-
-    public final ListPath<Comment, QComment> comments = this.<Comment, QComment>createList("comments", Comment.class, QComment.class, PathInits.DIRECT2);
 
     public final StringPath content = createString("content");
 
@@ -37,33 +33,31 @@ public class QStudy extends EntityPathBase<Study> {
 
     public final com.taeyoung.recipe.recipe_backend.domain.member.QMember member;
 
-    public final ListPath<StudyTag, QStudyTag> studyTags = this.<StudyTag, QStudyTag>createList("studyTags", StudyTag.class, QStudyTag.class, PathInits.DIRECT2);
-
-    public final StringPath title = createString("title");
+    public final com.taeyoung.recipe.recipe_backend.domain.recipe.QRecipe recipe;
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
-    public QStudy(String variable) {
-        this(Study.class, forVariable(variable), INITS);
+    public QComment(String variable) {
+        this(Comment.class, forVariable(variable), INITS);
     }
 
-    public QStudy(Path<? extends Study> path) {
+    public QComment(Path<? extends Comment> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QStudy(PathMetadata metadata) {
+    public QComment(PathMetadata metadata) {
         this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QStudy(PathMetadata metadata, PathInits inits) {
-        this(Study.class, metadata, inits);
+    public QComment(PathMetadata metadata, PathInits inits) {
+        this(Comment.class, metadata, inits);
     }
 
-    public QStudy(Class<? extends Study> type, PathMetadata metadata, PathInits inits) {
+    public QComment(Class<? extends Comment> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.category = inits.isInitialized("category") ? new QCategory(forProperty("category")) : null;
         this.member = inits.isInitialized("member") ? new com.taeyoung.recipe.recipe_backend.domain.member.QMember(forProperty("member")) : null;
+        this.recipe = inits.isInitialized("recipe") ? new com.taeyoung.recipe.recipe_backend.domain.recipe.QRecipe(forProperty("recipe"), inits.get("recipe")) : null;
     }
 
 }

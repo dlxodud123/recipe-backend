@@ -1,20 +1,24 @@
 package com.taeyoung.recipe.recipe_backend.domain.member;
 
+import com.taeyoung.recipe.recipe_backend.domain.comment.Comment;
+import com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe;
 import com.taeyoung.recipe.recipe_backend.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @Table(
-    name = "member",
-    uniqueConstraints = {
-        @UniqueConstraint(
-            columnNames = {"provider", "provider_id"}
-        )
-    }
+        name = "member",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        columnNames = {"provider", "provider_id"}
+                )
+        }
 )
 public class Member extends BaseEntity {
 
@@ -38,8 +42,8 @@ public class Member extends BaseEntity {
     @Column(unique = true)
     private String username;
 
-    private String email;
     private String password;
+    private String email;
     private String name;
     private String phone;
     private Boolean ageConsent;
@@ -51,11 +55,11 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-//    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
-//    private List<Recipe> recipes;
-//
-//    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
-//    private List<Comment> comments = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Recipe> recipes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 //
 //    @OneToMany(mappedBy = "member")
 //    private List<Like> likes = new ArrayList<>();
@@ -63,11 +67,12 @@ public class Member extends BaseEntity {
     public Member() {
     }
 
-    public Member(ProviderType provider, Role role, String username, String password, String name, String phone, Boolean ageConsent, String zipcode, String address, String detailAddress, LocalDate birthDate, Gender gender) {
+    public Member(ProviderType provider, Role role, String username, String password, String email, String name, String phone, Boolean ageConsent, String zipcode, String address, String detailAddress, LocalDate birthDate, Gender gender) {
         this.provider = provider;
         this.role = role;
         this.username = username;
         this.password = password;
+        this.email = email;
         this.name = name;
         this.phone = phone;
         this.ageConsent = ageConsent;
@@ -101,6 +106,22 @@ public class Member extends BaseEntity {
         member.providerId = providerId;
         member.role = role;
         return member;
+    }
+
+    public void link(Long localMemberId) {
+        this.linkedMemberId = localMemberId;
+    }
+    public void unlink() {
+        this.linkedMemberId = null;
+    }
+
+
+    public void addRecipe(Recipe recipe) {
+        this.recipes.add(recipe); // Member쪽 리스트에 추가
+    }
+    public void removeRecipe(Recipe recipe) {
+        this.recipes.remove(recipe); // Member쪽 리스트에서 제거
+        recipe.setMember(null);      // Recipe쪽 member를 null로
     }
 }
 

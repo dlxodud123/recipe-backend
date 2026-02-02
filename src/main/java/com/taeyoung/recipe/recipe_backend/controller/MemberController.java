@@ -24,10 +24,17 @@ public class MemberController {
     private final MemberService memberService;
 
     // 회원가입(아이디 중복 확인) !!
-    @GetMapping("/signup/{username}")
+    @GetMapping("/signup/username/{username}")
     public ResponseEntity<String> checkUsernameDuplicate(@PathVariable String username){
         memberService.isUsernameDuplicated(username);
         return ResponseEntity.ok("사용가능한 아이디입니다");
+    }
+
+    // 회원가입(이메일 중복 확인) !!
+    @GetMapping("/signup/email/{email}")
+    public ResponseEntity<String> checkEmailDuplicate(@PathVariable String email){
+        memberService.isEmailDuplicated(email);
+        return ResponseEntity.ok("사용가능한 이메일입니다");
     }
 
     // 회원가입 !!
@@ -41,10 +48,24 @@ public class MemberController {
     @GetMapping("/me")
     public ResponseEntity<MyPageResponseDto> getMyInfo(Authentication authentication){
         // 서버 배포용
-//        return ResponseEntity.ok(memberService.getMyInfo(((CustomUser) authentication.getPrincipal()).getId()));
+//        MyPageResponseDto myPageDto = memberService.getMyInfo(((CustomUser) authentication.getPrincipal()).getId());
+//        return ResponseEntity.ok(myPageDto);
 
         // 로컬 테스트용
-        return ResponseEntity.ok(memberService.getMyInfo(2L));
+        MyPageResponseDto myPageDto = memberService.getMyInfo(7L);
+        return ResponseEntity.ok(myPageDto);
+    }
+
+    // 회원 정보 수정 !!
+    @PutMapping("/me")
+    public ResponseEntity<String> updateMyInfo(@Valid @RequestBody UpdateRequestDto updateRequestDto, Authentication authentication){
+        // 서버 배포용
+//        memberService.updateMember(updateRequestDto, ((CustomUser) authentication.getPrincipal()).getId());
+
+        // 로컬 테스트용
+        memberService.updateMember(updateRequestDto, 7L);
+
+        return ResponseEntity.ok("회원수정 성공!");
     }
 
     // 회원 탈퇴 !!
@@ -69,16 +90,28 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
-    // 회원 정보 수정 !!
-    @PutMapping("/me")
-    public ResponseEntity<String> updateMyInfo(@Valid @RequestBody UpdateRequestDto updateRequestDto, Authentication authentication){
+    // 회원 정보 연동 !!
+    @PostMapping("/me/social")
+    public ResponseEntity<String> linkMyInfo(Authentication authentication){
         // 서버 배포용
-//        memberService.updateMember(updateRequestDto, ((CustomUser) authentication.getPrincipal()).getId());
+//        memberService.linkMember(((CustomUser) authentication.getPrincipal()).getId());
 
         // 로컬 테스트용
-        memberService.updateMember(updateRequestDto, 2L);
+        memberService.linkMember(7L);
 
-        return ResponseEntity.ok("회원수정 성공!");
+        return ResponseEntity.ok("회원연동 성공!"); 
+    }
+
+    // 회원 정보 연동 해제 !!
+    @DeleteMapping("/me/social")
+    public ResponseEntity<String> deleteLinkMyInfo(Authentication authentication){
+        // 서버 배포용
+//        memberService.deleteLinkMember(((CustomUser) authentication.getPrincipal()).getId());
+//
+        // 로컬 테스트용
+        memberService.deleteLinkMember(7L);
+
+        return ResponseEntity.ok("회원연동 해제 성공!");
     }
 
     // username 찾기 !!

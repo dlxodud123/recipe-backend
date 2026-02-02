@@ -9,6 +9,9 @@ import com.taeyoung.recipe.recipe_backend.dto.member.request.UpdateRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindPasswordRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindUsernameRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.response.MyPageResponseDto;
+import com.taeyoung.recipe.recipe_backend.global.exception.AlreadyLinkedAccountException;
+import com.taeyoung.recipe.recipe_backend.global.exception.AlreadyUnlinkedAccountException;
+import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateEmailException;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateUsernameException;
 import com.taeyoung.recipe.recipe_backend.repository.member.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -37,6 +41,14 @@ public class MemberService {
         }
     }
 
+    // 회원가입(이메일 중복 확인) !!
+    @Transactional(readOnly = true)
+    public void isEmailDuplicated(String email) {
+        if (memberRepository.existsByEmailAndProvider(email, ProviderType.LOCAL)) {
+            throw new DuplicateEmailException("이미 사용중인 이메일입니다.");
+        }
+    }
+
     // 회원가입 !!
     public Member registerMember(SignupRequestDto signupRequestDto){
         String encodedPassword = passwordEncoder.encode(signupRequestDto.getPassword());
@@ -46,6 +58,7 @@ public class MemberService {
                 Role.USER,
                 signupRequestDto.getUsername(),
                 encodedPassword,
+                signupRequestDto.getEmail(),
                 signupRequestDto.getName(),
                 signupRequestDto.getPhone(),
                 signupRequestDto.getAgeConsent(),
@@ -60,18 +73,20 @@ public class MemberService {
     // 회원 정보 조회 !!
     @Transactional(readOnly = true)
     public MyPageResponseDto getMyInfo(Long id) {
-        Member findMember = memberRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
-
-        return MyPageResponseDto.from(findMember);
-    }
-
-    // 회원 탈퇴 !!
-    public void deleteMember(Long id){
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
 
-        memberRepository.delete(member);
+        boolean isLinked;
+
+        if (member.getProvider() == ProviderType.LOCAL) {
+            // 로컬 로그인 → 소셜
+            isLinked = memberRepository.existsByLinkedMemberId(member.getId());
+        } else {
+            // 소셜 로그인 → 로컬
+            isLinked = member.getLinkedMemberId() != null;
+        }
+
+        return MyPageResponseDto.from(member, isLinked);
     }
 
     // 회원 정보 수정 !!
@@ -88,10 +103,42 @@ public class MemberService {
         );
     }
 
+    // 회원 탈퇴 !!
+    public void deleteMember(Long id){
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
+
+        memberRepository.delete(member);
+    }
+
+    // 회원 연동 !!
+    public void linkMember(Long id){
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
+
+        if (member.getProvider() == ProviderType.LOCAL) {
+            linkSocial(member);
+        } else {
+            linkLocal(member);
+        }
+    }
+
+    // 회원 연동 해제 !!
+    public void deleteLinkMember(Long id){
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
+
+        if (member.getProvider() == ProviderType.LOCAL) {
+            deleteLinkSocial(member);
+        } else {
+            deleteLinkLocal(member);
+        }
+    }
+
     // username 찾기 !!
     @Transactional(readOnly = true)
     public String findUsername(FindUsernameRequestDto findUsernameRequestDto) {
-        Member findMember = memberRepository.findByNameAndPhone(findUsernameRequestDto.getName(), findUsernameRequestDto.getPhone())
+        Member findMember = memberRepository.findByNameAndEmail(findUsernameRequestDto.getName(), findUsernameRequestDto.getEmail())
                 .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
 
         return findMember.getUsername();
@@ -111,9 +158,53 @@ public class MemberService {
         return tempPassword;
     }
 
-    // test 전용
+    // test 전용 !!
     @Transactional(readOnly = true)
     public Optional<Member> findByUsername(String username){
         return memberRepository.findByUsername(username);
+    }
+
+
+    // 소셜계정으로 연동하려고 하는 경우 !!
+    private void linkSocial(Member local) {
+        Member social = memberRepository.findByEmailAndProviderNot(local.getEmail(), ProviderType.LOCAL)
+                .orElseThrow(() -> new EntityNotFoundException("연동할 소셜 계정이 없습니다."));
+
+        // 이미 연동된 계정입니다.
+        if (social.getLinkedMemberId() != null) {
+            throw new AlreadyLinkedAccountException();
+        }
+
+        social.link(local.getId());
+    }
+    // 로컬계정으로 연동하려고 하는 경우 !!
+    private void linkLocal(Member social) {
+        // 이미 연동된 계정입니다.
+        if (social.getLinkedMemberId() != null) {
+            throw new AlreadyLinkedAccountException();
+        }
+
+        Member local = memberRepository.findByEmailAndProvider(social.getEmail(), ProviderType.LOCAL)
+                .orElseThrow(() -> new EntityNotFoundException("연동할 로컬 계정이 없습니다."));
+
+        social.link(local.getId());
+    }
+
+    // 로컬계정으로 연동해제 하려고 하는 경우 !!
+    @Transactional
+    private void deleteLinkSocial(Member local) {
+        Member social = memberRepository.findByLinkedMemberId(local.getId())
+                .orElseThrow(() -> new EntityNotFoundException("연동된 소셜 계정이 없습니다."));
+
+        social.unlink();
+    }
+    // 소셜계정으로 연동해제 하려고 하는 경우 !!
+    @Transactional
+    private void deleteLinkLocal(Member social) {
+        if (social.getLinkedMemberId() == null) {
+            throw new AlreadyUnlinkedAccountException();
+        }
+
+        social.unlink();
     }
 }

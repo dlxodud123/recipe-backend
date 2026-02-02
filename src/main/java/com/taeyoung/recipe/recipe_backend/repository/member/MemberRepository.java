@@ -7,16 +7,26 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
+    // 회원가입 (중복확인)
     boolean existsByUsername(String username);
+    boolean existsByEmailAndProvider(String email, ProviderType providerType);
+
+    // myPage 조회
+    boolean existsByLinkedMemberId(Long linkedMemberId);
+
+    // 연동
+    Optional<Member> findByEmailAndProvider(String email, ProviderType provider);
+    Optional<Member> findByEmailAndProviderNot(String email, ProviderType provider);
+    // 연동 해제
+    Optional<Member> findByLinkedMemberId(Long linkedMemberId);
 
     // jwt
     Optional<Member> findByUsername(String username);
 
     // find
-    Optional<Member> findByNameAndPhone(String name, String phone);
+    Optional<Member> findByNameAndEmail(String name, String email);
     Optional<Member> findByNameAndUsername(String name, String username);
 
     // google login
-//    boolean existsByProviderAndProviderId(ProviderType provider, String providerId);
     Member findByProviderAndProviderId(ProviderType provider, String providerId);
 }
