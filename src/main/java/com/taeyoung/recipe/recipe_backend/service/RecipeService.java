@@ -2,6 +2,7 @@ package com.taeyoung.recipe.recipe_backend.service;
 
 import com.taeyoung.recipe.recipe_backend.domain.member.Member;
 import com.taeyoung.recipe.recipe_backend.domain.recipe.*;
+import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeBySearchRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeCreateRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.*;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateRecipeItemException;
@@ -145,6 +146,25 @@ public class RecipeService {
     }
 
 
+    // 재료 활용
+    public List<RecipeBySearchRequestDto> searchRecipes(List<String> includeIngredients, List<String> excludeIngredients) {
+        if ((includeIngredients == null || includeIngredients.isEmpty())
+                && (excludeIngredients == null || excludeIngredients.isEmpty())) {
+            throw new IllegalArgumentException("재료나 제외할 재료를 입력하세요.");
+        }
+
+        long includeCount = includeIngredients != null ? includeIngredients.size() : 0;
+
+        List<Recipe> recipes = recipeRepository.findByIngredients(
+            includeIngredients,
+            excludeIngredients != null ? excludeIngredients : List.of(),
+            includeCount
+        );
+
+        return recipes.stream()
+            .map(recipe -> RecipeBySearchRequestDto.from(recipe, excludeIngredients))
+            .toList();
+    }
 
 
 

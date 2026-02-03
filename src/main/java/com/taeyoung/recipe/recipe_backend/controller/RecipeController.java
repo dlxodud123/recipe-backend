@@ -1,6 +1,7 @@
 package com.taeyoung.recipe.recipe_backend.controller;
 
 import com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe;
+import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeBySearchRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeCreateRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.*;
 import com.taeyoung.recipe.recipe_backend.service.RecipeService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -76,7 +78,19 @@ public class RecipeController {
     // 댓글 랭킹 조회(5개)
     @GetMapping("/top-commented")
     public List<RecipeByCommentCountResponseDto> getTopCommentedRecipes() {
-        return recipeService.getTop20ByCommentCount();
 
+        return recipeService.getTop20ByCommentCount();
+    }
+
+
+    // 재료 활용
+    @GetMapping("/search")
+    public List<RecipeBySearchRequestDto> searchRecipes(@RequestParam(required = false) List<String> ingredient,
+                                                        @RequestParam(required = false) List<String> exceptIngredient) {
+
+        List<String> includeIngredients = ingredient != null ? ingredient : List.of();
+        List<String> excludeIngredients = exceptIngredient != null ? exceptIngredient : List.of();
+
+        return recipeService.searchRecipes(includeIngredients, excludeIngredients);
     }
 }
