@@ -24,22 +24,25 @@ public class RecipeController {
 
     // 레시피 생성
     @PostMapping("/create")
-    public Recipe createStudy(@RequestPart("image") MultipartFile image,
-                                         @Valid @RequestPart("recipe") RecipeCreateRequestDto recipeCreateRequestDto,
-                                         Authentication authentication) throws IOException {
+//    public Recipe createStudy(@RequestPart("image") MultipartFile image,
+//                                         @Valid @RequestPart("recipe") RecipeCreateRequestDto recipeCreateRequestDto,
+//                                         Authentication authentication) throws IOException {
+    public Recipe createStudy(@Valid @RequestPart("recipe") RecipeCreateRequestDto recipeCreateRequestDto,
+                                            Authentication authentication) throws IOException {
+
 //        Long userId = ((CustomUser) authentication.getPrincipal()).getId();
-
-        if (image == null || image.isEmpty()) {
-            throw new IllegalArgumentException("이미지를 업로드해주세요");
-        }
-
-        String imageUrl = s3UploaderService.uploadFile(image);
+//        if (image == null || image.isEmpty()) {
+//            throw new IllegalArgumentException("이미지를 업로드해주세요");
+//        }
+//        String imageUrl = s3UploaderService.uploadFile(image);
 
         // 서버용
 //        return recipeService.save(recipeCreateRequestDto, imageUrl, userId);
 
+        String imageUrl = "이미지";
+
         // 테스트용
-        return recipeService.save(recipeCreateRequestDto, imageUrl, 7L);
+        return recipeService.save(recipeCreateRequestDto, imageUrl, 5L);
     }
 
     // 레시피 조회(카테고리)
