@@ -78,12 +78,10 @@ public class MemberService {
 
         boolean isLinked;
 
-        if (member.getProvider() == ProviderType.LOCAL) {
-            // 로컬 로그인 → 소셜
-            isLinked = memberRepository.existsByLinkedMemberId(member.getId());
+        if (member.getLinkedMemberId() == null) {
+            isLinked = false;
         } else {
-            // 소셜 로그인 → 로컬
-            isLinked = member.getLinkedMemberId() != null;
+            isLinked = true;
         }
 
         return MyPageResponseDto.from(member, isLinked);
@@ -105,34 +103,33 @@ public class MemberService {
 
     // 회원 탈퇴 !!
     public void deleteMember(Long id){
-        Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
+        Member linkedMember = memberRepository.findByLinkedMemberId(id).orElse(null);
 
-        memberRepository.delete(member);
+        if (linkedMember != null) {
+            linkedMember.unlink();
+        }
+
+        // 실제 회원 삭제
+        memberRepository.deleteById(id);
     }
-
+        
     // 회원 연동 !!
     public void linkMember(Long id){
-        Member member = memberRepository.findById(id)
+        Member localMember = memberRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
 
-        if (member.getProvider() == ProviderType.LOCAL) {
-            linkSocial(member);
-        } else {
-            linkLocal(member);
-        }
+        Member socialMember = memberRepository.findByEmailAndProvider(localMember.getEmail(), ProviderType.GOOGLE)
+                .orElseThrow(() -> new EntityNotFoundException("연동할 회원이 존재하지 않습니다."));
+
+        localMember.link(socialMember.getId());
     }
 
     // 회원 연동 해제 !!
     public void deleteLinkMember(Long id){
-        Member member = memberRepository.findById(id)
+        Member localMember = memberRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
 
-        if (member.getProvider() == ProviderType.LOCAL) {
-            deleteLinkSocial(member);
-        } else {
-            deleteLinkLocal(member);
-        }
+        localMember.unlink();
     }
 
     // username 찾기 !!
@@ -156,55 +153,5 @@ public class MemberService {
         memberRepository.save(findMember);
 
         return tempPassword;
-    }
-
-    // test 전용 !!
-    @Transactional(readOnly = true)
-    public Optional<Member> findByUsername(String username){
-        return memberRepository.findByUsername(username);
-    }
-
-
-    // 소셜계정으로 연동하려고 하는 경우 !!
-    private void linkSocial(Member local) {
-        Member social = memberRepository.findByEmailAndProviderNot(local.getEmail(), ProviderType.LOCAL)
-                .orElseThrow(() -> new EntityNotFoundException("연동할 소셜 계정이 없습니다."));
-
-        // 이미 연동된 계정입니다.
-        if (social.getLinkedMemberId() != null) {
-            throw new AlreadyLinkedAccountException();
-        }
-
-        social.link(local.getId());
-    }
-    // 로컬계정으로 연동하려고 하는 경우 !!
-    private void linkLocal(Member social) {
-        // 이미 연동된 계정입니다.
-        if (social.getLinkedMemberId() != null) {
-            throw new AlreadyLinkedAccountException();
-        }
-
-        Member local = memberRepository.findByEmailAndProvider(social.getEmail(), ProviderType.LOCAL)
-                .orElseThrow(() -> new EntityNotFoundException("연동할 로컬 계정이 없습니다."));
-
-        social.link(local.getId());
-    }
-
-    // 로컬계정으로 연동해제 하려고 하는 경우 !!
-    @Transactional
-    private void deleteLinkSocial(Member local) {
-        Member social = memberRepository.findByLinkedMemberId(local.getId())
-                .orElseThrow(() -> new EntityNotFoundException("연동된 소셜 계정이 없습니다."));
-
-        social.unlink();
-    }
-    // 소셜계정으로 연동해제 하려고 하는 경우 !!
-    @Transactional
-    private void deleteLinkLocal(Member social) {
-        if (social.getLinkedMemberId() == null) {
-            throw new AlreadyUnlinkedAccountException();
-        }
-
-        social.unlink();
     }
 }

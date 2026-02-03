@@ -21,6 +21,7 @@ public class MyPageResponseDto {
     private Gender gender;
 
     private boolean linked; // 연동 여부 추가
+    private String provider; // LOCAL / GOOGLE
 
     // 정적 팩토리 메서드
     public static MyPageResponseDto from(Member member, boolean isLinked) {
@@ -33,7 +34,8 @@ public class MyPageResponseDto {
                 member.getDetailAddress(),
                 member.getBirthDate(),
                 member.getGender(),
-                isLinked
+                isLinked,
+                member.getProvider().name()
         );
     }
 }

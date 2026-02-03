@@ -52,7 +52,7 @@ public class MemberController {
 //        return ResponseEntity.ok(myPageDto);
 
         // 로컬 테스트용
-        MyPageResponseDto myPageDto = memberService.getMyInfo(7L);
+        MyPageResponseDto myPageDto = memberService.getMyInfo(5L);
         return ResponseEntity.ok(myPageDto);
     }
 
@@ -63,7 +63,7 @@ public class MemberController {
 //        memberService.updateMember(updateRequestDto, ((CustomUser) authentication.getPrincipal()).getId());
 
         // 로컬 테스트용
-        memberService.updateMember(updateRequestDto, 7L);
+        memberService.updateMember(updateRequestDto, 5L);
 
         return ResponseEntity.ok("회원수정 성공!");
     }
@@ -72,10 +72,10 @@ public class MemberController {
     @DeleteMapping("/me")
     public ResponseEntity<Void> deleteMyAccount(Authentication authentication, HttpServletResponse response){
         // 서버 배포용
-//        memberService.updateMember((CustomUser) authentication.getPrincipal()).getId());
+//        memberService.deleteMember(((CustomUser) authentication.getPrincipal()).getId());
 
         // 로컬 테스트용
-        memberService.deleteMember(3L);
+        memberService.deleteMember(6L);
 
         // 🔥 JWT 쿠키 삭제
         Cookie cookie = new Cookie("jwt", null);
@@ -90,26 +90,26 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
-    // 회원 정보 연동 !!
+    // 회원 연동 !!
     @PostMapping("/me/social")
     public ResponseEntity<String> linkMyInfo(Authentication authentication){
         // 서버 배포용
 //        memberService.linkMember(((CustomUser) authentication.getPrincipal()).getId());
 
         // 로컬 테스트용
-        memberService.linkMember(7L);
+        memberService.linkMember(5L);
 
         return ResponseEntity.ok("회원연동 성공!"); 
     }
 
-    // 회원 정보 연동 해제 !!
+    // 회원 연동 해제 !!
     @DeleteMapping("/me/social")
     public ResponseEntity<String> deleteLinkMyInfo(Authentication authentication){
         // 서버 배포용
 //        memberService.deleteLinkMember(((CustomUser) authentication.getPrincipal()).getId());
 //
         // 로컬 테스트용
-        memberService.deleteLinkMember(7L);
+        memberService.deleteLinkMember(5L);
 
         return ResponseEntity.ok("회원연동 해제 성공!");
     }

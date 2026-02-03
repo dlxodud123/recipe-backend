@@ -14,9 +14,13 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     // myPage 조회
     boolean existsByLinkedMemberId(Long linkedMemberId);
 
+    // 이메일로 회원 조회
+    Optional<Member> findByEmail(String email);
+
     // 연동
     Optional<Member> findByEmailAndProvider(String email, ProviderType provider);
     Optional<Member> findByEmailAndProviderNot(String email, ProviderType provider);
+
     // 연동 해제
     Optional<Member> findByLinkedMemberId(Long linkedMemberId);
 
