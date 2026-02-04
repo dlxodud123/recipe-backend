@@ -1,6 +1,7 @@
 package com.taeyoung.recipe.recipe_backend.controller;
 
 import com.taeyoung.recipe.recipe_backend.domain.comment.Comment;
+import com.taeyoung.recipe.recipe_backend.domain.member.CustomUser;
 import com.taeyoung.recipe.recipe_backend.dto.comment.request.CommentCreateRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.comment.response.CommentByIdResponseDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByIdResponseDto;
@@ -23,13 +24,13 @@ public class CommentController {
     public Comment createComment(@PathVariable Long recipeId,
                                     @RequestBody CommentCreateRequestDto commentCreateRequestDto,
                                     Authentication authentication){
-//        Long userId = ((CustomUser) authentication.getPrincipal()).getId();
+        Long userId = ((CustomUser) authentication.getPrincipal()).getId();
 
         // 서버용
-//        return commentService.save(commentRequestDto, recipeId, userId);
+        return commentService.save(commentCreateRequestDto, recipeId, userId);
 
         // 테스트용
-        return commentService.save(commentCreateRequestDto, recipeId, 7L);
+//        return commentService.save(commentCreateRequestDto, recipeId, 7L);
     }
 
     // 댓글 조회(id)
