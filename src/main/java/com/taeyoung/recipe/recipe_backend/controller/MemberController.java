@@ -47,23 +47,16 @@ public class MemberController {
     // 회원 정보 조회 !!
     @GetMapping("/me")
     public ResponseEntity<MyPageResponseDto> getMyInfo(Authentication authentication){
-        // 서버 배포용
-//        MyPageResponseDto myPageDto = memberService.getMyInfo(((CustomUser) authentication.getPrincipal()).getId());
-//        return ResponseEntity.ok(myPageDto);
 
-        // 로컬 테스트용
-        MyPageResponseDto myPageDto = memberService.getMyInfo(5L);
+        MyPageResponseDto myPageDto = memberService.getMyInfo(((CustomUser) authentication.getPrincipal()).getId());
         return ResponseEntity.ok(myPageDto);
     }
 
     // 회원 정보 수정 !!
     @PutMapping("/me")
     public ResponseEntity<String> updateMyInfo(@Valid @RequestBody UpdateRequestDto updateRequestDto, Authentication authentication){
-        // 서버 배포용
-//        memberService.updateMember(updateRequestDto, ((CustomUser) authentication.getPrincipal()).getId());
 
-        // 로컬 테스트용
-        memberService.updateMember(updateRequestDto, 5L);
+        memberService.updateMember(updateRequestDto, ((CustomUser) authentication.getPrincipal()).getId());
 
         return ResponseEntity.ok("회원수정 성공!");
     }
@@ -71,13 +64,10 @@ public class MemberController {
     // 회원 탈퇴 !!
     @DeleteMapping("/me")
     public ResponseEntity<Void> deleteMyAccount(Authentication authentication, HttpServletResponse response){
-        // 서버 배포용
-//        memberService.deleteMember(((CustomUser) authentication.getPrincipal()).getId());
 
-        // 로컬 테스트용
-        memberService.deleteMember(6L);
+        memberService.deleteMember(((CustomUser) authentication.getPrincipal()).getId());
 
-        // 🔥 JWT 쿠키 삭제
+        // JWT 쿠키 삭제
         Cookie cookie = new Cookie("jwt", null);
         cookie.setPath("/");
 //        cookie.setHttpOnly(true);
@@ -93,11 +83,8 @@ public class MemberController {
     // 회원 연동 !!
     @PostMapping("/me/social")
     public ResponseEntity<String> linkMyInfo(Authentication authentication){
-        // 서버 배포용
-//        memberService.linkMember(((CustomUser) authentication.getPrincipal()).getId());
 
-        // 로컬 테스트용
-        memberService.linkMember(5L);
+        memberService.linkMember(((CustomUser) authentication.getPrincipal()).getId());
 
         return ResponseEntity.ok("회원연동 성공!"); 
     }
@@ -105,11 +92,8 @@ public class MemberController {
     // 회원 연동 해제 !!
     @DeleteMapping("/me/social")
     public ResponseEntity<String> deleteLinkMyInfo(Authentication authentication){
-        // 서버 배포용
-//        memberService.deleteLinkMember(((CustomUser) authentication.getPrincipal()).getId());
-//
-        // 로컬 테스트용
-        memberService.deleteLinkMember(5L);
+
+        memberService.deleteLinkMember(((CustomUser) authentication.getPrincipal()).getId());
 
         return ResponseEntity.ok("회원연동 해제 성공!");
     }
