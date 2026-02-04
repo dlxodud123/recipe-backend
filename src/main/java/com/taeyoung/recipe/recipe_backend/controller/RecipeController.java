@@ -1,5 +1,6 @@
 package com.taeyoung.recipe.recipe_backend.controller;
 
+import com.taeyoung.recipe.recipe_backend.domain.member.CustomUser;
 import com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeBySearchRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeCreateRequestDto;
@@ -26,25 +27,24 @@ public class RecipeController {
 
     // 레시피 생성
     @PostMapping("/create")
-//    public Recipe createStudy(@RequestPart("image") MultipartFile image,
-//                                         @Valid @RequestPart("recipe") RecipeCreateRequestDto recipeCreateRequestDto,
-//                                         Authentication authentication) throws IOException {
     public Recipe createStudy(@Valid @RequestPart("recipe") RecipeCreateRequestDto recipeCreateRequestDto,
+//                              @RequestPart("image") MultipartFile image,
                                             Authentication authentication) throws IOException {
 
-//        Long userId = ((CustomUser) authentication.getPrincipal()).getId();
+        Long userId = ((CustomUser) authentication.getPrincipal()).getId();
+
 //        if (image == null || image.isEmpty()) {
 //            throw new IllegalArgumentException("이미지를 업로드해주세요");
 //        }
 //        String imageUrl = s3UploaderService.uploadFile(image);
 
-        // 서버용
-//        return recipeService.save(recipeCreateRequestDto, imageUrl, userId);
-
         String imageUrl = "이미지";
 
+        // 서버용
+        return recipeService.save(recipeCreateRequestDto, imageUrl, userId);
+
         // 테스트용
-        return recipeService.save(recipeCreateRequestDto, imageUrl, 5L);
+//        return recipeService.save(recipeCreateRequestDto, imageUrl, 5L);
     }
 
     // 레시피 조회(카테고리)
