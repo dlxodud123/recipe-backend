@@ -111,7 +111,7 @@ public class SecurityConfig {
         http.addFilterBefore(new JwtFilter(), ExceptionTranslationFilter.class);
 
         http.logout(logout -> logout
-                .logoutUrl("/logout") // 기본 로그아웃 URL
+                .logoutUrl("/api/logout") // 기본 로그아웃 URL
                 .logoutSuccessHandler((request, response, authentication) -> {
                     // ✅ JWT 쿠키 삭제
                     Cookie cookie = new Cookie("jwt", null);
@@ -120,7 +120,7 @@ public class SecurityConfig {
                     response.addCookie(cookie);
 
                     // ✅ 로그아웃 후 리디렉션
-                    response.sendRedirect("/login");
+                    // response.sendRedirect("/login");
                 })
         );
 
