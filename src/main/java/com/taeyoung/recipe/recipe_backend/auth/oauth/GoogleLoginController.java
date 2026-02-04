@@ -79,7 +79,8 @@ public class GoogleLoginController {
         String jwt = JwtUtil.createToken(authentication);
 
         Cookie cookie = new Cookie("jwt", jwt);
-        cookie.setHttpOnly(true);
+        cookie.setHttpOnly(false);
+//        cookie.setHttpOnly(true);
 //        cookie.setSecure(true); // HTTPS 필수
         cookie.setSecure(false); // 로컬 테스트용
         cookie.setPath("/");
