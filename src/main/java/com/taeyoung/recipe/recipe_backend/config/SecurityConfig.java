@@ -72,7 +72,11 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
                 .requestMatchers("/login", "/css/**", "/js/**").permitAll()
-                .requestMatchers("/my-page/**", "/modify/**", "/study/edit/**", "/api/studies/delete/**"
+                .requestMatchers(HttpMethod.GET, "/comments/**").permitAll() // 댓글 조회는 모두 가능
+                .requestMatchers(
+                        "/my-page/**",
+                        "/recipe/create/**",
+                        "/comments/**" // 댓글 작성은 인증 필요
                 ).authenticated()
                 // admin
                 .requestMatchers("/admin/**").hasRole("ADMIN")
