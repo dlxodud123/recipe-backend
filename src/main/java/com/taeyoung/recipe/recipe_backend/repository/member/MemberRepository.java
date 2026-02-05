@@ -5,6 +5,7 @@ import com.taeyoung.recipe.recipe_backend.domain.member.ProviderType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
+import java.util.List;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
     // 회원가입 (중복확인)
@@ -33,4 +34,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     // google login
     Member findByProviderAndProviderId(ProviderType provider, String providerId);
+
+    // admin(최근)
+    List<Member> findTop5ByOrderByCreatedAtDesc();
 }

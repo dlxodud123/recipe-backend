@@ -1,52 +1,40 @@
 package com.taeyoung.recipe.recipe_backend.dto.admin.response;
 
+import com.taeyoung.recipe.recipe_backend.domain.comment.Comment;
+import com.taeyoung.recipe.recipe_backend.domain.member.Member;
+import com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 @Getter
+@RequiredArgsConstructor
 public class AdminDashboardResponseDto {
-    private final Long memberCount;
-    private final Long studyCount;
-    private final List<RecentMember> recentMembers;
-    private final List<RecentStudy> recentStudies;
 
-    public AdminDashboardResponseDto(Long memberCount, Long studyCount, List<RecentMember> recentMembers, List<RecentStudy> recentStudies) {
-        this.memberCount = memberCount;
-        this.studyCount = studyCount;
-        this.recentMembers = recentMembers;
-        this.recentStudies = recentStudies;
-    }
+    private final long memberCount;
+    private final long recipeCount;
+    private final long commentCount;
 
-    // 최근 회원 DTO
-    @Getter
-    public static class RecentMember {
-        private final Long id;
-        private final String name;
-        private final String email;
-        private final String joined;
+    private final List<AdminDashboardMemberResponseDto> recentMembers;
+    private final List<AdminDashboardRecipeResponseDto> recentRecipes;
+    private final List<AdminDashboardCommentResponseDto> recentComments;
 
-        public RecentMember(Long id, String name, String email, String joined) {
-            this.id = id;
-            this.name = name;
-            this.email = email;
-            this.joined = joined;
-        }
-    }
-
-    // 최근 스터디 DTO
-    @Getter
-    public static class RecentStudy {
-        private final Long id;
-        private final String name;
-        private final String category;
-        private final String created;
-
-        public RecentStudy(Long id, String name, String category, String created) {
-            this.id = id;
-            this.name = name;
-            this.category = category;
-            this.created = created;
-        }
+    public static AdminDashboardResponseDto from(
+            long memberCount,
+            long recipeCount,
+            long commentCount,
+            List<Member> members,
+            List<Recipe> recipes,
+            List<Comment> comments
+    ) {
+        return new AdminDashboardResponseDto(
+                memberCount,
+                recipeCount,
+                commentCount,
+                members.stream().map(AdminDashboardMemberResponseDto::from).toList(),
+                recipes.stream().map(AdminDashboardRecipeResponseDto::from).toList(),
+                comments.stream().map(AdminDashboardCommentResponseDto::from).toList()
+        );
     }
 }
