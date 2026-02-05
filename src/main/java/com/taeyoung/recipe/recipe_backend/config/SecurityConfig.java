@@ -68,18 +68,29 @@ public class SecurityConfig {
             .csrf((csrf) -> csrf.disable());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                // 🔹 preflight 요청 허용 (중요)
+                // 🔹 preflight (CORS)
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
+                // 🔹 정적 리소스 / 로그인
                 .requestMatchers("/login", "/css/**", "/js/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/comments/**").permitAll() // 댓글 조회는 모두 가능
-                .requestMatchers(
-                        "/my-page/**",
-                        "/recipe/create/**",
-                        "/comments/**" // 댓글 작성은 인증 필요
-                ).authenticated()
-                // admin
-                .requestMatchers("/admin/**").hasRole("ADMIN")
+
+                // 🔹 공개 API
+                .requestMatchers(HttpMethod.GET, "/api/comments/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/recipes/**").permitAll()
+
+                // 🔹 내 정보 / 인증 필요 API
+                .requestMatchers("/api/members/me/**").authenticated()
+
+                // 🔹 댓글 작성
+                .requestMatchers(HttpMethod.POST, "/api/comments/**").authenticated()
+
+                // 🔹 레시피 생성
+                .requestMatchers(HttpMethod.POST, "/api/recipes/**").authenticated()
+
+                // 🔹 관리자
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+                // 🔹 나머지는 전부 허용
                 .anyRequest().permitAll()
         );
         // auth 없이 지정된 경로 접속 시 /login으로 이동
