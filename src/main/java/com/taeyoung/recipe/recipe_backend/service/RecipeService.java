@@ -95,20 +95,6 @@ public class RecipeService {
     }
 
     // 레시피 조회(카테고리)
-//    public List<RecipeByCategoryResponseDto> getRecipeByCategory(String categoryName) {
-//        Category category = categoryRepository.findByName(categoryName)
-//            .orElseThrow(() -> new EntityNotFoundException("카테고리가 존재하지 않습니다."));
-//
-//        return recipeRepository.findAllByCategoryId(category.getId())
-//            .stream()
-//            .map(recipe -> new RecipeByCategoryResponseDto(
-//                    recipe.getId(),
-//                    recipe.getTitle(),
-//                    recipe.getSubTitle(),
-//                    recipe.getImageUrl()
-//            ))
-//            .toList();
-//    }
     public List<RecipeByCategoryResponseDto> getRecipeByCategory(
             String categoryName,
             String keyword
