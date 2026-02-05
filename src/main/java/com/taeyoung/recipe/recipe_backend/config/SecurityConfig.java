@@ -68,14 +68,29 @@ public class SecurityConfig {
             .csrf((csrf) -> csrf.disable());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                // 🔹 preflight 요청 허용 (중요)
+                // 🔹 preflight (CORS)
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
+                // 🔹 정적 리소스 / 로그인
                 .requestMatchers("/login", "/css/**", "/js/**").permitAll()
-                .requestMatchers("/my-page/**", "/modify/**", "/study/edit/**", "/api/studies/delete/**"
-                ).authenticated()
-                // admin
-                .requestMatchers("/admin/**").hasRole("ADMIN")
+
+                // 🔹 공개 API
+                .requestMatchers(HttpMethod.GET, "/api/comments/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/recipes/**").permitAll()
+
+                // 🔹 내 정보 / 인증 필요 API
+                .requestMatchers("/api/members/me/**").authenticated()
+
+                // 🔹 댓글 작성
+                .requestMatchers(HttpMethod.POST, "/api/comments/**").authenticated()
+
+                // 🔹 레시피 생성
+                .requestMatchers(HttpMethod.POST, "/api/recipes/**").authenticated()
+
+                // 🔹 관리자
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+                // 🔹 나머지는 전부 허용
                 .anyRequest().permitAll()
         );
         // auth 없이 지정된 경로 접속 시 /login으로 이동
@@ -111,7 +126,7 @@ public class SecurityConfig {
         http.addFilterBefore(new JwtFilter(), ExceptionTranslationFilter.class);
 
         http.logout(logout -> logout
-                .logoutUrl("/logout") // 기본 로그아웃 URL
+                .logoutUrl("/api/logout") // 기본 로그아웃 URL
                 .logoutSuccessHandler((request, response, authentication) -> {
                     // ✅ JWT 쿠키 삭제
                     Cookie cookie = new Cookie("jwt", null);
@@ -120,7 +135,7 @@ public class SecurityConfig {
                     response.addCookie(cookie);
 
                     // ✅ 로그아웃 후 리디렉션
-                    response.sendRedirect("/login");
+                    // response.sendRedirect("/login");
                 })
         );
 

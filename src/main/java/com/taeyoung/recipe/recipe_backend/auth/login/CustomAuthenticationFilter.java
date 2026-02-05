@@ -22,11 +22,9 @@ import java.io.IOException;
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
-    private final MemberRepository memberRepository;
 
     public CustomAuthenticationFilter(AuthenticationManager authenticationManager, MemberRepository memberRepository) {
         this.authenticationManager = authenticationManager;
-        this.memberRepository = memberRepository;
         setFilterProcessesUrl("/api/members/login");
     }
 
@@ -51,9 +49,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         // 쿠키에 JWT 저장
         Cookie cookie = new Cookie("jwt", jwt);
-//        cookie.setHttpOnly(true);
+        cookie.setHttpOnly(true);
 //        cookie.setSecure(true); // HTTPS 필수
-        cookie.setHttpOnly(false);
         cookie.setSecure(false);
         cookie.setPath("/");
         cookie.setMaxAge(1000);
