@@ -9,20 +9,15 @@ import com.taeyoung.recipe.recipe_backend.dto.member.request.UpdateRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindPasswordRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindUsernameRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.response.MyPageResponseDto;
-import com.taeyoung.recipe.recipe_backend.global.exception.AlreadyLinkedAccountException;
-import com.taeyoung.recipe.recipe_backend.global.exception.AlreadyUnlinkedAccountException;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateEmailException;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateUsernameException;
 import com.taeyoung.recipe.recipe_backend.repository.member.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -103,14 +98,20 @@ public class MemberService {
 
     // 회원 탈퇴 !!
     public void deleteMember(Long id){
+        // 삭제할 회원 가져오기
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
+
+        // 연동된 멤버 링크 끊기
         Member linkedMember = memberRepository.findByLinkedMemberId(id).orElse(null);
 
         if (linkedMember != null) {
-            linkedMember.unlink();
+            linkedMember.unlink();  // linkedMemberId = null
+            memberRepository.save(linkedMember); // 변경을 DB에 반영
         }
 
         // 실제 회원 삭제
-        memberRepository.deleteById(id);
+        memberRepository.delete(member);
     }
         
     // 회원 연동 !!
