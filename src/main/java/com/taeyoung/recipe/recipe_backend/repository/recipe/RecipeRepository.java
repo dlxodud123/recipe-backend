@@ -2,6 +2,7 @@ package com.taeyoung.recipe.recipe_backend.repository.recipe;
 
 import com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByCommentCountResponseDto;
+import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeBySearchResponseDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +16,7 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
     // 조회
     List<Recipe> findAllByCategoryId(Long categoryId);
+    List<Recipe> findByCategoryIdAndTitleContaining(Long categoryId, String title);
 
     // 최근 조회(5개)
     List<Recipe> findTop5ByOrderByCreatedAtDesc();
@@ -48,4 +50,15 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
             @Param("excludeIngredients") List<String> excludeIngredients,
             @Param("includeCount") long includeCount
     );
+
+    // 검색(header)
+    @Query("""
+        SELECT new com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeBySearchResponseDto(
+            r.category.name
+        )
+        FROM Recipe r
+        WHERE r.title LIKE %:keyword%
+           OR r.description LIKE %:keyword%
+    """)
+    List<RecipeBySearchResponseDto> searchByKeyword(@Param("keyword") String keyword);
 }

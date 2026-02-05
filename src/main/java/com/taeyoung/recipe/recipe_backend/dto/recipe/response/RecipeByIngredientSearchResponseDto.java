@@ -1,4 +1,4 @@
-package com.taeyoung.recipe.recipe_backend.dto.recipe.request;
+package com.taeyoung.recipe.recipe_backend.dto.recipe.response;
 
 import com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class RecipeBySearchRequestDto {
+public class RecipeByIngredientSearchResponseDto {
     private Long id;
     private String title;
     private String subTitle;
@@ -21,8 +21,8 @@ public class RecipeBySearchRequestDto {
     private List<String> includeIngredients; // 포함 재료
     private List<String> excludeIngredients; // 제외 재료
 
-    public static RecipeBySearchRequestDto from(Recipe recipe, List<String> excludeIngredients) {
-        return new RecipeBySearchRequestDto(
+    public static RecipeByIngredientSearchResponseDto from(Recipe recipe, List<String> excludeIngredients) {
+        return new RecipeByIngredientSearchResponseDto(
             recipe.getId(),
             recipe.getTitle(),
             recipe.getSubTitle(),

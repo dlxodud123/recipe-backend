@@ -2,7 +2,7 @@ package com.taeyoung.recipe.recipe_backend.controller;
 
 import com.taeyoung.recipe.recipe_backend.domain.member.CustomUser;
 import com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe;
-import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeBySearchRequestDto;
+import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByIngredientSearchResponseDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeCreateRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.*;
 import com.taeyoung.recipe.recipe_backend.service.RecipeService;
@@ -11,10 +11,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -48,10 +46,17 @@ public class RecipeController {
     }
 
     // 레시피 조회(카테고리)
+//    @GetMapping("/category")
+//    public List<RecipeByCategoryResponseDto> getRecipeByCategory(@RequestParam("categoryName") String categoryName) {
+//
+//        return recipeService.getRecipeByCategory(categoryName);
+//    }
     @GetMapping("/category")
-    public List<RecipeByCategoryResponseDto> getRecipeByCategory(@RequestParam("categoryName") String categoryName) {
-
-        return recipeService.getRecipeByCategory(categoryName);
+    public List<RecipeByCategoryResponseDto> getRecipeByCategory(
+            @RequestParam("categoryName") String categoryName,
+            @RequestParam(value = "keyword", required = false) String keyword
+    ) {
+        return recipeService.getRecipeByCategory(categoryName, keyword);
     }
 
     // 상세 레시피 조회(id)
@@ -84,13 +89,21 @@ public class RecipeController {
 
 
     // 재료 활용
-    @GetMapping("/search")
-    public List<RecipeBySearchRequestDto> searchRecipes(@RequestParam(required = false) List<String> ingredient,
-                                                        @RequestParam(required = false) List<String> exceptIngredient) {
+    @GetMapping("/ingredients/search")
+    public List<RecipeByIngredientSearchResponseDto> searchRecipes(@RequestParam(required = false) List<String> ingredient,
+                                                                   @RequestParam(required = false) List<String> exceptIngredient) {
 
         List<String> includeIngredients = ingredient != null ? ingredient : List.of();
         List<String> excludeIngredients = exceptIngredient != null ? exceptIngredient : List.of();
 
         return recipeService.searchRecipes(includeIngredients, excludeIngredients);
+    }
+
+
+    // 검색(header)
+    @GetMapping("/search")
+    public List<RecipeBySearchResponseDto> searchByKeyword(@RequestParam String keyword) {
+
+        return recipeService.searchByKeyword(keyword);
     }
 }

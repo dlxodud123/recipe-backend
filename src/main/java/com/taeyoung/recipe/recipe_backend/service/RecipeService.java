@@ -2,7 +2,7 @@ package com.taeyoung.recipe.recipe_backend.service;
 
 import com.taeyoung.recipe.recipe_backend.domain.member.Member;
 import com.taeyoung.recipe.recipe_backend.domain.recipe.*;
-import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeBySearchRequestDto;
+import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByIngredientSearchResponseDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeCreateRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.*;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateRecipeItemException;
@@ -95,19 +95,46 @@ public class RecipeService {
     }
 
     // 레시피 조회(카테고리)
-    public List<RecipeByCategoryResponseDto> getRecipeByCategory(String categoryName) {
+//    public List<RecipeByCategoryResponseDto> getRecipeByCategory(String categoryName) {
+//        Category category = categoryRepository.findByName(categoryName)
+//            .orElseThrow(() -> new EntityNotFoundException("카테고리가 존재하지 않습니다."));
+//
+//        return recipeRepository.findAllByCategoryId(category.getId())
+//            .stream()
+//            .map(recipe -> new RecipeByCategoryResponseDto(
+//                    recipe.getId(),
+//                    recipe.getTitle(),
+//                    recipe.getSubTitle(),
+//                    recipe.getImageUrl()
+//            ))
+//            .toList();
+//    }
+    public List<RecipeByCategoryResponseDto> getRecipeByCategory(
+            String categoryName,
+            String keyword
+    ) {
         Category category = categoryRepository.findByName(categoryName)
-            .orElseThrow(() -> new EntityNotFoundException("카테고리가 존재하지 않습니다."));
+                .orElseThrow(() -> new EntityNotFoundException("카테고리가 존재하지 않습니다."));
 
-        return recipeRepository.findAllByCategoryId(category.getId())
-            .stream()
-            .map(recipe -> new RecipeByCategoryResponseDto(
-                    recipe.getId(),
-                    recipe.getTitle(),
-                    recipe.getSubTitle(),
-                    recipe.getImageUrl()
-            ))
-            .toList();
+        List<Recipe> recipes;
+
+        if (keyword == null || keyword.isBlank()) {
+            recipes = recipeRepository.findAllByCategoryId(category.getId());
+        } else {
+            recipes = recipeRepository.findByCategoryIdAndTitleContaining(
+                    category.getId(),
+                    keyword
+            );
+        }
+
+        return recipes.stream()
+                .map(recipe -> new RecipeByCategoryResponseDto(
+                        recipe.getId(),
+                        recipe.getTitle(),
+                        recipe.getSubTitle(),
+                        recipe.getImageUrl()
+                ))
+                .toList();
     }
 
     // 상세 레시피 조회(id)
@@ -147,7 +174,7 @@ public class RecipeService {
 
 
     // 재료 활용
-    public List<RecipeBySearchRequestDto> searchRecipes(List<String> includeIngredients, List<String> excludeIngredients) {
+    public List<RecipeByIngredientSearchResponseDto> searchRecipes(List<String> includeIngredients, List<String> excludeIngredients) {
         if ((includeIngredients == null || includeIngredients.isEmpty())
                 && (excludeIngredients == null || excludeIngredients.isEmpty())) {
             throw new IllegalArgumentException("재료나 제외할 재료를 입력하세요.");
@@ -162,8 +189,14 @@ public class RecipeService {
         );
 
         return recipes.stream()
-            .map(recipe -> RecipeBySearchRequestDto.from(recipe, excludeIngredients))
+            .map(recipe -> RecipeByIngredientSearchResponseDto.from(recipe, excludeIngredients))
             .toList();
+    }
+
+    // 검색(header)
+    public List<RecipeBySearchResponseDto> searchByKeyword(String keyword) {
+
+        return recipeRepository.searchByKeyword(keyword);
     }
 
 
