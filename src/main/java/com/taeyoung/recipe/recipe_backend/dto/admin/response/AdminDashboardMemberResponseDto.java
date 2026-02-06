@@ -12,15 +12,15 @@ public class AdminDashboardMemberResponseDto {
     private final String name;
     private final String createdAt;
     private final String provider;
-    private final boolean linked;
+    private final String linked;
 
     public static AdminDashboardMemberResponseDto from(Member member) {
         return new AdminDashboardMemberResponseDto(
                 member.getId(),
                 member.getName(),
                 member.getCreatedAt().toLocalDate().toString(),
-                member.getProvider().name(),   // LOCAL / GOOGLE
-                member.getLinkedMemberId() != null
+                member.getProvider().name(),
+                member.getLinkedMemberId() != null ? "O" : "X"
         );
     }
 }

@@ -1,6 +1,5 @@
 package com.taeyoung.recipe.recipe_backend.controller;
 
-
 import com.taeyoung.recipe.recipe_backend.dto.admin.request.AdminRoleChangeRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.admin.response.AdminDashboardResponseDto;
 import com.taeyoung.recipe.recipe_backend.dto.admin.response.AdminMemberDetailResponseDto;
@@ -12,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
