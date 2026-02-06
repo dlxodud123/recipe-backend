@@ -12,6 +12,7 @@ import com.taeyoung.recipe.recipe_backend.repository.recipe.CategoryRepository;
 import com.taeyoung.recipe.recipe_backend.repository.recipe.RecipeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -95,32 +96,37 @@ public class RecipeService {
     }
 
     // 레시피 조회(카테고리)
-    public List<RecipeByCategoryResponseDto> getRecipeByCategory(
+    public Page<RecipeByCategoryResponseDto> getRecipeByCategory(
             String categoryName,
-            String keyword
+            String keyword,
+            Pageable pageable
     ) {
         Category category = categoryRepository.findByName(categoryName)
                 .orElseThrow(() -> new EntityNotFoundException("카테고리가 존재하지 않습니다."));
 
-        List<Recipe> recipes;
+        Page<Recipe> recipes;
 
         if (keyword == null || keyword.isBlank()) {
-            recipes = recipeRepository.findAllByCategoryId(category.getId());
+            recipes = recipeRepository.findAllByCategoryId(
+                    category.getId(),
+                    pageable
+            );
         } else {
             recipes = recipeRepository.findByCategoryIdAndTitleContaining(
                     category.getId(),
-                    keyword
+                    keyword,
+                    pageable
             );
         }
 
-        return recipes.stream()
-                .map(recipe -> new RecipeByCategoryResponseDto(
+        return recipes.map(recipe ->
+                new RecipeByCategoryResponseDto(
                         recipe.getId(),
                         recipe.getTitle(),
                         recipe.getSubTitle(),
                         recipe.getImageUrl()
-                ))
-                .toList();
+                )
+        );
     }
 
     // 상세 레시피 조회(id)

@@ -9,6 +9,9 @@ import com.taeyoung.recipe.recipe_backend.service.RecipeService;
 import com.taeyoung.recipe.recipe_backend.service.S3UploaderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,11 +50,12 @@ public class RecipeController {
 
     // 레시피 조회(카테고리)
     @GetMapping("/category")
-    public List<RecipeByCategoryResponseDto> getRecipeByCategory(
+    public Page<RecipeByCategoryResponseDto> getRecipeByCategory(
             @RequestParam("categoryName") String categoryName,
-            @RequestParam(value = "keyword", required = false) String keyword
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @PageableDefault(size = 15) Pageable pageable
     ) {
-        return recipeService.getRecipeByCategory(categoryName, keyword);
+        return recipeService.getRecipeByCategory(categoryName, keyword, pageable);
     }
 
     // 상세 레시피 조회(id)
