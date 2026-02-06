@@ -1,9 +1,7 @@
 package com.taeyoung.recipe.recipe_backend.controller;
 
 import com.taeyoung.recipe.recipe_backend.dto.admin.request.AdminRoleChangeRequestDto;
-import com.taeyoung.recipe.recipe_backend.dto.admin.response.AdminDashboardResponseDto;
-import com.taeyoung.recipe.recipe_backend.dto.admin.response.AdminMemberDetailResponseDto;
-import com.taeyoung.recipe.recipe_backend.dto.admin.response.AdminMemberResponseDto;
+import com.taeyoung.recipe.recipe_backend.dto.admin.response.*;
 import com.taeyoung.recipe.recipe_backend.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -53,5 +51,25 @@ public class AdminController {
         adminService.changeMemberRole(memberId, adminRoleChangeRequestDto.getRole());
 
         return ResponseEntity.ok().body(Map.of("message", "회원 권한 변경 완료!"));
+    }
+
+    // 전체 레시피 조회
+    @GetMapping("/recipes")
+    public Page<AdminRecipeResponseDto> getRecipes(Pageable pageable) {
+        return adminService.getRecipes(pageable);
+    }
+
+    // 레시피 상세 조회
+    @GetMapping("/recipes/{recipeId}")
+    public AdminRecipeDetailResponseDto getRecipeDetail(@PathVariable Long recipeId) {
+        return adminService.getRecipeDetail(recipeId);
+    }
+
+    // 레시피 삭제
+    @DeleteMapping("/recipes/{recipeId}")
+    public ResponseEntity<?> deleteRecipe(@PathVariable Long recipeId) {
+        adminService.deleteRecipe(recipeId);
+
+        return ResponseEntity.ok().body(Map.of("message", "레시피 삭제 완료!"));
     }
 }

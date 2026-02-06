@@ -4,9 +4,7 @@ import com.taeyoung.recipe.recipe_backend.domain.comment.Comment;
 import com.taeyoung.recipe.recipe_backend.domain.member.Member;
 import com.taeyoung.recipe.recipe_backend.domain.member.Role;
 import com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe;
-import com.taeyoung.recipe.recipe_backend.dto.admin.response.AdminDashboardResponseDto;
-import com.taeyoung.recipe.recipe_backend.dto.admin.response.AdminMemberDetailResponseDto;
-import com.taeyoung.recipe.recipe_backend.dto.admin.response.AdminMemberResponseDto;
+import com.taeyoung.recipe.recipe_backend.dto.admin.response.*;
 import com.taeyoung.recipe.recipe_backend.repository.comment.CommentRepository;
 import com.taeyoung.recipe.recipe_backend.repository.member.MemberRepository;
 import com.taeyoung.recipe.recipe_backend.repository.recipe.RecipeRepository;
@@ -54,6 +52,8 @@ public class AdminService {
         );
     }
 
+    // =============================================================================================
+
     // 전체 회원 조회
     public Page<AdminMemberResponseDto> getMembers(Pageable pageable) {
         return memberRepository.findAll(pageable)
@@ -95,5 +95,29 @@ public class AdminService {
         member.setRole(newRoleEnum);
 
         memberRepository.save(member);
+    }
+
+    // =============================================================================================
+
+    // 전체 레시피 조회
+    public Page<AdminRecipeResponseDto> getRecipes(Pageable pageable) {
+        return recipeRepository.findAll(pageable)
+                .map(AdminRecipeResponseDto::new);
+    }
+
+    // 레시피 상세 조회
+    public AdminRecipeDetailResponseDto getRecipeDetail(Long recipeId) {
+        Recipe recipe = recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new EntityNotFoundException("레시피가 존재하지 않습니다."));
+
+        return new AdminRecipeDetailResponseDto(recipe);
+    }
+
+    // 레시피 삭제
+    public void deleteRecipe(Long recipeId) {
+        Recipe recipe = recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new EntityNotFoundException("레시피가 존재하지 않습니다."));
+
+        recipeRepository.delete(recipe);
     }
 }
