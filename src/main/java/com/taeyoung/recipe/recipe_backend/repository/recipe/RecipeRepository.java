@@ -3,6 +3,7 @@ package com.taeyoung.recipe.recipe_backend.repository.recipe;
 import com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByCommentCountResponseDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeBySearchResponseDto;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,8 +16,8 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     boolean existsByTitle(String title);
 
     // 조회
-    List<Recipe> findAllByCategoryId(Long categoryId);
-    List<Recipe> findByCategoryIdAndTitleContaining(Long categoryId, String title);
+    Page<Recipe> findAllByCategoryId(Long categoryId, Pageable pageable);
+    Page<Recipe> findByCategoryIdAndTitleContaining(Long categoryId, String keyword, Pageable pageable);
 
     // 최근 조회(5개)
     List<Recipe> findTop5ByOrderByCreatedAtDesc();
