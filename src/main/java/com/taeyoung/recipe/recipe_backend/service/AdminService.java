@@ -11,6 +11,8 @@ import com.taeyoung.recipe.recipe_backend.repository.member.MemberRepository;
 import com.taeyoung.recipe.recipe_backend.repository.recipe.RecipeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,10 +54,9 @@ public class AdminService {
     }
 
     // 전체 회원 조회
-    public List<AdminMemberResponseDto> getMembers() {
-        return memberRepository.findAll().stream()
-                .map(AdminMemberResponseDto::new)  // Member 객체 그대로 DTO 생성자 전달
-                .toList();
+    public Page<AdminMemberResponseDto> getMembers(Pageable pageable) {
+        return memberRepository.findAll(pageable)
+                .map(AdminMemberResponseDto::new);
     }
 
     // 회원 상세 조회

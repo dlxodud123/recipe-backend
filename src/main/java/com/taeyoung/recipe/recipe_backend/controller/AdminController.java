@@ -6,15 +6,14 @@ import com.taeyoung.recipe.recipe_backend.dto.admin.response.AdminMemberDetailRe
 import com.taeyoung.recipe.recipe_backend.dto.admin.response.AdminMemberResponseDto;
 import com.taeyoung.recipe.recipe_backend.service.AdminService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,8 +31,8 @@ public class AdminController {
 
     // 전체 회원 조회
     @GetMapping("/members")
-    public List<AdminMemberResponseDto> getMembers() {
-        return adminService.getMembers();
+    public Page<AdminMemberResponseDto> getMembers(Pageable pageable) {
+        return adminService.getMembers(pageable);
     }
 
     // 회원 상세 조회
