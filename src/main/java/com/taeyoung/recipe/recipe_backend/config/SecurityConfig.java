@@ -88,7 +88,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/recipes/**").authenticated()
 
                 // 🔹 관리자
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+//                .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
                 // 🔹 나머지는 전부 허용
                 .anyRequest().permitAll()
