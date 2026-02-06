@@ -2,6 +2,7 @@ package com.taeyoung.recipe.recipe_backend.service;
 
 import com.taeyoung.recipe.recipe_backend.domain.comment.Comment;
 import com.taeyoung.recipe.recipe_backend.domain.member.Member;
+import com.taeyoung.recipe.recipe_backend.domain.member.Role;
 import com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe;
 import com.taeyoung.recipe.recipe_backend.dto.admin.response.AdminDashboardResponseDto;
 import com.taeyoung.recipe.recipe_backend.dto.admin.response.AdminMemberDetailResponseDto;
@@ -65,5 +66,34 @@ public class AdminService {
                 .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
 
         return new AdminMemberDetailResponseDto(member);
+    }
+
+    // 회원 삭제
+    public void deleteMember(Long id){
+        // 삭제할 회원 가져오기
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
+
+        // 연동된 멤버 링크 끊기
+        Member linkedMember = memberRepository.findByLinkedMemberId(id).orElse(null);
+
+        if (linkedMember != null) {
+            linkedMember.unlink();  // linkedMemberId = null
+            memberRepository.save(linkedMember); // 변경을 DB에 반영
+        }
+
+        // 실제 회원 삭제
+        memberRepository.delete(member);
+    }
+
+    // 회원 권한 변경
+    public void changeMemberRole(Long id, String newRole) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
+
+        Role newRoleEnum = Role.valueOf(newRole);
+        member.setRole(newRoleEnum);
+
+        memberRepository.save(member);
     }
 }
