@@ -43,9 +43,6 @@ public class RecipeController {
 
         // 서버용
         return recipeService.save(recipeCreateRequestDto, imageUrl, userId);
-
-        // 테스트용
-//        return recipeService.save(recipeCreateRequestDto, imageUrl, 5L);
     }
 
     // 레시피 조회(카테고리)

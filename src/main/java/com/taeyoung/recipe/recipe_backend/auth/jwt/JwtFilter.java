@@ -37,10 +37,6 @@ public class JwtFilter extends OncePerRequestFilter {
             try {
                 Claims claim = JwtUtil.extractToken(jwtCookie);
 
-//                var arr = claim.get("authorities").toString().split(",");
-//                var authorities = Arrays.stream(arr)
-//                        .map(SimpleGrantedAuthority::new)
-//                        .toList();
                 List<String> authoritiesList = (List<String>) claim.get("authorities");
                 var authorities = authoritiesList.stream()
                         .map(SimpleGrantedAuthority::new)

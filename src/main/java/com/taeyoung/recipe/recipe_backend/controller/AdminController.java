@@ -26,8 +26,6 @@ public class AdminController {
         return adminService.getDashboard();
     }
 
-    // =============================================================================================
-
     // 전체 회원 조회
     @GetMapping("/members")
     public Page<AdminMemberResponseDto> getMembers(Pageable pageable) {
@@ -56,8 +54,6 @@ public class AdminController {
         return ResponseEntity.ok().body(Map.of("message", "회원 권한 변경 완료!"));
     }
 
-    // =============================================================================================
-
     // 전체 레시피 조회
     @GetMapping("/recipes")
     public Page<AdminRecipeResponseDto> getRecipes(Pageable pageable) {
@@ -77,8 +73,6 @@ public class AdminController {
 
         return ResponseEntity.ok().body(Map.of("message", "레시피 삭제 완료!"));
     }
-
-    // =============================================================================================
 
     // 전체 댓글 조회
     @GetMapping("/comments")

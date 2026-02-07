@@ -52,8 +52,6 @@ public class AdminService {
         );
     }
 
-    // =============================================================================================
-
     // 전체 회원 조회
     public Page<AdminMemberResponseDto> getMembers(Pageable pageable) {
         return memberRepository.findAll(pageable)
@@ -97,8 +95,6 @@ public class AdminService {
         memberRepository.save(member);
     }
 
-    // =============================================================================================
-
     // 전체 레시피 조회
     public Page<AdminRecipeResponseDto> getRecipes(Pageable pageable) {
         return recipeRepository.findAdminRecipes(pageable);
@@ -119,8 +115,6 @@ public class AdminService {
 
         recipeRepository.delete(recipe);
     }
-
-    // =============================================================================================
 
     // 전체 댓글 조회
     public Page<AdminCommentResponseDto> getComments(Pageable pageable) {

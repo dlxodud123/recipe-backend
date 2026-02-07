@@ -60,9 +60,6 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "member")
-//    private List<Like> likes = new ArrayList<>();
 
     public Member() {
     }

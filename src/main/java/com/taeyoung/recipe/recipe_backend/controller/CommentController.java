@@ -26,11 +26,7 @@ public class CommentController {
                                     Authentication authentication){
         Long userId = ((CustomUser) authentication.getPrincipal()).getId();
 
-        // 서버용
         return commentService.save(commentCreateRequestDto, recipeId, userId);
-
-        // 테스트용
-//        return commentService.save(commentCreateRequestDto, recipeId, 7L);
     }
 
     // 댓글 조회(id)
