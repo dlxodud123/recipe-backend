@@ -101,8 +101,7 @@ public class AdminService {
 
     // 전체 레시피 조회
     public Page<AdminRecipeResponseDto> getRecipes(Pageable pageable) {
-        return recipeRepository.findAll(pageable)
-                .map(AdminRecipeResponseDto::new);
+        return recipeRepository.findAdminRecipes(pageable);
     }
 
     // 레시피 상세 조회

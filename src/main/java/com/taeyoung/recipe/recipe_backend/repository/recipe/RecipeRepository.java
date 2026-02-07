@@ -1,6 +1,7 @@
 package com.taeyoung.recipe.recipe_backend.repository.recipe;
 
 import com.taeyoung.recipe.recipe_backend.domain.recipe.Recipe;
+import com.taeyoung.recipe.recipe_backend.dto.admin.response.AdminRecipeResponseDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByCommentCountResponseDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeBySearchResponseDto;
 import org.springframework.data.domain.Page;
@@ -63,4 +64,25 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
            OR r.description LIKE %:keyword%
     """)
     List<RecipeBySearchResponseDto> searchByKeyword(@Param("keyword") String keyword);
+
+    // admin(전체 레시피)(fetch join)
+    @Query("""
+        select new com.taeyoung.recipe.recipe_backend.dto.admin.response.AdminRecipeResponseDto(
+            r.id,
+            r.title,
+            c.name,
+            m.name,
+            count(distinct i.id),
+            count(distinct s.id),
+            count(distinct st.id)
+        )
+        from Recipe r
+        join r.category c
+        join r.member m
+        left join r.ingredients i
+        left join r.seasonings s
+        left join r.steps st
+        group by r.id, r.title, c.name, m.name
+    """)
+    Page<AdminRecipeResponseDto> findAdminRecipes(Pageable pageable);
 }
