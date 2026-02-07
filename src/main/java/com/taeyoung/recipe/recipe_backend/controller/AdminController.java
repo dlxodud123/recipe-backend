@@ -25,6 +25,8 @@ public class AdminController {
         return adminService.getDashboard();
     }
 
+    // =============================================================================================
+
     // 전체 회원 조회
     @GetMapping("/members")
     public Page<AdminMemberResponseDto> getMembers(Pageable pageable) {
@@ -53,6 +55,8 @@ public class AdminController {
         return ResponseEntity.ok().body(Map.of("message", "회원 권한 변경 완료!"));
     }
 
+    // =============================================================================================
+
     // 전체 레시피 조회
     @GetMapping("/recipes")
     public Page<AdminRecipeResponseDto> getRecipes(Pageable pageable) {
@@ -71,5 +75,27 @@ public class AdminController {
         adminService.deleteRecipe(recipeId);
 
         return ResponseEntity.ok().body(Map.of("message", "레시피 삭제 완료!"));
+    }
+
+    // =============================================================================================
+
+    // 전체 레시피 조회
+    @GetMapping("/comments")
+    public Page<AdminCommentResponseDto> getComments(Pageable pageable) {
+        return adminService.getComments(pageable);
+    }
+
+    // 레시피 상세 조회
+    @GetMapping("/comments/{commentId}")
+    public AdminCommentResponseDto getCommentDetail(@PathVariable Long commentId) {
+        return adminService.getCommentDetail(commentId);
+    }
+
+    // 레시피 삭제
+    @DeleteMapping("/comments/{commentId}")
+    public ResponseEntity<?> deleteComment(@PathVariable Long commentId) {
+        adminService.deleteComment(commentId);
+
+        return ResponseEntity.ok().body(Map.of("message", "댓글 삭제 완료!"));
     }
 }

@@ -119,4 +119,28 @@ public class AdminService {
 
         recipeRepository.delete(recipe);
     }
+
+    // =============================================================================================
+
+    // 전체 댓글 조회
+    public Page<AdminCommentResponseDto> getComments(Pageable pageable) {
+        return commentRepository.findAll(pageable)
+                .map(AdminCommentResponseDto::new);
+    }
+
+    // 댓글 상세 조회
+    public AdminCommentResponseDto getCommentDetail(Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new EntityNotFoundException("댓글이 존재하지 않습니다."));
+
+        return new AdminCommentResponseDto(comment);
+    }
+
+    // 댓글 삭제
+    public void deleteComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new EntityNotFoundException("댓글이 존재하지 않습니다."));
+
+        commentRepository.delete(comment);
+    }
 }
