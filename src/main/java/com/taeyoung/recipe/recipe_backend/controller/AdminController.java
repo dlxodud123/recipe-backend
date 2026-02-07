@@ -7,13 +7,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-//@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/api/admin")
 public class AdminController {
 
@@ -79,19 +80,19 @@ public class AdminController {
 
     // =============================================================================================
 
-    // 전체 레시피 조회
+    // 전체 댓글 조회
     @GetMapping("/comments")
     public Page<AdminCommentResponseDto> getComments(Pageable pageable) {
         return adminService.getComments(pageable);
     }
 
-    // 레시피 상세 조회
+    // 댓글 상세 조회
     @GetMapping("/comments/{commentId}")
     public AdminCommentResponseDto getCommentDetail(@PathVariable Long commentId) {
         return adminService.getCommentDetail(commentId);
     }
 
-    // 레시피 삭제
+    // 댓글 삭제
     @DeleteMapping("/comments/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable Long commentId) {
         adminService.deleteComment(commentId);
