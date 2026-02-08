@@ -20,7 +20,7 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    // 대시보드
+    // 대시보드 
     @GetMapping("/dashboard")
     public AdminDashboardResponseDto getDashboard() {
         return adminService.getDashboard();
