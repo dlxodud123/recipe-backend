@@ -2,9 +2,9 @@ spring:
   profiles:
     active: local
   datasource:
-#    로컬 MySQL 사용
-    url: jdbc:mysql://localhost:3306/recipe_db?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
-    username: root
+#   서버 MySQL 사용
+    url: jdbc:mysql://mysql:3306/mealhub_db?useSSL=false&serverTimezone=Asia/Seoul
+    username: user
     password: vltmxhs12
     driver-class-name: com.mysql.cj.jdbc.Driver
 
@@ -35,15 +35,16 @@ server:
 google:
   client-id: ${GOOGLE_CLIENT_ID}
   client-secret: ${GOOGLE_CLIENT_SECRET}
-#  redirect-uri: https://api.mealhub.site/api/oauth/google/callback
-  redirect-uri: http://localhost:8080/api/oauth/google/callback
+  redirect-uri: https://api.mealhub.site/api/oauth/google/callback
+#  redirect-uri: http://localhost:8080/api/oauth/google/callback
 
 app:
   cors:
     allowed-origins:
       - http://localhost:3000
       - http://127.0.0.1:3000
-#      - https://dxxxx.cloudfront.net
+      - https://mealhub.site
+      - https://www.mealhub.site
 
 # 🔹 여기 아래에 AWS S3 설정 추가
 cloud:
