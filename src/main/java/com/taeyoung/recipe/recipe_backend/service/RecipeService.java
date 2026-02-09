@@ -43,7 +43,7 @@ public class RecipeService {
         }
 
         // 카테고리 조회
-        Category category = categoryRepository.findById(dto.getCategoryId())
+        Category category = categoryRepository.findByCategoryOrder(dto.getCategoryId())
             .orElseThrow(() -> new EntityNotFoundException("카테고리가 존재하지 않습니다."));
 
         // 재료 및 양념 중복 체크
