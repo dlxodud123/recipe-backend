@@ -6,7 +6,6 @@ import com.taeyoung.recipe.recipe_backend.dto.recipe.response.RecipeByIngredient
 import com.taeyoung.recipe.recipe_backend.dto.recipe.request.RecipeCreateRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.recipe.response.*;
 import com.taeyoung.recipe.recipe_backend.service.RecipeService;
-import com.taeyoung.recipe.recipe_backend.service.S3UploaderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,7 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -23,23 +24,26 @@ import java.util.List;
 @RequestMapping("/api/recipes")
 public class RecipeController {
 
-    private final S3UploaderService s3UploaderService;
     private final RecipeService recipeService;
 
     // 레시피 생성
     @PostMapping("/create")
-    public Recipe createStudy(@Valid @RequestPart("recipe") RecipeCreateRequestDto recipeCreateRequestDto,
-//                              @RequestPart("image") MultipartFile image,
-                                            Authentication authentication) throws IOException {
+    public Recipe createStudy(
+                            @Valid @RequestPart("recipe") RecipeCreateRequestDto recipeCreateRequestDto,
+                              @RequestPart("image") MultipartFile image,
+                            Authentication authentication) throws IOException {
 
         Long userId = ((CustomUser) authentication.getPrincipal()).getId();
 
-//        if (image == null || image.isEmpty()) {
-//            throw new IllegalArgumentException("이미지를 업로드해주세요");
-//        }
-//        String imageUrl = s3UploaderService.uploadFile(image);
+        if (image == null || image.isEmpty()) {
+            throw new IllegalArgumentException("이미지를 업로드해주세요");
+        }
 
-        String imageUrl = "이미지";
+        String imageName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
+        String imagePath = "/var/www/mealhub/images/" + imageName;
+        image.transferTo(new File(imagePath));
+
+        String imageUrl = "/images/" + imageName;
 
         // 서버용
         return recipeService.save(recipeCreateRequestDto, imageUrl, userId);
