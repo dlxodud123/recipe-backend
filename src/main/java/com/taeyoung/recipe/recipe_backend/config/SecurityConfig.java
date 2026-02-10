@@ -108,33 +108,14 @@ public class SecurityConfig {
                     // 2) 그 외 페이지 요청이면 login으로 redirect
                     response.sendRedirect("/login");
                 })
-//                .accessDeniedHandler((request, response, accessDeniedException) -> {
-//                    response.setContentType("text/html; charset=UTF-8");
-//                    response.getWriter().write(
-//                        "<script>" +
-//                                "alert('관리자만 접근 가능합니다.');" +
-//                                "location.href = '/';" +
-//                                "</script>"
-//                    );
-//                })
                 .accessDeniedHandler((request, response, accessDeniedException) -> {
-                    // Ajax 요청이 아니더라도 JSON 반환 처리
-                    if (request.getHeader("X-Requested-With") == null && "XMLHttpRequest".equals(request.getHeader("X-Requested-With")) == false) {
-                        // 그냥 브라우저 접근이면 기존 HTML
-                        response.setContentType("text/html; charset=UTF-8");
-                        response.getWriter().write(
-                                "<script>" +
-                                        "alert('관리자만 접근 가능합니다.');" +
-                                        "location.href = '/';" +
-                                        "</script>"
-                        );
-                        return;
-                    }
-
-                    // Axios 요청이든 그냥 JSON API 요청이든 403 JSON 반환
-                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                    response.setContentType("application/json; charset=UTF-8");
-                    response.getWriter().write("{\"message\": \"ACCESS_DENIED\"}");
+                    response.setContentType("text/html; charset=UTF-8");
+                    response.getWriter().write(
+                        "<script>" +
+                                "alert('관리자만 접근 가능합니다.');" +
+                                "location.href = '/';" +
+                                "</script>"
+                    );
                 })
         );
 
