@@ -55,8 +55,8 @@ public class GoogleLoginController {
         sendJwtToResponse(member, response);
 
         // 뷰 반환 없이 JSON 응답만
-//        return "redirect:https://mealhub.site";
-        return "redirect:http://localhost:3000";
+        return "redirect:https://mealhub.site";
+//        return "redirect:http://localhost:3000";
     }
 
     // JWT 생성 + 쿠키 설정 + JSON 응답
@@ -79,10 +79,9 @@ public class GoogleLoginController {
         String jwt = JwtUtil.createToken(authentication);
 
         Cookie cookie = new Cookie("jwt", jwt);
-        cookie.setHttpOnly(false);
-//        cookie.setHttpOnly(true);
-//        cookie.setSecure(true); // HTTPS 필수
-        cookie.setSecure(false); // 로컬 테스트용
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true); // HTTPS 필수
+//        cookie.setSecure(false); // 로컬 테스트용
         cookie.setPath("/");
         cookie.setMaxAge(1000);
         response.addCookie(cookie);

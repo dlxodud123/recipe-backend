@@ -70,8 +70,9 @@ public class MemberController {
         // JWT 쿠키 삭제
         Cookie cookie = new Cookie("jwt", null);
         cookie.setPath("/");
-//        cookie.setHttpOnly(true);
-        cookie.setHttpOnly(false);
+//        cookie.setHttpOnly(false);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
 
