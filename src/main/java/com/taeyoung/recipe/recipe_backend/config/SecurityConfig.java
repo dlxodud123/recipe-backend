@@ -105,7 +105,7 @@ public class SecurityConfig {
                         return;
                     }
 
-                    // 2) 그 외 페이지 요청이면 login으로 redirect
+                    // 2) 그 외 페이지 요청이면 login으로 redirect  
                     response.sendRedirect("/login");
                 })
                 .accessDeniedHandler((request, response, accessDeniedException) -> {
