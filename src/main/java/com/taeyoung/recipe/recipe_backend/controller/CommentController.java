@@ -19,7 +19,6 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    // 댓글 작성
     @PostMapping("/{recipeId}")
     public Comment createComment(@PathVariable Long recipeId,
                                     @RequestBody CommentCreateRequestDto commentCreateRequestDto,
@@ -28,11 +27,8 @@ public class CommentController {
 
         return commentService.save(commentCreateRequestDto, recipeId, userId);
     }
-
-    // 댓글 조회(id)
     @GetMapping("/{recipeId}")
     public List<CommentByIdResponseDto> getCommentById(@PathVariable Long recipeId) {
-
         return commentService.getCommentById(recipeId);
     }
 }

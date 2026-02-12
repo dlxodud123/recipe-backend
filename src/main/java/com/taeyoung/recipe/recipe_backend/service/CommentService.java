@@ -24,28 +24,19 @@ public class CommentService {
     private final RecipeRepository recipeRepository;
     private final MemberRepository memberRepository;
 
-    // 댓글 작성
     public Comment save(CommentCreateRequestDto dto, Long recipeId, long userId) {
-        // 멤버 조회
         Member member = memberRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
-
-        // 레시피 조회
         Recipe recipe = recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new EntityNotFoundException("레시피가 존재하지 않습니다."));
 
-        // 댓글 생성(comment에 member, recipe 연결)
         Comment comment = new Comment(dto.getComment(), member, recipe);
-
-        // member에 comment 연결
         member.getComments().add(comment);
-        // recipe에 comment 연결
         recipe.getComments().add(comment);
 
         return commentRepository.save(comment);
     }
-
-    // 댓글 조회(id)
+    @Transactional(readOnly = true)
     public List<CommentByIdResponseDto> getCommentById(Long recipeId) {
         List<Comment> comments = commentRepository.findAllByRecipeIdOrderByCreatedAtDesc(recipeId);
         return comments.stream()
