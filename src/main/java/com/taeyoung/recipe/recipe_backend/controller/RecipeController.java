@@ -49,43 +49,34 @@ public class RecipeController {
         return recipeService.save(recipeCreateRequestDto, imageUrl, userId);
     }
 
-    // 레시피 조회(카테고리)
-    @GetMapping("/category")
-    public Page<RecipeByCategoryResponseDto> getRecipeByCategory(
-            @RequestParam("categoryName") String categoryName,
-            @RequestParam(value = "keyword", required = false) String keyword,
-            @PageableDefault(size = 15) Pageable pageable
-    ) {
-        return recipeService.getRecipeByCategory(categoryName, keyword, pageable);
-    }
+
+
+
+
 
     // 상세 레시피 조회(id)
     @GetMapping("/detail/{recipeId}")
     public RecipeByIdResponseDto getRecipeById(@PathVariable Long recipeId) {
-
         return recipeService.getRecipeById(recipeId);
     }
 
+
+
+
+
+
     // 최신 레시피 조회(5개)
     @GetMapping("/recent")
-    public List<RecipeRecentResponseDto> getRecentRecipe(){
-
-        return recipeService.getRecentRecipe();
-    }
-
+    public List<RecipeRecentResponseDto> getRecentRecipe() {return recipeService.getRecentRecipe();}
     // 조회수 TOP 조회(20개)
     @GetMapping("/views")
-    public List<RecipeByViewCountResponseDto> getViewRecipe(){
-
-        return recipeService.getTop20ByViewCount();
-    }
-
+    public List<RecipeByViewCountResponseDto> getViewRecipe(){return recipeService.getTop20ByViewCount();}
     // 댓글 랭킹 조회(5개)
     @GetMapping("/top-commented")
-    public List<RecipeByCommentCountResponseDto> getTopCommentedRecipes() {
+    public List<RecipeByCommentCountResponseDto> getTopCommentedRecipes() {return recipeService.getTop20ByCommentCount();}
 
-        return recipeService.getTop20ByCommentCount();
-    }
+
+
 
 
     // 재료 활용
@@ -100,10 +91,21 @@ public class RecipeController {
     }
 
 
+
+
+
+    // 레시피 조회(카테고리)
+    @GetMapping("/category")
+    public Page<RecipeByCategoryResponseDto> getRecipeByCategory(
+            @RequestParam("categoryName") String categoryName,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @PageableDefault(size = 15) Pageable pageable
+    ) {
+        return recipeService.getRecipeByCategory(categoryName, keyword, pageable);
+    }
     // 검색(header)
     @GetMapping("/search")
     public List<RecipeBySearchResponseDto> searchByKeyword(@RequestParam String keyword) {
-
         return recipeService.searchByKeyword(keyword);
     }
 }

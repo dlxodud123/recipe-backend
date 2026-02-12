@@ -9,6 +9,7 @@ import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateRecipeItemEx
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateRecipeTitleException;
 import com.taeyoung.recipe.recipe_backend.repository.member.MemberRepository;
 import com.taeyoung.recipe.recipe_backend.repository.recipe.CategoryRepository;
+import com.taeyoung.recipe.recipe_backend.repository.recipe.RecipeQueryRepository;
 import com.taeyoung.recipe.recipe_backend.repository.recipe.RecipeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final MemberRepository memberRepository;
     private final CategoryRepository categoryRepository;
+    private final RecipeQueryRepository recipeQueryRepository;
 
     // 레시피 생성
     public Recipe save(RecipeCreateRequestDto dto, String imageUrl, Long userId) {
@@ -95,41 +97,11 @@ public class RecipeService {
         return recipeRepository.save(recipe);
     }
 
-    // 레시피 조회(카테고리)
-    public Page<RecipeByCategoryResponseDto> getRecipeByCategory(
-            String categoryName,
-            String keyword,
-            Pageable pageable
-    ) {
-        Category category = categoryRepository.findByName(categoryName)
-                .orElseThrow(() -> new EntityNotFoundException("카테고리가 존재하지 않습니다."));
 
-        Page<Recipe> recipes;
 
-        if (keyword == null || keyword.isBlank()) {
-            recipes = recipeRepository.findAllByCategoryId(
-                    category.getId(),
-                    pageable
-            );
-        } else {
-            recipes = recipeRepository.findByCategoryIdAndTitleContaining(
-                    category.getId(),
-                    keyword,
-                    pageable
-            );
-        }
 
-        return recipes.map(recipe ->
-                new RecipeByCategoryResponseDto(
-                        recipe.getId(),
-                        recipe.getTitle(),
-                        recipe.getSubTitle(),
-                        recipe.getImageUrl()
-                )
-        );
-    }
 
-    // 상세 레시피 조회(id)
+
     public RecipeByIdResponseDto getRecipeById(long recipeId) {
         Recipe recipe = recipeRepository.findById(recipeId)
             .orElseThrow(() -> new EntityNotFoundException("레시피가 존재하지 않습니다."));
@@ -139,7 +111,15 @@ public class RecipeService {
         return RecipeByIdResponseDto.from(recipe);
     }
 
+
+
+
+
+
+
+
     // 최신 레시피 조회
+    @Transactional(readOnly = true)
     public List<RecipeRecentResponseDto> getRecentRecipe() {
         List<Recipe> recipes = recipeRepository.findTop5ByOrderByCreatedAtDesc();
 
@@ -147,8 +127,8 @@ public class RecipeService {
             .map(RecipeRecentResponseDto::from)
             .toList();
     }
-
     // 조회수 TOP 조회(20개)
+    @Transactional(readOnly = true)
     public List<RecipeByViewCountResponseDto> getTop20ByViewCount() {
         List<Recipe> recipes = recipeRepository.findTop20ByOrderByViewCountDescCreatedAtDesc();
 
@@ -156,14 +136,15 @@ public class RecipeService {
             .map(RecipeByViewCountResponseDto::from)
             .toList();
     }
-
     // 댓글 랭킹 조회(5개)
+    @Transactional(readOnly = true)
     public List<RecipeByCommentCountResponseDto> getTop20ByCommentCount() {
-        Pageable top5 = PageRequest.of(0, 5);
+        List<Recipe> recipes = recipeRepository.findTop5ByOrderByCommentCountDesc();
 
-        return recipeRepository.findTop5ByCommentCount(top5);
+        return recipes.stream()
+                .map(RecipeByCommentCountResponseDto::from)
+                .toList();
     }
-
 
     // 재료 활용
     public List<RecipeByIngredientSearchResponseDto> searchRecipes(List<String> includeIngredients, List<String> excludeIngredients) {
@@ -185,11 +166,41 @@ public class RecipeService {
             .toList();
     }
 
-    // 검색(header)
-    public List<RecipeBySearchResponseDto> searchByKeyword(String keyword) {
 
-        return recipeRepository.searchByKeyword(keyword);
+
+
+
+
+    @Transactional(readOnly = true)
+    public Page<RecipeByCategoryResponseDto> getRecipeByCategory(String categoryName, String keyword, Pageable pageable) {
+        Category category = categoryRepository.findByName(categoryName)
+            .orElseThrow(() -> new EntityNotFoundException("카테고리가 존재하지 않습니다."));
+
+        Page<Recipe> recipes;
+        if (keyword == null || keyword.isBlank()) {
+            recipes = recipeRepository.findAllByCategoryId(category.getId(), pageable);
+        } else {
+            recipes = recipeRepository.findByCategoryIdAndTitleContaining(category.getId(), keyword, pageable);
+        }
+
+        return recipes.map(recipe ->
+                new RecipeByCategoryResponseDto(
+                        recipe.getId(),
+                        recipe.getTitle(),
+                        recipe.getSubTitle(),
+                        recipe.getImageUrl()
+                )
+        );
     }
+    @Transactional(readOnly = true)
+    public List<RecipeBySearchResponseDto> searchByKeyword(String keyword) {
+        return recipeQueryRepository.searchByKeyword(keyword);
+    }
+
+
+
+
+
 
 
 
