@@ -26,7 +26,15 @@ public class RecipeController {
 
     private final RecipeService recipeService;
 
+
+
+
+
+
+
+
     // 레시피 생성
+
     @PostMapping("/create")
     public Recipe createStudy(
                             @Valid @RequestPart("recipe") RecipeCreateRequestDto recipeCreateRequestDto,
@@ -35,19 +43,11 @@ public class RecipeController {
 
         Long userId = ((CustomUser) authentication.getPrincipal()).getId();
 
-        if (image == null || image.isEmpty()) {
-            throw new IllegalArgumentException("이미지를 업로드해주세요");
-        }
-
-        String imageName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
-        String imagePath = "/var/www/mealhub/images/" + imageName;
-        image.transferTo(new File(imagePath));
-
-        String imageUrl = "/images/" + imageName;
-
-        // 서버용
-        return recipeService.save(recipeCreateRequestDto, imageUrl, userId);
+        return recipeService.save(recipeCreateRequestDto, image, userId);
     }
+
+
+
 
 
 
@@ -59,12 +59,6 @@ public class RecipeController {
     public RecipeByIdResponseDto getRecipeById(@PathVariable Long recipeId) {
         return recipeService.getRecipeById(recipeId);
     }
-
-
-
-
-
-
     // 최신 레시피 조회(5개)
     @GetMapping("/recent")
     public List<RecipeRecentResponseDto> getRecentRecipe() {return recipeService.getRecentRecipe();}

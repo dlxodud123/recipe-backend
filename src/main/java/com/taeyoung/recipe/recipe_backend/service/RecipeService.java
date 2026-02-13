@@ -18,7 +18,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -33,8 +36,20 @@ public class RecipeService {
     private final CategoryRepository categoryRepository;
     private final RecipeQueryRepository recipeQueryRepository;
 
+
+
+
     // 레시피 생성
-    public Recipe save(RecipeCreateRequestDto dto, String imageUrl, Long userId) {
+    public Recipe save(RecipeCreateRequestDto dto, MultipartFile image, Long userId) throws IOException {
+        // 이미지 관련
+        if (image == null || image.isEmpty()) {
+            throw new IllegalArgumentException("이미지를 업로드해주세요");
+        }
+        String imageName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
+        String imagePath = "/var/www/mealhub/images/" + imageName;
+        image.transferTo(new File(imagePath));
+        String imageUrl = "/images/" + imageName;
+
         // 멤버 조회
         Member member = memberRepository.findById(userId)
             .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
