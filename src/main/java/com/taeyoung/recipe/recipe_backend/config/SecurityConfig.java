@@ -71,7 +71,7 @@ public class SecurityConfig {
                 // 🔹 preflight (CORS)
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                // 🔹 정적 리소스 / 로그인
+                // 🔹 정적 리소스 / 로그인  
                 .requestMatchers("/login", "/css/**", "/js/**").permitAll()
 
                 // 🔹 공개 API
