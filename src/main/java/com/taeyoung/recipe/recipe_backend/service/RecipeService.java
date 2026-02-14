@@ -163,15 +163,22 @@ public class RecipeService {
                 .toList();
     }
 
+
+
+
+
+
+
+
+
     // 재료 활용
+    @Transactional(readOnly = true)
     public List<RecipeByIngredientSearchResponseDto> searchRecipes(List<String> includeIngredients, List<String> excludeIngredients) {
-        if ((includeIngredients == null || includeIngredients.isEmpty())
-                && (excludeIngredients == null || excludeIngredients.isEmpty())) {
+        if ((includeIngredients == null || includeIngredients.isEmpty()) && (excludeIngredients == null || excludeIngredients.isEmpty())) {
             throw new IllegalArgumentException("재료나 제외할 재료를 입력하세요.");
         }
 
         long includeCount = includeIngredients != null ? includeIngredients.size() : 0;
-
         List<Recipe> recipes = recipeRepository.findByIngredients(
             includeIngredients,
             excludeIngredients != null ? excludeIngredients : List.of(),
@@ -181,6 +188,29 @@ public class RecipeService {
         return recipes.stream()
             .map(recipe -> RecipeByIngredientSearchResponseDto.from(recipe, excludeIngredients))
             .toList();
+    }
+
+
+
+
+
+
+
+
+
+    private void validateNoDuplicate(RecipeCreateRequestDto dto) {
+        Set<String> ingredientSet = new HashSet<>();
+        for (String raw : dto.getIngredients()) {
+            if (raw == null) continue;
+            String value = raw.trim().replaceAll("\\s+", " ").toLowerCase();
+            if (!ingredientSet.add(value)) {throw new DuplicateRecipeItemException("재료에 중복된 항목이 있습니다.");}
+        }
+        Set<String> seasoningSet = new HashSet<>();
+        for (String raw : dto.getSeasonings()) {
+            if (raw == null) continue;
+            String value = raw.trim().replaceAll("\\s+", " ").toLowerCase();
+            if (!seasoningSet.add(value)) {throw new DuplicateRecipeItemException("양념에 중복된 항목이 있습니다.");}
+        }
     }
 
 
@@ -212,36 +242,5 @@ public class RecipeService {
     @Transactional(readOnly = true)
     public List<RecipeBySearchResponseDto> searchByKeyword(String keyword) {
         return recipeQueryRepository.searchByKeyword(keyword);
-    }
-
-
-
-
-
-
-
-
-
-    // 재료, 양념 중복 체크 메서드
-    private void validateNoDuplicate(RecipeCreateRequestDto dto) {
-
-        // 재료 내부 중복 체크
-        Set<String> ingredientSet = new HashSet<>();
-        for (String raw : dto.getIngredients()) {
-            if (raw == null) continue;
-            String value = raw.trim().replaceAll("\\s+", " ").toLowerCase();
-            if (!ingredientSet.add(value)) {
-                throw new DuplicateRecipeItemException("재료에 중복된 항목이 있습니다.");
-            }
-        }
-        // 양념 내부 중복 체크
-        Set<String> seasoningSet = new HashSet<>();
-        for (String raw : dto.getSeasonings()) {
-            if (raw == null) continue;
-            String value = raw.trim().replaceAll("\\s+", " ").toLowerCase();
-            if (!seasoningSet.add(value)) {
-                throw new DuplicateRecipeItemException("양념에 중복된 항목이 있습니다.");
-            }
-        }
     }
 }

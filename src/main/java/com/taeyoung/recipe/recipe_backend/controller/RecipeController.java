@@ -46,14 +46,6 @@ public class RecipeController {
         return recipeService.save(recipeCreateRequestDto, image, userId);
     }
 
-
-
-
-
-
-
-
-
     // 상세 레시피 조회(id)
     @GetMapping("/detail/{recipeId}")
     public RecipeByIdResponseDto getRecipeById(@PathVariable Long recipeId) {
@@ -73,16 +65,21 @@ public class RecipeController {
 
 
 
+
+
+
     // 재료 활용
     @GetMapping("/ingredients/search")
     public List<RecipeByIngredientSearchResponseDto> searchRecipes(@RequestParam(required = false) List<String> ingredient,
                                                                    @RequestParam(required = false) List<String> exceptIngredient) {
-
         List<String> includeIngredients = ingredient != null ? ingredient : List.of();
         List<String> excludeIngredients = exceptIngredient != null ? exceptIngredient : List.of();
 
         return recipeService.searchRecipes(includeIngredients, excludeIngredients);
     }
+
+
+
 
 
 

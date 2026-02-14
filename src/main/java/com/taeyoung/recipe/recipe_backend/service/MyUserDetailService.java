@@ -30,7 +30,6 @@ public class MyUserDetailService implements UserDetailsService {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_" + member.getRole()));
 
-        var a = new CustomUser(member.getId(), member.getUsername(), member.getPassword(), member.getProvider(), authorities);
-        return a;
+        return new CustomUser(member.getId(), member.getUsername(), member.getPassword(), member.getProvider(), authorities);
     }
 }
