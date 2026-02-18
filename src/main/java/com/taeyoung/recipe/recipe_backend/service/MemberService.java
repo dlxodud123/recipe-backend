@@ -142,7 +142,7 @@ public class MemberService {
         return findMember.getUsername();
     }
 
-    // password 찾기 !!
+    // password 찾기 !!  
     public String findPassword(FindPasswordRequestDto findPasswordRequestDto) {
         Member findMember = memberRepository.findByNameAndUsername(findPasswordRequestDto.getName(), findPasswordRequestDto.getUsername())
                 .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
