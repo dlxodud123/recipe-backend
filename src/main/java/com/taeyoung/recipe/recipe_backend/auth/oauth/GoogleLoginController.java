@@ -43,7 +43,6 @@ public class GoogleLoginController {
         ProviderType provider = ProviderType.GOOGLE;
         String providerId = (String) userInfo.get("id");
 
-        // 연동이 완료된 member가 db에 있는지 확인
         Member member = googleLoginService.findByProviderAndProviderId(provider, providerId);
 
         if (member == null) {
@@ -51,17 +50,13 @@ public class GoogleLoginController {
             googleLoginService.registerSocialMember(member);
         }
 
-        // JWT 발급 및 쿠키/응답 처리
         sendJwtToResponse(member, response);
 
-        // 뷰 반환 없이 JSON 응답만
         return "redirect:https://mealhub.site";
-//        return "redirect:http://localhost:3000";
     }
 
     // JWT 생성 + 쿠키 설정 + JSON 응답
     private void sendJwtToResponse(Member member, HttpServletResponse response) throws IOException {
-
         CustomUser customUser = new CustomUser(
                 member.getId(),
                 member.getEmail(),
@@ -80,14 +75,9 @@ public class GoogleLoginController {
 
         Cookie cookie = new Cookie("jwt", jwt);
         cookie.setHttpOnly(true);
-        cookie.setSecure(true); // HTTPS 필수
-//        cookie.setSecure(false); // 로컬 테스트용
+        cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setMaxAge(1000);
         response.addCookie(cookie);
-
-        // 로컬호스트 콘솔 확인용
-        response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write("{\"jwt\":\"" + jwt + "\"}");
     }
 }

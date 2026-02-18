@@ -109,7 +109,7 @@ public class MemberController {
 
     // password 찾기 !!
     @PostMapping("/find-password")
-    public ResponseEntity<String> findPassword(@RequestBody FindPasswordRequestDto findPasswordRequestDto) {
+    public ResponseEntity<String> findPassword(@Valid @RequestBody FindPasswordRequestDto findPasswordRequestDto) {
         String findPassword = memberService.findPassword(findPasswordRequestDto);
 
         return ResponseEntity.ok(findPassword);
