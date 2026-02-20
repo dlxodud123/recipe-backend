@@ -133,7 +133,7 @@ public class MemberService {
         localMember.unlink();
     }
 
-    // username 찾기 !!
+    // username 찾기 !!  
     @Transactional(readOnly = true)
     public String findUsername(FindUsernameRequestDto findUsernameRequestDto) {
         Member findMember = memberRepository.findByNameAndEmail(findUsernameRequestDto.getName(), findUsernameRequestDto.getEmail())
