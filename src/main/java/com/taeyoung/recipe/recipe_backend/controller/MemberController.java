@@ -44,43 +44,37 @@ public class MemberController {
         return ResponseEntity.ok("회원가입 성공!");
     }
 
+
+
+
+
     // 회원 정보 조회 !!
     @GetMapping("/me")
     public ResponseEntity<MyPageResponseDto> getMyInfo(Authentication authentication){
-
         MyPageResponseDto myPageDto = memberService.getMyInfo(((CustomUser) authentication.getPrincipal()).getId());
         return ResponseEntity.ok(myPageDto);
     }
-
     // 회원 정보 수정 !!
     @PutMapping("/me")
     public ResponseEntity<String> updateMyInfo(@Valid @RequestBody UpdateRequestDto updateRequestDto, Authentication authentication){
-
         memberService.updateMember(updateRequestDto, ((CustomUser) authentication.getPrincipal()).getId());
-
         return ResponseEntity.ok("회원수정 성공!");
     }
-
     // 회원 탈퇴 !!
     @DeleteMapping("/me")
     public ResponseEntity<Void> deleteMyAccount(Authentication authentication, HttpServletResponse response){
-
         memberService.deleteMember(((CustomUser) authentication.getPrincipal()).getId());
 
-        // JWT 쿠키 삭제
         Cookie cookie = new Cookie("jwt", null);
         cookie.setPath("/");
-//        cookie.setHttpOnly(false);
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
-
         SecurityContextHolder.clearContext();
 
         return ResponseEntity.ok().build();
     }
-
     // 회원 연동 !!
     @PostMapping("/me/social")
     public ResponseEntity<String> linkMyInfo(Authentication authentication){
@@ -89,7 +83,6 @@ public class MemberController {
 
         return ResponseEntity.ok("회원연동 성공!"); 
     }
-
     // 회원 연동 해제 !!
     @DeleteMapping("/me/social")
     public ResponseEntity<String> deleteLinkMyInfo(Authentication authentication){
@@ -98,6 +91,11 @@ public class MemberController {
 
         return ResponseEntity.ok("회원연동 해제 성공!");
     }
+
+
+
+
+
 
     // username 찾기 !!
     @PostMapping("/find-username")

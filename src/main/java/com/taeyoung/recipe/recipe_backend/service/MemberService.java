@@ -35,7 +35,6 @@ public class MemberService {
             throw new DuplicateUsernameException("이미 사용중인 아이디입니다.");
         }
     }
-
     // 회원가입(이메일 중복 확인) !!
     @Transactional(readOnly = true)
     public void isEmailDuplicated(String email) {
@@ -43,7 +42,6 @@ public class MemberService {
             throw new DuplicateEmailException("이미 사용중인 이메일입니다.");
         }
     }
-
     // 회원가입 !!
     public Member registerMember(SignupRequestDto signupRequestDto){
         String encodedPassword = passwordEncoder.encode(signupRequestDto.getPassword());
@@ -65,6 +63,10 @@ public class MemberService {
         ));
     }
 
+
+
+
+
     // 회원 정보 조회 !!
     @Transactional(readOnly = true)
     public MyPageResponseDto getMyInfo(Long id) {
@@ -72,7 +74,6 @@ public class MemberService {
                 .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
 
         boolean isLinked;
-
         if (member.getLinkedMemberId() == null) {
             isLinked = false;
         } else {
@@ -81,7 +82,6 @@ public class MemberService {
 
         return MyPageResponseDto.from(member, isLinked);
     }
-
     // 회원 정보 수정 !!
     public void updateMember(UpdateRequestDto updateRequestDto, Long id) {
         Member member = memberRepository.findById(id)
@@ -95,7 +95,6 @@ public class MemberService {
                 updateRequestDto.getGender()
         );
     }
-
     // 회원 탈퇴 !!
     public void deleteMember(Long id){
         // 삭제할 회원 가져오기
@@ -104,16 +103,13 @@ public class MemberService {
 
         // 연동된 멤버 링크 끊기
         Member linkedMember = memberRepository.findByLinkedMemberId(id).orElse(null);
-
         if (linkedMember != null) {
             linkedMember.unlink();  // linkedMemberId = null
             memberRepository.save(linkedMember); // 변경을 DB에 반영
         }
 
-        // 실제 회원 삭제
         memberRepository.delete(member);
     }
-        
     // 회원 연동 !!
     public void linkMember(Long id){
         Member localMember = memberRepository.findById(id)
@@ -124,7 +120,6 @@ public class MemberService {
 
         localMember.link(socialMember.getId());
     }
-
     // 회원 연동 해제 !!
     public void deleteLinkMember(Long id){
         Member localMember = memberRepository.findById(id)
@@ -132,6 +127,12 @@ public class MemberService {
 
         localMember.unlink();
     }
+
+
+
+
+
+
 
     // username 찾기 !!  
     @Transactional(readOnly = true)
