@@ -27,6 +27,7 @@ public class AdminService {
     private final CommentRepository commentRepository;
 
     // 대시보드
+    @Transactional(readOnly = true)
     public AdminDashboardResponseDto getDashboard() {
 
         long memberCount = memberRepository.count();
@@ -35,10 +36,8 @@ public class AdminService {
 
         List<Member> recentMembers =
                 memberRepository.findTop5ByOrderByCreatedAtDesc();
-
         List<Recipe> recentRecipes =
                 recipeRepository.findTop5ByOrderByCreatedAtDesc();
-
         List<Comment> recentComments =
                 commentRepository.findTop5ByOrderByCreatedAtDesc();
 
@@ -52,20 +51,26 @@ public class AdminService {
         );
     }
 
+
+
+
+
+
+
     // 전체 회원 조회
+    @Transactional(readOnly = true)
     public Page<AdminMemberResponseDto> getMembers(Pageable pageable) {
         return memberRepository.findAll(pageable)
                 .map(AdminMemberResponseDto::new);
     }
-
     // 회원 상세 조회
+    @Transactional(readOnly = true)
     public AdminMemberDetailResponseDto getMemberDetail(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
 
         return new AdminMemberDetailResponseDto(member);
     }
-
     // 회원 삭제
     public void deleteMember(Long id){
         // 삭제할 회원 가져오기
@@ -80,10 +85,8 @@ public class AdminService {
             memberRepository.save(linkedMember); // 변경을 DB에 반영
         }
 
-        // 실제 회원 삭제
         memberRepository.delete(member);
     }
-
     // 회원 권한 변경
     public void changeMemberRole(Long id, String newRole) {
         Member member = memberRepository.findById(id)
@@ -94,6 +97,13 @@ public class AdminService {
 
         memberRepository.save(member);
     }
+
+
+
+
+
+
+
 
     // 전체 레시피 조회
     public Page<AdminRecipeResponseDto> getRecipes(Pageable pageable) {
