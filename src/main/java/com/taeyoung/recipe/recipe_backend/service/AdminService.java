@@ -106,18 +106,18 @@ public class AdminService {
 
 
     // 전체 레시피 조회
+    @Transactional(readOnly = true)
     public Page<AdminRecipeResponseDto> getRecipes(Pageable pageable) {
         return recipeRepository.findAdminRecipes(pageable);
     }
-
     // 레시피 상세 조회
+    @Transactional(readOnly = true)
     public AdminRecipeDetailResponseDto getRecipeDetail(Long recipeId) {
-        Recipe recipe = recipeRepository.findById(recipeId)
+        Recipe recipe = recipeRepository.findRecipeWithIngredientsAndSteps(recipeId)
                 .orElseThrow(() -> new EntityNotFoundException("레시피가 존재하지 않습니다."));
 
         return new AdminRecipeDetailResponseDto(recipe);
     }
-
     // 레시피 삭제
     public void deleteRecipe(Long recipeId) {
         Recipe recipe = recipeRepository.findById(recipeId)
@@ -126,20 +126,29 @@ public class AdminService {
         recipeRepository.delete(recipe);
     }
 
+
+
+
+
+
+
+
+
+
     // 전체 댓글 조회
+    @Transactional(readOnly = true)
     public Page<AdminCommentResponseDto> getComments(Pageable pageable) {
         return commentRepository.findAll(pageable)
                 .map(AdminCommentResponseDto::new);
     }
-
     // 댓글 상세 조회
+    @Transactional(readOnly = true)
     public AdminCommentResponseDto getCommentDetail(Long commentId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new EntityNotFoundException("댓글이 존재하지 않습니다."));
 
         return new AdminCommentResponseDto(comment);
     }
-
     // 댓글 삭제
     public void deleteComment(Long commentId) {
         Comment comment = commentRepository.findById(commentId)
@@ -147,4 +156,10 @@ public class AdminService {
 
         commentRepository.delete(comment);
     }
+
+
+
+
+
+
 }

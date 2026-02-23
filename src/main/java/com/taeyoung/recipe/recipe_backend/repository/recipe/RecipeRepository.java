@@ -30,6 +30,13 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
 
 
+    // 레시피 상세 조회
+    @Query("select r from Recipe r " +
+            "join fetch r.ingredients i " +
+            "join fetch r.steps s " +
+            "where r.id = :recipeId")
+    Optional<Recipe> findRecipeWithIngredientsAndSteps(@Param("recipeId") Long recipeId);
+
 
 
 
@@ -53,7 +60,6 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
 
     // 포함 재료 포함 + 제외 재료 미포함 검색 (예시)
-
     @Query("SELECT r FROM Recipe r JOIN r.ingredients i " +
             "WHERE i.name IN :includeIngredients " +
             "AND NOT EXISTS (SELECT 1 FROM r.ingredients e WHERE e.name IN :excludeIngredients) " +

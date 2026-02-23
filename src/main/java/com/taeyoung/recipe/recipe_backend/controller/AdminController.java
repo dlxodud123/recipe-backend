@@ -68,13 +68,11 @@ public class AdminController {
     public Page<AdminRecipeResponseDto> getRecipes(Pageable pageable) {
         return adminService.getRecipes(pageable);
     }
-
     // 레시피 상세 조회
     @GetMapping("/recipes/{recipeId}")
     public AdminRecipeDetailResponseDto getRecipeDetail(@PathVariable Long recipeId) {
         return adminService.getRecipeDetail(recipeId);
     }
-
     // 레시피 삭제
     @DeleteMapping("/recipes/{recipeId}")
     public ResponseEntity<?> deleteRecipe(@PathVariable Long recipeId) {
@@ -83,18 +81,23 @@ public class AdminController {
         return ResponseEntity.ok().body(Map.of("message", "레시피 삭제 완료!"));
     }
 
+
+
+
+
+
+
+
     // 전체 댓글 조회
     @GetMapping("/comments")
     public Page<AdminCommentResponseDto> getComments(Pageable pageable) {
         return adminService.getComments(pageable);
     }
-
     // 댓글 상세 조회
     @GetMapping("/comments/{commentId}")
     public AdminCommentResponseDto getCommentDetail(@PathVariable Long commentId) {
         return adminService.getCommentDetail(commentId);
     }
-
     // 댓글 삭제
     @DeleteMapping("/comments/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable Long commentId) {
@@ -102,4 +105,9 @@ public class AdminController {
 
         return ResponseEntity.ok().body(Map.of("message", "댓글 삭제 완료!"));
     }
+
+
+
+
+
 }

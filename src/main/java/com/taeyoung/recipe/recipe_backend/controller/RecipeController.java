@@ -34,7 +34,6 @@ public class RecipeController {
 
 
     // 레시피 생성
-
     @PostMapping("/create")
     public Recipe createStudy(
                             @Valid @RequestPart("recipe") RecipeCreateRequestDto recipeCreateRequestDto,
@@ -51,6 +50,7 @@ public class RecipeController {
     public RecipeByIdResponseDto getRecipeById(@PathVariable Long recipeId) {
         return recipeService.getRecipeById(recipeId);
     }
+
     // 최신 레시피 조회(5개)
     @GetMapping("/recent")
     public List<RecipeRecentResponseDto> getRecentRecipe() {return recipeService.getRecentRecipe();}

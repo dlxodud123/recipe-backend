@@ -120,8 +120,8 @@ public class RecipeService {
     // 상세 레시피 조회(id)
     @Transactional(readOnly = true)
     public RecipeByIdResponseDto getRecipeById(long recipeId) {
-        Recipe recipe = recipeRepository.findById(recipeId)
-            .orElseThrow(() -> new EntityNotFoundException("레시피가 존재하지 않습니다."));
+        Recipe recipe = recipeRepository.findRecipeWithIngredientsAndSteps(recipeId)
+                .orElseThrow(() -> new EntityNotFoundException("레시피가 존재하지 않습니다."));
 
         recipe.increaseViewCount();
 
