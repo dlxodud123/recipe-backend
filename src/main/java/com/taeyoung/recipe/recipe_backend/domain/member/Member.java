@@ -120,5 +120,10 @@ public class Member extends BaseEntity {
         this.recipes.remove(recipe); // Member쪽 리스트에서 제거
         recipe.setMember(null);      // Recipe쪽 member를 null로
     }
+
+    // test용 setter 함수
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
+    }
 }
 

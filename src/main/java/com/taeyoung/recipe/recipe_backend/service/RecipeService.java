@@ -155,10 +155,16 @@ public class RecipeService {
     }
     // 댓글 랭킹 조회(5개)
     @Transactional(readOnly = true)
-    public List<RecipeByCommentCountResponseDto> getTop20ByCommentCount() {
-        List<Recipe> recipes = recipeRepository.findTop5ByOrderByCommentCountDesc();
+    public List<RecipeByCommentCountResponseDto> getTop5ByCommentCount() {
+//        List<Recipe> recipes = recipeRepository.findTop5ByOrderByCommentCountDesc();
+//
+//        return recipes.stream()
+//                .map(RecipeByCommentCountResponseDto::from)
+//                .toList();
 
-        return recipes.stream()
+        return recipeRepository
+                .findByOrderByCommentCountDesc(PageRequest.of(0, 5))
+                .stream()
                 .map(RecipeByCommentCountResponseDto::from)
                 .toList();
     }

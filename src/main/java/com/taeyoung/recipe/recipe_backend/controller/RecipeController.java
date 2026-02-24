@@ -59,7 +59,7 @@ public class RecipeController {
     public List<RecipeByViewCountResponseDto> getViewRecipe(){return recipeService.getTop20ByViewCount();}
     // 댓글 랭킹 조회(5개)
     @GetMapping("/top-commented")
-    public List<RecipeByCommentCountResponseDto> getTopCommentedRecipes() {return recipeService.getTop20ByCommentCount();}
+    public List<RecipeByCommentCountResponseDto> getTopCommentedRecipes() {return recipeService.getTop5ByCommentCount();}
 
 
 

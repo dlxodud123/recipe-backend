@@ -26,4 +26,11 @@ public class Category {
 
     public Category() {
     }
+
+    // test
+    public Category setNameAndOrder(String name, int order) {
+        this.name = name;
+        this.categoryOrder = order;
+        return this;
+    }
 }

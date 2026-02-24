@@ -9,6 +9,8 @@ import com.taeyoung.recipe.recipe_backend.dto.member.request.UpdateRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindPasswordRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.request.find.FindUsernameRequestDto;
 import com.taeyoung.recipe.recipe_backend.dto.member.response.MyPageResponseDto;
+import com.taeyoung.recipe.recipe_backend.global.exception.AlreadyLinkedAccountException;
+import com.taeyoung.recipe.recipe_backend.global.exception.AlreadyUnlinkedAccountException;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateEmailException;
 import com.taeyoung.recipe.recipe_backend.global.exception.DuplicateUsernameException;
 import com.taeyoung.recipe.recipe_backend.repository.member.MemberRepository;
@@ -118,6 +120,11 @@ public class MemberService {
         Member socialMember = memberRepository.findByEmailAndProvider(localMember.getEmail(), ProviderType.GOOGLE)
                 .orElseThrow(() -> new EntityNotFoundException("연동할 회원이 존재하지 않습니다."));
 
+        // 이미 연동된 경우
+        if(localMember.getLinkedMemberId() != null){
+            throw new AlreadyLinkedAccountException();
+        }
+
         localMember.link(socialMember.getId());
     }
     // 회원 연동 해제 !!
@@ -125,8 +132,14 @@ public class MemberService {
         Member localMember = memberRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
 
+        if(localMember.getLinkedMemberId() == null){
+            throw new AlreadyUnlinkedAccountException();
+        }
+
         localMember.unlink();
     }
+
+
 
 
 

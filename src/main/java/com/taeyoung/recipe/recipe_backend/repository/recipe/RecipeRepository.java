@@ -26,7 +26,15 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     List<Recipe> findTop20ByOrderByViewCountDescCreatedAtDesc();
 
     // 댓글 랭킹 조회(5개)
-    List<Recipe> findTop5ByOrderByCommentCountDesc();
+//    List<Recipe> findTop5ByOrderByCommentCountDesc();
+    @Query("""
+        SELECT r
+        FROM Recipe r
+        LEFT JOIN r.comments c
+        GROUP BY r.id
+        ORDER BY COUNT(c) DESC
+    """)
+    List<Recipe> findByOrderByCommentCountDesc(Pageable pageable);
 
 
 
