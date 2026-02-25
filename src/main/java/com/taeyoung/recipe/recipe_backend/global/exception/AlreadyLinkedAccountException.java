@@ -5,3 +5,4 @@ public class AlreadyLinkedAccountException extends RuntimeException {
         super("이미 연동된 계정입니다.");
     }
 }
+

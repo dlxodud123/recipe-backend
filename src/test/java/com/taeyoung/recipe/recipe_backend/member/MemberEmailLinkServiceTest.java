@@ -71,43 +71,45 @@ public class MemberEmailLinkServiceTest {
     @Test
     @DisplayName("이메일 연동 성공")
     void linkEmail_success() {
-        // when & then
+        // when & then  
         assertThatCode(() -> memberService.linkMember(localMemberId))
                 .doesNotThrowAnyException();
 
         Member localMember = memberRepository.findById(localMemberId).orElseThrow();
         assertThat(localMember.getLinkedMemberId()).isEqualTo(googleMemberId);
     }
-
     @Test
     @DisplayName("이메일 연동 해제 성공")
     void unlinkEmail_success() {
-        // when & then
+        // given
         memberService.linkMember(localMemberId);
 
+        // when & then
         assertThatCode(() -> memberService.deleteLinkMember(localMemberId))
                 .doesNotThrowAnyException();
 
         Member localMember = memberRepository.findById(localMemberId).orElseThrow();
         assertThat(localMember.getLinkedMemberId()).isNull();
     }
-
     @Test
     @DisplayName("이미 연동된 계정 연동 시도")
     void linkEmail_alreadyLinked() {
+        // given
         memberService.linkMember(localMemberId);
 
+        // when & then
         assertThatThrownBy(() -> memberService.linkMember(localMemberId))
                 .isInstanceOf(AlreadyLinkedAccountException.class)
                 .hasMessage("이미 연동된 계정입니다.");
     }
-
     @Test
     @DisplayName("이미 해제된 계정 재해제 시도")
     void unlinkEmail_alreadyUnlinked() {
+        // given
         memberService.linkMember(localMemberId);
         memberService.deleteLinkMember(localMemberId);
 
+        // when & then
         assertThatThrownBy(() -> memberService.deleteLinkMember(localMemberId))
                 .isInstanceOf(AlreadyUnlinkedAccountException.class)
                 .hasMessage("이미 연동 해제된 계정입니다.");
