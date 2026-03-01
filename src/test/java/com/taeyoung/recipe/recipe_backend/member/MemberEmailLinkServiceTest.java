@@ -71,7 +71,7 @@ public class MemberEmailLinkServiceTest {
     @Test
     @DisplayName("이메일 연동 성공")
     void linkEmail_success() {
-        // when & then    
+        // when & then      
         assertThatCode(() -> memberService.linkMember(localMemberId))
                 .doesNotThrowAnyException();
 
