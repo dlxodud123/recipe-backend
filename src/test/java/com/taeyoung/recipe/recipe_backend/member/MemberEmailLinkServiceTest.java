@@ -81,7 +81,7 @@ public class MemberEmailLinkServiceTest {
     @Test
     @DisplayName("이메일 연동 해제 성공")
     void unlinkEmail_success() {
-        // given
+        // given  
         memberService.linkMember(localMemberId);
 
         // when & then
