@@ -78,11 +78,11 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/comments/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/recipes/**").permitAll()
 
-                // 🔹 내 정보 / 인증 필요 API
-                .requestMatchers("/api/members/me/**").authenticated()
-
                 // 🔹 댓글 작성
                 .requestMatchers(HttpMethod.POST, "/api/comments/**").authenticated()
+
+                // 🔹 내 정보 / 인증 필요 API
+                .requestMatchers("/api/members/me/**").authenticated()
 
                 // 🔹 레시피 생성
                 .requestMatchers(HttpMethod.POST, "/api/recipes/**").authenticated()
