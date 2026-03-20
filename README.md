@@ -19,6 +19,7 @@
 - Spring Boot
 - JPA / Spring Data JPA
 - Querydsl
+- MySQL
 
 ### Frontend
 - React
