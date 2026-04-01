@@ -1,18 +1,18 @@
-# 🍽️ 한끼식사 (MealHub)
+# 한끼식사 (MealHub)
 
-## 📖 프로젝트 소개
+## 프로젝트 소개
 사용자가 간편하게 레시피를 생성하고 참고할 수 있도록 만든 웹 서비스입니다.  
 레시피 조회, 추천, 관리 기능을 제공하여 사용자 편의성을 높였습니다.
 
 ---
 
-## 🚀 배포 링크
+## 배포 링크
 - 서비스 URL: https://mealhub.site/
 - PPT 발표자료: https://docs.google.com/presentation/d/1D3yxSzIk0LFxntSI0_tRor5ApjAuxsKl48olgPKjJtc/edit
 
 ---
 
-## 🛠️ 기술 스택
+## 기술 스택
 
 ### Backend
 - Java
@@ -31,21 +31,21 @@
 
 ---
 
-## ✨ 주요 기능
+## 주요 기능
 
-- 🍱 레시피 조회 및 검색 기능
-- ⭐ 사용자 맞춤 레시피 추천
-- 📝 레시피 기록 관리
-- 🔐 로그인 및 인증
+- 레시피 조회 및 검색 기능
+- 사용자 맞춤 레시피 추천
+- 레시피 기록 관리
+- 로그인 및 인증
 
 ---
 
-## 🏗️ 시스템 구조
+## 시스템 구조
 <img width="1499" height="686" alt="image" src="https://github.com/user-attachments/assets/697073de-56b5-4351-8126-042dc489eca2" />
 
 ---
 
-## ⚙️ 핵심 구현 내용
+## 핵심 구현 내용
 
 ### 1. REST API 설계 (Backend)
 - 계층형 구조 (Controller-Service-Repository) 적용
@@ -71,7 +71,7 @@
 
 ---
 
-## 🔥 트러블 슈팅
+## 트러블 슈팅
 
 ### 문제: N+1 문제 발생
 - 원인: Lazy 로딩으로 인해 반복 쿼리 발생
